@@ -1,0 +1,16 @@
+﻿using AutomobiliuNuoma.Core.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AutomobiliuNuoma.Core.Contracts
+{
+    public interface IKlientaiRepository
+    {
+        List<Klientas> GautiVisusKlientus();
+        void PridetiNaujaKlienta(Klientas klientas);
+
+    }
+}
