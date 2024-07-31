@@ -16,11 +16,12 @@ public class Program
             Console.WriteLine("1. Rodyti visus automobilius (KOL KAS NEVEIKIA)");
             Console.WriteLine("2. Rodyti visus klientus");
             Console.WriteLine("3. Formuoti nuomos uzsakyma");
-            Console.WriteLine("4. Rodyti visus elektromobilius is duombazes");
-            Console.WriteLine("5. Rodyti visus naftos kuro automobilius is duombazes");
-            Console.WriteLine("6. Prideti automobili i duombaze");
-            Console.WriteLine("7. Rodyti visus klientus is duombazes");
-            Console.WriteLine("8. Prideti klienta i duombaze");
+            Console.WriteLine("4. Gauti visus uzsakymus"); 
+            Console.WriteLine("5. Rodyti visus elektromobilius is duombazes");
+            Console.WriteLine("6. Rodyti visus naftos kuro automobilius is duombazes");
+            Console.WriteLine("7. Prideti automobili i duombaze");
+            Console.WriteLine("8. Rodyti visus klientus is duombazes");
+            Console.WriteLine("9. Prideti klienta i duombaze");
 
             string pasirinkimas = Console.ReadLine();
             switch (pasirinkimas)
@@ -32,7 +33,7 @@ public class Program
                         Console.WriteLine(a);
                     }
                     break;
-                case "2": /*neduombaze*/
+                case "2": /*KOL KAS PERMETA I DUOMBAZE, O NE LISTA*/
                     List<Klientas> klientai = autonuomaService.GautiVisusKlientus();
                     foreach (Klientas k in klientai)
                     {
@@ -67,14 +68,29 @@ public class Program
 
                     break;
 
-                case "4": /*duombaze*/
+                case "4":
+                    var uzsakymai = autonuomaService.GautiVisusUzsakymus();
+                    if (uzsakymai.Count == 0)
+                    {
+                        Console.WriteLine("Nera uzsakymu.");
+                    }
+                    else
+                    {
+                        foreach (var uzsakymas in uzsakymai)
+                        {
+                            Console.WriteLine($"Uzsakovas: {uzsakymas.Uzsakovas.Vardas} {uzsakymas.Uzsakovas.Pavarde}, Nuomuojamas Auto: {uzsakymas.NuomuojamasAuto.Marke} {uzsakymas.NuomuojamasAuto.Modelis}, Nuomos Pradzia: {uzsakymas.NuomosPradzia.ToShortDateString()}, Dienu Kiekis: {uzsakymas.DienuKiekis}, Pabaigos Data: {uzsakymas.gautiPabaigosData().ToShortDateString()}, Nuomos Kaina: {uzsakymas.skaiciuotiNuomosKaina()}");
+                        }
+                    }
+                    break;
+
+                case "5": /*duombaze*/
                     List<Elektromobilis> elektromobiliai = autonuomaService.GautiVisusElektromobilius();
                     foreach (Elektromobilis ev in elektromobiliai)
                     {
                         Console.WriteLine(ev);
                     }
                     break;
-                case "5": /*duombaze*/
+                case "6": /*duombaze*/
                     List<NaftosKuroAutomobilis> naftosKuroAutomobiliai = autonuomaService.GautiVisusNaftosKuroAuto();
                     foreach (NaftosKuroAutomobilis v in naftosKuroAutomobiliai)
                     {
@@ -82,7 +98,7 @@ public class Program
                     }
                     break;
 
-                case "6": /*duombaze*/
+                case "7": /*duombaze*/
                     Automobilis naujasAuto = new Automobilis();
                     int ikrovimoLaikas = 0;
                     int baterijosTalpa = 0;
@@ -121,7 +137,7 @@ public class Program
 
                     break;
 
-                case "7": /*duombaze*/
+                case "8": /*duombaze*/
                     List<Klientas> klientaiDB = autonuomaService.GautiVisusKlientus();
                     foreach (Klientas kl in klientaiDB)
                     {
@@ -129,7 +145,7 @@ public class Program
                     }
                     break;
 
-                case "8":
+                case "9":
                     
                     Console.WriteLine("Iveskite kliento varda");
                     string klientoVardas = Console.ReadLine();
@@ -142,6 +158,10 @@ public class Program
 
                     autonuomaService.PridetiNaujaKlienta(naujasKlientas);
 
+                    break;
+
+                default:
+                    Console.WriteLine("Neteisingas pasirinkimas. Bandykite dar karta.");
                     break;
 
             }

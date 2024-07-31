@@ -35,6 +35,7 @@ namespace AutomobiliuNuoma.Core.Services
             _automobiliaiService.PridetiAutomobili(automobilis);
         }
 
+
         public List<Klientas> GautiVisusKlientus()
         {
             return _klientaiService.GautiVisusKlientus();
@@ -74,5 +75,28 @@ namespace AutomobiliuNuoma.Core.Services
             _klientaiService.PridetiNaujaKlienta(klientas);
         }
 
+
+        public void SkaiciuotiBendraNuomosKaina()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<NuomosUzsakymas> gautiUzsakymusPagalKlienta(string klientoVardas, string klientoPavarde)
+        {
+            Klientas klientas = _klientaiService.PaieskaPagalVardaPavarde(klientoVardas, klientoPavarde);
+
+            if (klientas == null)
+            {
+                return new List<NuomosUzsakymas>();
+            }
+
+            return VisiUzsakymai.Where(u => u.Uzsakovas == klientas).ToList();
+        }
+
+        public List<NuomosUzsakymas> GautiVisusUzsakymus()
+        {
+            return VisiUzsakymai;
+        }
     }
-}
+    }
+

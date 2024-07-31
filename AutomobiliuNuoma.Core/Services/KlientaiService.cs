@@ -23,6 +23,17 @@ namespace AutomobiliuNuoma.Core.Services
                 VisiKlientai = _klientaiRepository.GautiVisusKlientus();
             return VisiKlientai;
         }
+
+        public void IrasytiIFaila()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void NuskaitytiIsFailo()
+        {
+            throw new NotImplementedException();
+        }
+
         public Klientas PaieskaPagalVardaPavarde(string vardas, string pavarde)
         {
             Klientas klientas = new Klientas();

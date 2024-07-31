@@ -26,6 +26,13 @@ namespace AutomobiliuNuoma.Core.Models
             NuomosKaina = nuomosKaina;
         }
         public Automobilis() { }
-        
+
+        public string gautiInformacija()
+        {
+            return $"{Id} {Marke}, {Modelis}, Nuomos kaina: {NuomosKaina}";
+        }
+
+
     }
+
 }

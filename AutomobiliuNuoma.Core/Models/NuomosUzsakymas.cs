@@ -12,6 +12,20 @@ namespace AutomobiliuNuoma.Core.Models
         public Automobilis NuomuojamasAuto { get; set; }
         public DateTime NuomosPradzia { get; set; }
         public int DienuKiekis { get; set; }
-      
+
+
+        public decimal skaiciuotiNuomosKaina()
+        {
+            return DienuKiekis * NuomuojamasAuto.NuomosKaina;
+        }
+
+        public DateTime gautiPabaigosData()
+        {
+            return NuomosPradzia.AddDays(DienuKiekis);
+        }
+
+
     }
+
+
 }

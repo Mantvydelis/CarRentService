@@ -9,6 +9,8 @@ namespace AutomobiliuNuoma.Core.Contracts
 {
     public interface IKlientaiService
     {
+        void NuskaitytiIsFailo();
+        void IrasytiIFaila();
         List<Klientas> GautiVisusKlientus();
         Klientas PaieskaPagalVardaPavarde(string vardas, string pavarde);
 

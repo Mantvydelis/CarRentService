@@ -18,6 +18,12 @@ namespace AutomobiliuNuoma.Core.Contracts
 
         void PridetiNaujaKlienta(Klientas klientas);
 
+        List<NuomosUzsakymas> GautiVisusUzsakymus();
+
+        void SkaiciuotiBendraNuomosKaina();
+
+        List<NuomosUzsakymas> gautiUzsakymusPagalKlienta(string klientoVardas, string klientoPavarde);
+
 
     }
 }
