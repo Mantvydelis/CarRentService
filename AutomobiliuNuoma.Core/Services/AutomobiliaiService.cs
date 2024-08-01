@@ -59,6 +59,15 @@ namespace AutomobiliuNuoma.Core.Services
                 _automobiliaiRepository.IrasytiNaftosKuroAutomobili((NaftosKuroAutomobilis)automobilis);
         }
 
+        public NaftosKuroAutomobilis GautiNaftosAutoPagalId(int id)
+        {
+            return _automobiliaiRepository.GautiNaftosAutoPagalId(id);
+        }
+
+        public NaftosKuroAutomobilis KoreguotiNaftaAutoInfo(int id, string marke, string modelis, decimal nuomosKaina, double degaluSanaudos)
+        {
+            return _automobiliaiRepository.KoreguotiNaftaAutoInfo(id, marke, modelis, nuomosKaina, degaluSanaudos);
+        }
 
     }
 }

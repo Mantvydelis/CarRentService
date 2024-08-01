@@ -88,12 +88,12 @@ namespace AutomobiliuNuoma.Core.Repositories
             using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
             dbConnection.Open();
             var result = dbConnection.
-                QueryFirst<Elektromobilis>(@"SELECT * FROM Elektromobiliai WHERE Id = @id", new {Id = id});
+                QueryFirst<Elektromobilis>(@"SELECT * FROM Elektromobiliai WHERE Id = @id", new { Id = id });
             dbConnection.Close();
             return result;
         }
 
-        public Automobilis GautiNaftosAutoPagalId(int id)
+        public NaftosKuroAutomobilis GautiNaftosAutoPagalId(int id)
         {
             using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
             dbConnection.Open();
@@ -102,6 +102,22 @@ namespace AutomobiliuNuoma.Core.Repositories
             dbConnection.Close();
             return result;
         }
+
+        public NaftosKuroAutomobilis KoreguotiNaftaAutoInfo(int id, string marke, string modelis, decimal nuomosKaina, double degaluSanaudos)
+        {
+            using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
+            dbConnection.Open();
+            var query = @"UPDATE NaftosKuroAutomobilis 
+                  SET Marke = @Marke, Modelis = @Modelis, NuomosKaina = @NuomosKaina, DegaluSanaudos = @DegaluSanaudos 
+                  WHERE AutomobilisId = @Id;
+                  SELECT * FROM NaftosKuroAutomobilis WHERE AutomobilisId = @Id";
+            var result = dbConnection.QueryFirst<NaftosKuroAutomobilis>(query, new { Id = id, Marke = marke, Modelis = modelis, NuomosKaina = nuomosKaina, DegaluSanaudos = degaluSanaudos });
+            dbConnection.Close();
+            return result;
+
+
+        }
+
 
     }
 }

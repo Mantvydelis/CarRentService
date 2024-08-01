@@ -45,7 +45,7 @@ namespace AutomobiliuNuoma.Core.Models
 
         public NuomosUzsakymas() { }
 
-        public decimal skaiciuotiNuomosKaina()
+        public decimal skaiciuotiNuomosKaina() /*REIKS PAKOREGUOTI IR PRIDETI PRIE CASE 8*/
         {
             return DienuKiekis * NuomuojamasAuto.NuomosKaina;
         }

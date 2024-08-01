@@ -83,7 +83,12 @@ namespace AutomobiliuNuoma.Core.Repositories
             throw new NotImplementedException();
         }
 
-        public Automobilis GautiNaftosAutoPagalId(int id)
+        public NaftosKuroAutomobilis GautiNaftosAutoPagalId(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public NaftosKuroAutomobilis KoreguotiNaftaAutoInfo(int id, string marke, string modelis, decimal nuomosKaina, double degaluSanaudos)
         {
             throw new NotImplementedException();
         }

@@ -84,9 +84,19 @@ namespace AutomobiliuNuoma.Core.Services
 
         public List<NuomosUzsakymas> GautiVisusUzsakymus()
         {
-           return _uzsakymaiRepository.GautiVisusNuomosUzsakymus();
+            return _uzsakymaiRepository.GautiVisusNuomosUzsakymus();
 
         }
+
+        public NaftosKuroAutomobilis GautiNaftosAutoPagalId(int id)
+        {
+            return _automobiliaiService.GautiNaftosAutoPagalId(id);
+        }
+
+        public NaftosKuroAutomobilis KoreguotiNaftaAutoInfo(int id, string marke, string modelis, decimal nuomosKaina, double degaluSanaudos)
+        {
+            return _automobiliaiService.KoreguotiNaftaAutoInfo(id, marke, modelis, nuomosKaina, degaluSanaudos);
+        }
     }
-    }
+}
 

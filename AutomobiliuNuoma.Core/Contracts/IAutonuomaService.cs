@@ -25,6 +25,12 @@ namespace AutomobiliuNuoma.Core.Contracts
 
         List<NuomosUzsakymas> gautiUzsakymusPagalKlienta(string klientoVardas, string klientoPavarde);
 
+        NaftosKuroAutomobilis GautiNaftosAutoPagalId(int id);
+
+        NaftosKuroAutomobilis KoreguotiNaftaAutoInfo(int id, string marke, string modelis, decimal nuomosKaina, double degaluSanaudos);
+
+
 
     }
+
 }
