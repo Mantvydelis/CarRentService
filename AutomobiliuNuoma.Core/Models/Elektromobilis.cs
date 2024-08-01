@@ -26,7 +26,7 @@ namespace AutomobiliuNuoma.Core.Models
         public Elektromobilis(){}
         public override string ToString()
         {
-            return $"{Id} {Marke} {Modelis} {NuomosKaina} {BaterijosTalpa}kwh {KrovimoLaikas} val.";
+            return $"{AutomobilisId} {Marke} {Modelis} {NuomosKaina} {BaterijosTalpa}kwh {KrovimoLaikas} val.";
         }
     }
 }

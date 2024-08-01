@@ -1,5 +1,6 @@
 ﻿using AutomobiliuNuoma.Core.Contracts;
 using AutomobiliuNuoma.Core.Models;
+using AutomobiliuNuoma.Core.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,15 +13,17 @@ namespace AutomobiliuNuoma.Core.Services
     {
         private readonly IKlientaiService _klientaiService;
         private readonly IAutomobiliaiService _automobiliaiService;
+        private readonly IUzsakymaiRepository _uzsakymaiRepository;
 
         private List<Automobilis> VisiAutomobiliai = new List<Automobilis>();
 
         private List<NuomosUzsakymas> VisiUzsakymai = new List<NuomosUzsakymas>();
 
-        public AutonuomosService(IKlientaiService klientaiService, IAutomobiliaiService automobiliaiService)
+        public AutonuomosService(IKlientaiService klientaiService, IAutomobiliaiService automobiliaiService, IUzsakymaiRepository uzsakymaiRepository)
         {
             _automobiliaiService = automobiliaiService;
             _klientaiService = klientaiService;
+            _uzsakymaiRepository = uzsakymaiRepository;
         }
 
         public List<Automobilis> GautiVisusAutomobilius()
@@ -48,27 +51,13 @@ namespace AutomobiliuNuoma.Core.Services
         {
             return _automobiliaiService.GautiVisusNaftosKuroAuto();
         }
-        public void SukurtiNuoma(string klientoVardas, string klientoPavarde, int autoId, DateTime nuomosPradzia, int dienos)
+        public void SukurtiNuoma(int klientasId, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, string autoTipas)
         {
-            Klientas klientas = _klientaiService.PaieskaPagalVardaPavarde(klientoVardas, klientoPavarde);
-
-            Automobilis automobilis = new Automobilis();
-
-            foreach (Automobilis a in VisiAutomobiliai)
-            {
-                if (a.Id == autoId)
-                    automobilis = a;
-            }
-
-            NuomosUzsakymas nuomosUzsakymas = new NuomosUzsakymas
-            {
-                Uzsakovas = klientas,
-                NuomuojamasAuto = automobilis,
-                NuomosPradzia = nuomosPradzia,
-                DienuKiekis = dienos
-            };
-            VisiUzsakymai.Add(nuomosUzsakymas);
+            var nuomosUzsakymas = new NuomosUzsakymas(klientasId, automobilisId, nuomosPradzia, dienuKiekis, autoTipas);
+            _uzsakymaiRepository.PridetiNaujaUzsakyma(nuomosUzsakymas);
         }
+
+
 
         public void PridetiNaujaKlienta(Klientas klientas)
         {
@@ -95,7 +84,8 @@ namespace AutomobiliuNuoma.Core.Services
 
         public List<NuomosUzsakymas> GautiVisusUzsakymus()
         {
-            return VisiUzsakymai;
+           return _uzsakymaiRepository.GautiVisusNuomosUzsakymus();
+
         }
     }
     }

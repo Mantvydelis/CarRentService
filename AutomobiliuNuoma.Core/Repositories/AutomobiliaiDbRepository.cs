@@ -32,7 +32,12 @@ namespace AutomobiliuNuoma.Core.Repositories
             using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
             dbConnection.Open();
             List<Elektromobilis> result = dbConnection.
-                Query<Elektromobilis>(@"SELECT * FROM [dbo].[Elektromobiliai]").ToList();
+                Query<Elektromobilis>(@"SELECT [Id] AS AutomobilisId
+      ,[Marke]
+      ,[Modelis]
+      ,[NuomosKaina]
+      ,[BaterijosTalpa]
+      ,[KrovimoLaikas] FROM [dbo].[Elektromobiliai]").ToList();
             dbConnection.Close();
             return result;
         }
@@ -41,7 +46,11 @@ namespace AutomobiliuNuoma.Core.Repositories
             using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
             dbConnection.Open();
             var result = dbConnection.
-                Query<NaftosKuroAutomobilis>(@"SELECT * FROM [dbo].[NaftosKuroAuto]").ToList();
+                Query<NaftosKuroAutomobilis>(@"SELECT [Id] AS AutomobilisId
+      ,[Marke]
+      ,[Modelis]
+      ,[NuomosKaina]
+      ,[DegaluSanaudos] FROM [dbo].[NaftosKuroAuto]").ToList();
             dbConnection.Close();
             return result;
         }
@@ -51,7 +60,7 @@ namespace AutomobiliuNuoma.Core.Repositories
             string sqlCommand = "INSERT INTO Elektromobiliai ([Marke],[Modelis],[NuomosKaina],[BaterijosTalpa]" +
                 ",[KrovimoLaikas]) VALUES (@Marke, @Modelis, @NuomosKaina, @BaterijosTalpa, @KrovimoLaikas)";
 
-            using(var connection = new SqlConnection(_dbConnectionString))
+            using (var connection = new SqlConnection(_dbConnectionString))
             {
                 connection.Execute(sqlCommand, elektromobilis);
             }
@@ -66,5 +75,33 @@ namespace AutomobiliuNuoma.Core.Repositories
                 connection.Execute(sqlCommand, naftosKuroAutomobilis);
             }
         }
+
+        public Automobilis PaieskaPagalId(int id)
+        {
+
+            throw new NotImplementedException();
+
+        }
+
+        public Automobilis GautiElektromobiliPagalId(int id)
+        {
+            using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
+            dbConnection.Open();
+            var result = dbConnection.
+                QueryFirst<Elektromobilis>(@"SELECT * FROM Elektromobiliai WHERE Id = @id", new {Id = id});
+            dbConnection.Close();
+            return result;
+        }
+
+        public Automobilis GautiNaftosAutoPagalId(int id)
+        {
+            using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
+            dbConnection.Open();
+            var result = dbConnection.
+                QueryFirst<NaftosKuroAutomobilis>(@"SELECT * FROM NaftosKuroAuto WHERE Id = @id", new { Id = id });
+            dbConnection.Close();
+            return result;
+        }
+
     }
 }

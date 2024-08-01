@@ -12,5 +12,7 @@ namespace AutomobiliuNuoma.Core.Contracts
         List<Klientas> GautiVisusKlientus();
         void PridetiNaujaKlienta(Klientas klientas);
 
+        Klientas GautiKlientaPagalId(int id);
+
     }
 }

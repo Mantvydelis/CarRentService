@@ -15,13 +15,14 @@ public class Program
         {
             Console.WriteLine("1. Rodyti visus automobilius (KOL KAS NEVEIKIA)");
             Console.WriteLine("2. Rodyti visus klientus");
-            Console.WriteLine("3. Formuoti nuomos uzsakyma");
-            Console.WriteLine("4. Gauti visus uzsakymus"); 
-            Console.WriteLine("5. Rodyti visus elektromobilius is duombazes");
-            Console.WriteLine("6. Rodyti visus naftos kuro automobilius is duombazes");
-            Console.WriteLine("7. Prideti automobili i duombaze");
-            Console.WriteLine("8. Rodyti visus klientus is duombazes");
-            Console.WriteLine("9. Prideti klienta i duombaze");
+            Console.WriteLine("3. Rodyti visus elektromobilius is duombazes");
+            Console.WriteLine("4. Rodyti visus naftos kuro automobilius is duombazes");
+            Console.WriteLine("5. Prideti automobili i duombaze");
+            Console.WriteLine("6. Rodyti visus klientus is duombazes");
+            Console.WriteLine("7. Prideti klienta i duombaze");
+            Console.WriteLine("8. Gauti visus uzsakymus is duombaazes");
+            Console.WriteLine("9. Formuoti nuomos uzsakyma i duombaze");
+
 
             string pasirinkimas = Console.ReadLine();
             switch (pasirinkimas)
@@ -33,64 +34,21 @@ public class Program
                         Console.WriteLine(a);
                     }
                     break;
-                case "2": /*KOL KAS PERMETA I DUOMBAZE, O NE LISTA*/
+                case "2": /*PERMETA I DUOMBAZE, O NE LISTA*/
                     List<Klientas> klientai = autonuomaService.GautiVisusKlientus();
                     foreach (Klientas k in klientai)
                     {
                         Console.WriteLine(k);
                     }
                     break;
-
-                case "3": /*neduombaze*/
-                    Console.WriteLine("Nuomos uzsakymas: ");
-                    foreach (Klientas k in autonuomaService.GautiVisusKlientus())
-                    {
-                        Console.WriteLine(k);
-                    }
-
-                    Console.WriteLine("Iveskite norimo kliento varda");
-                    string vardas = Console.ReadLine();
-                    Console.WriteLine("Iveskite norimo kliento pavarde");
-                    string pavarde = Console.ReadLine();
-
-                    foreach (Automobilis a in autonuomaService.GautiVisusAutomobilius())
-                    {
-                        Console.WriteLine(a);
-                    }
-
-                    Console.WriteLine("Pasirinkite automobili pagal Id sarase: ");
-                    int autoId = int.Parse(Console.ReadLine());
-
-                    Console.WriteLine("Iveskite kiek dienu autommobilis yra isnuomojamas: ");
-                    int dienos = int.Parse(Console.ReadLine());
-
-                    autonuomaService.SukurtiNuoma(vardas, pavarde, autoId, DateTime.Now, dienos);
-
-                    break;
-
-                case "4":
-                    var uzsakymai = autonuomaService.GautiVisusUzsakymus();
-                    if (uzsakymai.Count == 0)
-                    {
-                        Console.WriteLine("Nera uzsakymu.");
-                    }
-                    else
-                    {
-                        foreach (var uzsakymas in uzsakymai)
-                        {
-                            Console.WriteLine($"Uzsakovas: {uzsakymas.Uzsakovas.Vardas} {uzsakymas.Uzsakovas.Pavarde}, Nuomuojamas Auto: {uzsakymas.NuomuojamasAuto.Marke} {uzsakymas.NuomuojamasAuto.Modelis}, Nuomos Pradzia: {uzsakymas.NuomosPradzia.ToShortDateString()}, Dienu Kiekis: {uzsakymas.DienuKiekis}, Pabaigos Data: {uzsakymas.gautiPabaigosData().ToShortDateString()}, Nuomos Kaina: {uzsakymas.skaiciuotiNuomosKaina()}");
-                        }
-                    }
-                    break;
-
-                case "5": /*duombaze*/
+                case "3": /*duombaze*/
                     List<Elektromobilis> elektromobiliai = autonuomaService.GautiVisusElektromobilius();
                     foreach (Elektromobilis ev in elektromobiliai)
                     {
                         Console.WriteLine(ev);
                     }
                     break;
-                case "6": /*duombaze*/
+                case "4": /*duombaze*/
                     List<NaftosKuroAutomobilis> naftosKuroAutomobiliai = autonuomaService.GautiVisusNaftosKuroAuto();
                     foreach (NaftosKuroAutomobilis v in naftosKuroAutomobiliai)
                     {
@@ -98,7 +56,7 @@ public class Program
                     }
                     break;
 
-                case "7": /*duombaze*/
+                case "5": /*duombaze*/
                     Automobilis naujasAuto = new Automobilis();
                     int ikrovimoLaikas = 0;
                     int baterijosTalpa = 0;
@@ -137,7 +95,7 @@ public class Program
 
                     break;
 
-                case "8": /*duombaze*/
+                case "6": /*duombaze*/
                     List<Klientas> klientaiDB = autonuomaService.GautiVisusKlientus();
                     foreach (Klientas kl in klientaiDB)
                     {
@@ -145,7 +103,7 @@ public class Program
                     }
                     break;
 
-                case "9":
+                case "7":
                     
                     Console.WriteLine("Iveskite kliento varda");
                     string klientoVardas = Console.ReadLine();
@@ -158,6 +116,78 @@ public class Program
 
                     autonuomaService.PridetiNaujaKlienta(naujasKlientas);
 
+                    break;
+
+                case "8": /*gauti uzsakymus is duombazes*/
+                    var uzsakymai = autonuomaService.GautiVisusUzsakymus();
+                    if (uzsakymai.Count == 0)
+                    {
+                        Console.WriteLine("Nera uzsakymu.");
+                    }
+                    else
+                    { 
+                        var naftosKuroAutomobiliai2 = autonuomaService.GautiVisusNaftosKuroAuto();
+                        var elektromobiliai2 = autonuomaService.GautiVisusElektromobilius();
+                        var klientai2 = autonuomaService.GautiVisusKlientus();
+
+                        foreach (var uzsakymas in uzsakymai)
+                        {
+                            var klientas = klientai2.FirstOrDefault(k => k.KlientasId == uzsakymas.KlientasId);
+
+                            Automobilis automobilis = null;
+
+                            if (uzsakymas.AutoTipas == "NaftosKuroAutomobilis")
+                            {
+                                automobilis = naftosKuroAutomobiliai2
+                                    .FirstOrDefault(a => a.AutomobilisId == uzsakymas.AutomobilisId);
+                            }
+                            else if (uzsakymas.AutoTipas == "Elektromobilis")
+                            {
+                                automobilis = elektromobiliai2
+                                    .FirstOrDefault(a => a.AutomobilisId == uzsakymas.AutomobilisId);
+                            }
+
+                            if (automobilis != null)
+                            {
+                                Console.WriteLine($"Uzsakovas: {klientas.Vardas} {klientas.Pavarde}, Uzsakytas automobilis: {automobilis.Marke} {automobilis.Modelis}, Nuomos Pradzia: {uzsakymas.NuomosPradzia.ToShortDateString()}, Dienu Kiekis: {uzsakymas.DienuKiekis}");
+                            }
+                        }
+                    }
+                    break;
+
+                case "9": /*DUOMBAZE*/
+
+                    Console.WriteLine("Pasirinkite kliento id:");
+                    var visiKlientai = autonuomaService.GautiVisusKlientus();
+                    foreach (var k in visiKlientai) Console.WriteLine($"{k.KlientasId} {k.Vardas} {k.Pavarde}");
+                    int klientasId = int.Parse(Console.ReadLine());
+
+                    Console.WriteLine("Iveskite nuomos pradzios data (yyyy-mm-dd):");
+                    DateTime nuomosPradzia = DateTime.Parse(Console.ReadLine());
+
+                    Console.WriteLine("Iveskite dienu kieki:");
+                    int nuomosDienuKiekis = int.Parse(Console.ReadLine());
+
+                    Console.WriteLine("Elektromobilis - 1  Naftos Kuro Auto - 2: ");
+                    string AutoTipas = Console.ReadLine();
+
+                    switch (AutoTipas)
+                    {
+                        case "1":
+                            Console.WriteLine("Pasirinkite automobilio id:");
+                            var visiAuto1 = autonuomaService.GautiVisusElektromobilius();
+                            foreach (var a in visiAuto1) Console.WriteLine($"{a.AutomobilisId} {a.Marke} {a.Modelis}");
+                            int automobilisId1 = int.Parse(Console.ReadLine());
+                            autonuomaService.SukurtiNuoma(klientasId, automobilisId1, nuomosPradzia, nuomosDienuKiekis, AutoTipas);
+                            break;
+                        case "2":
+                            Console.WriteLine("Pasirinkite automobilio id:");
+                            var visiAuto2 = autonuomaService.GautiVisusNaftosKuroAuto();
+                            foreach (var a in visiAuto2) Console.WriteLine($"{a.AutomobilisId} {a.Marke} {a.Modelis}");
+                            int automobilisId2 = int.Parse(Console.ReadLine());
+                            autonuomaService.SukurtiNuoma(klientasId, automobilisId2, nuomosPradzia, nuomosDienuKiekis, AutoTipas);
+                            break;
+                    }
                     break;
 
                 default:
@@ -175,8 +205,10 @@ public class Program
         //IAutomobiliaiRepository automobiliaiRepository = new AutomobiliaiFileRepository("Auto.csv");
         IKlientaiRepository klientaiRepository = new KlientaiDBRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;");
         IAutomobiliaiRepository automobiliaiRepository = new AutomobiliaiDbRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;");
+        IUzsakymaiRepository uzsakymaiRepository = new UzsakymaiDBRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;");
+
         IKlientaiService klientaiService = new KlientaiService(klientaiRepository);
         IAutomobiliaiService automobiliaiService = new AutomobiliaiService(automobiliaiRepository);
-        return new AutonuomosService(klientaiService, automobiliaiService);
+        return new AutonuomosService(klientaiService, automobiliaiService, uzsakymaiRepository);
     }
 }

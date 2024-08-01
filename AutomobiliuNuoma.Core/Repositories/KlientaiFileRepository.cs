@@ -1,6 +1,7 @@
 ﻿using AutomobiliuNuoma.Core.Contracts;
 using AutomobiliuNuoma.Core.Models;
 using System;
+using Dapper;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,9 +19,9 @@ namespace AutomobiliuNuoma.Core.Repositories
         public List<Klientas> GautiVisusKlientus()
         {
             List<Klientas> visiKlientai = new List<Klientas>();
-            using(StreamReader sr = new StreamReader(_filePath))
+            using (StreamReader sr = new StreamReader(_filePath))
             {
-                while(!sr.EndOfStream)
+                while (!sr.EndOfStream)
                 {
                     string eilute = sr.ReadLine();
                     string[] verte = eilute.Split(',');
@@ -33,6 +34,12 @@ namespace AutomobiliuNuoma.Core.Repositories
         public void PridetiNaujaKlienta(Klientas klientas)
         {
             throw new NotImplementedException();
+        }
+
+        public Klientas GautiKlientaPagalId(int id)
+        {
+            throw new NotImplementedException();
+
         }
     }
 }

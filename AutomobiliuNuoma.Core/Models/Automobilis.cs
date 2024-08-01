@@ -8,13 +8,13 @@ namespace AutomobiliuNuoma.Core.Models
 {
     public class Automobilis
     {
-        public int Id { get; set; }
+        public int AutomobilisId { get; set; }
         public string Marke { get; set; }
         public string Modelis { get; set; }
         public decimal NuomosKaina { get; set; }
-        public Automobilis(int id, string marke, string modelis, decimal nuomosKaina)
+        public Automobilis(int automobilisId, string marke, string modelis, decimal nuomosKaina)
         {
-            Id = id;
+            AutomobilisId = automobilisId;
             Marke = marke;
             Modelis = modelis;
             NuomosKaina = nuomosKaina;
@@ -29,7 +29,7 @@ namespace AutomobiliuNuoma.Core.Models
 
         public string gautiInformacija()
         {
-            return $"{Id} {Marke}, {Modelis}, Nuomos kaina: {NuomosKaina}";
+            return $"{AutomobilisId} {Marke}, {Modelis}, Nuomos kaina: {NuomosKaina}";
         }
 
 

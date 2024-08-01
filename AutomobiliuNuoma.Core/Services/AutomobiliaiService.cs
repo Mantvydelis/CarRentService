@@ -43,7 +43,7 @@ namespace AutomobiliuNuoma.Core.Services
         {
             List<Automobilis> paieskosRezultatai = new List<Automobilis>();
             List<Automobilis> automobiliai = _automobiliaiRepository.NuskaitytiAutomobilius();
-            foreach(Automobilis a in automobiliai)
+            foreach (Automobilis a in automobiliai)
             {
                 if (a.Marke == marke)
                     paieskosRezultatai.Add(a);
@@ -58,5 +58,7 @@ namespace AutomobiliuNuoma.Core.Services
             else
                 _automobiliaiRepository.IrasytiNaftosKuroAutomobili((NaftosKuroAutomobilis)automobilis);
         }
+
+
     }
 }

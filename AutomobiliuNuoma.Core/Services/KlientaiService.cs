@@ -53,5 +53,11 @@ namespace AutomobiliuNuoma.Core.Services
             _klientaiRepository.PridetiNaujaKlienta(klientas);
         }
 
+        public Klientas PaieskaPagalId(int id)
+        {
+            return _klientaiRepository.GautiKlientaPagalId(id);
+
+        }
+
     }
 }

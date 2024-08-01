@@ -28,7 +28,7 @@ namespace AutomobiliuNuoma.Core.Models
 
         public override string ToString()
         {
-            return $"{Id} {Marke} {Modelis} {NuomosKaina} {DegaluSanaudos.ToString("F1")}L/100km";
+            return $"{AutomobilisId} {Marke} {Modelis} {NuomosKaina} {DegaluSanaudos.ToString("F1")}L/100km";
         }
     }
 }

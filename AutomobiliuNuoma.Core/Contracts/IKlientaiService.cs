@@ -15,5 +15,7 @@ namespace AutomobiliuNuoma.Core.Contracts
         Klientas PaieskaPagalVardaPavarde(string vardas, string pavarde);
 
         void PridetiNaujaKlienta(Klientas klientas);
+
+        Klientas PaieskaPagalId(int id);
     }
 }

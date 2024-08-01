@@ -16,6 +16,11 @@ namespace AutomobiliuNuoma.Core.Repositories
             _filePath = autoFilePath;
         }
 
+        public NaftosKuroAutomobilis GautiNaftosAuto(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Elektromobilis> GautiVisusElektromobilius()
         {
             List<Elektromobilis> visiAuto = new List<Elektromobilis>();
@@ -56,9 +61,9 @@ namespace AutomobiliuNuoma.Core.Repositories
         public List<Automobilis> NuskaitytiAutomobilius()
         {
             List<Automobilis> visiAuto = new List<Automobilis>();
-            using(StreamReader sr = new StreamReader(_filePath))
+            using (StreamReader sr = new StreamReader(_filePath))
             {
-                while(!sr.EndOfStream)
+                while (!sr.EndOfStream)
                 {
                     string eilute = sr.ReadLine();
                     string[] vertes = eilute.Split(',', StringSplitOptions.RemoveEmptyEntries);
@@ -71,6 +76,16 @@ namespace AutomobiliuNuoma.Core.Repositories
                 }
             }
             return visiAuto;
+        }
+
+        public Automobilis GautiElektromobiliPagalId(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Automobilis GautiNaftosAutoPagalId(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -15,5 +15,10 @@ namespace AutomobiliuNuoma.Core.Contracts
         void IrasytiNaftosKuroAutomobili(NaftosKuroAutomobilis automobilis);
         List<Elektromobilis> GautiVisusElektromobilius();
         List<NaftosKuroAutomobilis> GautiVisusNaftosKuroAutomobilius();
+
+        Automobilis GautiElektromobiliPagalId(int id);
+
+        Automobilis GautiNaftosAutoPagalId(int id);
+
     }
 }

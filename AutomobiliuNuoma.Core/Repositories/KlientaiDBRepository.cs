@@ -22,13 +22,17 @@ namespace AutomobiliuNuoma.Core.Repositories
         {
             using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
             dbConnection.Open();
-            var result = dbConnection.Query<KlientasDto>(@"SELECT Vardas, Pavarde, GimimoMetai FROM [dbo].[Klientai]").ToList();
+            var result = dbConnection.Query<KlientasDto>(@"SELECT [Id] AS KlientasId
+      ,[Vardas]
+      ,[Pavarde]
+      ,[GimimoMetai] FROM [dbo].[Klientai]").ToList();
             dbConnection.Close();
-            return result.Select(dto => new Klientas(dto.Vardas, dto.Pavarde, DateOnly.FromDateTime(dto.GimimoMetai))).ToList();
+            return result.Select(dto => new Klientas(dto.KlientasId, dto.Vardas, dto.Pavarde, DateOnly.FromDateTime(dto.GimimoMetai))).ToList();
         }
 
         private class KlientasDto
         {
+            public int KlientasId { get; set; }
             public string Vardas { get; set; }
             public string Pavarde { get; set; }
             public DateTime GimimoMetai { get; set; }
@@ -49,6 +53,21 @@ namespace AutomobiliuNuoma.Core.Repositories
 
                 connection.Execute(sqlCommand, naujiduomenys);
             }
+        }
+
+        public Klientas GautiKlientaPagalId(int id)
+        {
+
+            using (IDbConnection dbConnection = new SqlConnection(_dbConnectionString))
+            {
+                dbConnection.Open();
+                var result = dbConnection.QueryFirstOrDefault<Klientas>(
+                    "SELECT * FROM Klientai WHERE KlientasId = @id",
+                    new { id }
+                );
+                return result;
+            }
+
         }
     }
 }
