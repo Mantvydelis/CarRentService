@@ -78,7 +78,7 @@ namespace AutomobiliuNuoma.Core.Repositories
             return visiAuto;
         }
 
-        public Automobilis GautiElektromobiliPagalId(int id)
+        public Elektromobilis GautiElektromobiliPagalId(int id)
         {
             throw new NotImplementedException();
         }
@@ -89,6 +89,11 @@ namespace AutomobiliuNuoma.Core.Repositories
         }
 
         public NaftosKuroAutomobilis KoreguotiNaftaAutoInfo(int id, string marke, string modelis, decimal nuomosKaina, double degaluSanaudos)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Elektromobilis KoreguotiElektromobilioInfo(int id, string marke, string modelis, decimal nuomosKaina, int baterijosTalpa, int krovimoLaikas)
         {
             throw new NotImplementedException();
         }

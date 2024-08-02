@@ -21,6 +21,10 @@ namespace AutomobiliuNuoma.Core.Contracts
 
         NaftosKuroAutomobilis KoreguotiNaftaAutoInfo(int id, string marke, string modelis, decimal nuomosKaina, double degaluSanaudos);
 
+        Elektromobilis GautiElektromobiliPagalId(int id);
+
+        Elektromobilis KoreguotiElektromobilioInfo(int id, string marke, string modelis, decimal nuomosKaina, int baterijosTalpa, int krovimoLaikas);
+
     }
 
 }

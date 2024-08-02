@@ -16,6 +16,8 @@ namespace AutomobiliuNuoma.Core.Contracts
 
         void PridetiNaujaKlienta(Klientas klientas);
 
-        Klientas PaieskaPagalId(int id);
+        Klientas GautiKlientaPagalId(int id);
+
+        Klientas KoreguotiKlientoInfo(int id, string vardas, string pavarde, DateOnly gimimoMetai);
     }
 }

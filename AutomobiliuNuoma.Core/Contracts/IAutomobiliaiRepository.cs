@@ -16,11 +16,12 @@ namespace AutomobiliuNuoma.Core.Contracts
         List<Elektromobilis> GautiVisusElektromobilius();
         List<NaftosKuroAutomobilis> GautiVisusNaftosKuroAutomobilius();
 
-        Automobilis GautiElektromobiliPagalId(int id);
+        Elektromobilis GautiElektromobiliPagalId(int id);
 
         NaftosKuroAutomobilis GautiNaftosAutoPagalId(int id);
 
         NaftosKuroAutomobilis KoreguotiNaftaAutoInfo(int id, string marke, string modelis, decimal nuomosKaina, double degaluSanaudos);
 
+        Elektromobilis KoreguotiElektromobilioInfo(int id, string marke, string modelis, decimal nuomosKaina, int baterijosTalpa, int krovimoLaikas);
     }
 }

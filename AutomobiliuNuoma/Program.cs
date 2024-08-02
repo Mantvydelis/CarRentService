@@ -12,8 +12,9 @@ public class Program
     public static void Main(string[] args)
     {
         IAutonuomaService autonuomaService = SetupDependencies();
-        while(true)
+        while (true)
         {
+            Console.WriteLine("-----------------------------------------------");
             Console.WriteLine("1. Rodyti visus automobilius (KOL KAS NEVEIKIA)");
             Console.WriteLine("2. Rodyti visus klientus");
             Console.WriteLine("3. Rodyti visus elektromobilius is duombazes");
@@ -25,7 +26,7 @@ public class Program
             Console.WriteLine("9. Formuoti nuomos uzsakyma i duombaze");
             Console.WriteLine("10. Pakeisti duomenis automobiliu duombazeje");
             Console.WriteLine("11. Pakeisti duomenis klientu duombazeje");
-            Console.WriteLine("12. Pakeisti duomenis uzsakymu duombazeje");
+            Console.WriteLine("12. Pakeisti uzsakymu duomenis duombazeje");
 
             string pasirinkimas = Console.ReadLine();
             switch (pasirinkimas)
@@ -107,7 +108,7 @@ public class Program
                     break;
 
                 case "7":
-                    
+
                     Console.WriteLine("Iveskite kliento varda");
                     string klientoVardas = Console.ReadLine();
                     Console.WriteLine("Iveskite kliento pavarde");
@@ -128,7 +129,7 @@ public class Program
                         Console.WriteLine("Nera uzsakymu.");
                     }
                     else
-                    { 
+                    {
                         var naftosKuroAutomobiliai2 = autonuomaService.GautiVisusNaftosKuroAuto();
                         var elektromobiliai2 = autonuomaService.GautiVisusElektromobilius();
                         var klientai2 = autonuomaService.GautiVisusKlientus();
@@ -199,34 +200,48 @@ public class Program
                     switch (keitimoTipas)
                     {
                         case "1":
-
+                            var visiAuto2 = autonuomaService.GautiVisusNaftosKuroAuto();
+                            foreach (var a in visiAuto2) Console.WriteLine($"{a.AutomobilisId}. {a.Marke} {a.Modelis}, Nuomos kaina: {a.NuomosKaina} eur., Degalu Sanaudos: {a.DegaluSanaudos}");
                             Console.WriteLine("Pasirinkite norimo keisti automobilio id:");
                             int id = int.Parse(Console.ReadLine());
                             var dabartineAuto = autonuomaService.GautiNaftosAutoPagalId(id);
 
                             Console.WriteLine("Iveskite nauja marke arba spauskite ENTER:");
                             string naujaMarke = Console.ReadLine();
-                            if (naujaMarke == null)
+                            if (string.IsNullOrEmpty(naujaMarke))
                             {
                                 naujaMarke = dabartineAuto.Marke;
                             }
                             Console.WriteLine("Iveskite nauja modeli arba spauskite ENTER:");
                             string naujasModelis = Console.ReadLine();
-                            if (naujasModelis == null)
+                            if (string.IsNullOrEmpty(naujasModelis))
                             {
                                 naujasModelis = dabartineAuto.Modelis;
                             }
                             Console.WriteLine("Iveskite nauja nuomos kaina arba spauskite ENTER:");
-                            decimal naujaNuomosKaina = decimal.Parse(Console.ReadLine());
-                            if (naujaNuomosKaina == null)
+                            string arNaujaNuomosKaina = Console.ReadLine();
+                            decimal naujaNuomosKaina;
+                            if (string.IsNullOrEmpty(arNaujaNuomosKaina))
                             {
                                 naujaNuomosKaina = dabartineAuto.NuomosKaina;
+
                             }
+                            else
+                            {
+                                naujaNuomosKaina = decimal.Parse(arNaujaNuomosKaina);
+                            }
+
                             Console.WriteLine("Iveskite naujas degalu sanaudas arba spauskite ENTER:");
-                            double naujosDegaluSanaudos = double.Parse(Console.ReadLine());
-                            if (naujosDegaluSanaudos == null)
+                            string arNaujosDegaluSanaudos = Console.ReadLine();
+                            double naujosDegaluSanaudos;
+                            if (string.IsNullOrEmpty(arNaujosDegaluSanaudos))
                             {
                                 naujosDegaluSanaudos = dabartineAuto.DegaluSanaudos;
+
+                            }
+                            else
+                            {
+                                naujosDegaluSanaudos = double.Parse(arNaujosDegaluSanaudos);
                             }
 
                             var atnaujintasAutomobilis = autonuomaService.KoreguotiNaftaAutoInfo(id, naujaMarke, naujasModelis, naujaNuomosKaina, naujosDegaluSanaudos);
@@ -235,28 +250,132 @@ public class Program
 
 
                         case "2":
-                            
-                        Console.WriteLine("Pasirinkite norimo keisti elektromobilio id:");
-                        var visiAuto1 = autonuomaService.GautiVisusElektromobilius();
-                        foreach (var a in visiAuto1) Console.WriteLine($"{a.AutomobilisId} {a.Marke} {a.Modelis} {a.NuomosKaina} {a.BaterijosTalpa}, {a.KrovimoLaikas}");
+                            var visiAuto1 = autonuomaService.GautiVisusElektromobilius();
+                            foreach (var a in visiAuto1) Console.WriteLine($"{a.AutomobilisId}. {a.Marke} {a.Modelis}, Nuomos kaina: {a.NuomosKaina} eur., Baterijos talpa: {a.BaterijosTalpa} KmW, Krovimo Laikas: {a.KrovimoLaikas} val.");
+
+                            Console.WriteLine("Pasirinkite norimo keisti elektromobilio id:");
+                            int idElektrinio = int.Parse(Console.ReadLine());
+                            var dabartinisElektromobilis = autonuomaService.GautiElektromobiliPagalId(idElektrinio);
+
+                            Console.WriteLine("Iveskite nauja elektromobilio marke arba spauskite ENTER:");
+                            string naujaElektromobilioMarke = Console.ReadLine();
+                            if (string.IsNullOrEmpty(naujaElektromobilioMarke))
+                            {
+                                naujaElektromobilioMarke = dabartinisElektromobilis.Marke;
+                            }
+                            Console.WriteLine("Iveskite nauja modeli arba spauskite ENTER:");
+                            string naujasElektromobilioModelis = Console.ReadLine();
+                            if (string.IsNullOrEmpty(naujasElektromobilioModelis))
+                            {
+                                naujasElektromobilioModelis = dabartinisElektromobilis.Modelis;
+                            }
+                            Console.WriteLine("Iveskite nauja nuomos kaina arba spauskite ENTER:");
+                            string arNaujaElektromobilioNuomosKaina = Console.ReadLine();
+                            decimal naujaElektromobilioNuomosKaina;
+                            if (string.IsNullOrEmpty(arNaujaElektromobilioNuomosKaina))
+                            {
+                                naujaElektromobilioNuomosKaina = dabartinisElektromobilis.NuomosKaina;
+
+                            }
+                            else
+                            {
+                                naujaElektromobilioNuomosKaina = decimal.Parse(arNaujaElektromobilioNuomosKaina);
+                            }
+
+                            Console.WriteLine("Iveskite nauja baterijos talpa arba spauskite ENTER:");
+                            string arNaujaBaterijosTalpa = Console.ReadLine();
+                            int naujaBaterijosTalpa;
+                            if (string.IsNullOrEmpty(arNaujaBaterijosTalpa))
+                            {
+                                naujaBaterijosTalpa = dabartinisElektromobilis.BaterijosTalpa;
+
+                            }
+                            else
+                            {
+                                naujaBaterijosTalpa = int.Parse(arNaujaBaterijosTalpa);
+                            }
+
+                            Console.WriteLine("Iveskite nauja krovimo laika arba spauskite ENTER:");
+                            string arNaujasKrovimoLaikas = Console.ReadLine();
+                            int naujasKrovimoLaikas;
+                            if (string.IsNullOrEmpty(arNaujasKrovimoLaikas))
+                            {
+                                naujasKrovimoLaikas = dabartinisElektromobilis.KrovimoLaikas;
+
+                            }
+                            else
+                            {
+                                naujasKrovimoLaikas = int.Parse(arNaujasKrovimoLaikas);
+                            }
+
+                            var atnaujintasElektromobilis = autonuomaService.KoreguotiElektromobilioInfo(idElektrinio, naujaElektromobilioMarke, naujasElektromobilioModelis, naujaElektromobilioNuomosKaina, naujaBaterijosTalpa, naujasKrovimoLaikas);
 
                             break;
 
-
                     }
 
-                 break;
+
+                    break;
+
+                case "11": //Pakeisti duomenis klientu duombazeje
+                    var visiKlientaiSarase = autonuomaService.GautiVisusKlientus();
+                    foreach (var a in visiKlientaiSarase) Console.WriteLine($"{a.KlientasId}, {a.Vardas} {a.Pavarde}, Gimimo metai: {a.GimimoMetai}");
+
+                    Console.WriteLine("Pasirinkite norimo keisti kliento id:");
+                    int idKliento = int.Parse(Console.ReadLine());
+                    var dabartinisKlientas = autonuomaService.GautiKlientaPagalId(idKliento);
+
+                    Console.WriteLine("Iveskite nauja kliento varda arba spauskite ENTER:");
+                    string naujasKlientoVardas = Console.ReadLine();
+                    if (string.IsNullOrEmpty(naujasKlientoVardas))
+                    {
+                        naujasKlientoVardas = dabartinisKlientas.Vardas;
+                    }
+
+                    Console.WriteLine("Iveskite nauja kliento pavarde arba spauskite ENTER:");
+                    string naujaKlientoPavarde = Console.ReadLine();
+                    if (string.IsNullOrEmpty(naujaKlientoPavarde))
+                    {
+                        naujaKlientoPavarde = dabartinisKlientas.Pavarde;
+                    }
+
+                    Console.WriteLine("Iveskite nauja kliento gimimo data (YYYY-MM-DD) arba spauskite ENTER:");
+                    string arNaujaGimimoData = Console.ReadLine();
+                    DateOnly naujaGimimoData;
+                    if (string.IsNullOrEmpty(arNaujaGimimoData))
+                    {
+                        naujaGimimoData = dabartinisKlientas.GimimoMetai;
+
+                    }
+                    else
+                    {
+                        naujaGimimoData = DateOnly.Parse(arNaujaGimimoData);
+                    }
+
+                    var atnaujintasKlientas = autonuomaService.KoreguotiKlientoInfo(idKliento, naujasKlientoVardas, naujaKlientoPavarde, naujaGimimoData);
 
 
-                 default:
-                 Console.WriteLine("Neteisingas pasirinkimas. Bandykite dar karta.");
-                 break;
+                    break;
+
+                case "12": //Pakeisti uzsakymu duomenis duombazeje
+                    
+
+
+
+
+                    break;
+
+
+
+                default:
+                    Console.WriteLine("Neteisingas pasirinkimas. Bandykite dar karta.");
+                    break;
 
             }
-
+        }
 
         }
-    }
+    
     public static IAutonuomaService SetupDependencies()
     {
         //IKlientaiRepository klientaiRepository = new KlientaiFileRepository("Klientai.csv");

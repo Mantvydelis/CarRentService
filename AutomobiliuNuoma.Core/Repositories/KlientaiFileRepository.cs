@@ -41,5 +41,10 @@ namespace AutomobiliuNuoma.Core.Repositories
             throw new NotImplementedException();
 
         }
+
+        public Klientas KoreguotiKlientoInfo(int id, string vardas, string pavarde, DateOnly gimimoMetai)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

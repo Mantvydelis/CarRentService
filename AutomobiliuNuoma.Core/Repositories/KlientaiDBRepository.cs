@@ -22,15 +22,15 @@ namespace AutomobiliuNuoma.Core.Repositories
         {
             using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
             dbConnection.Open();
-            var result = dbConnection.Query<KlientasDto>(@"SELECT [Id] AS KlientasId
-      ,[Vardas]
-      ,[Pavarde]
-      ,[GimimoMetai] FROM [dbo].[Klientai]").ToList();
+            var result = dbConnection.Query<KlientasIsDuombazes>(@"SELECT [Id] AS KlientasId
+             ,[Vardas]
+             ,[Pavarde]
+             ,[GimimoMetai] FROM [dbo].[Klientai]").ToList();
             dbConnection.Close();
             return result.Select(dto => new Klientas(dto.KlientasId, dto.Vardas, dto.Pavarde, DateOnly.FromDateTime(dto.GimimoMetai))).ToList();
         }
 
-        private class KlientasDto
+        private class KlientasIsDuombazes
         {
             public int KlientasId { get; set; }
             public string Vardas { get; set; }
@@ -61,12 +61,40 @@ namespace AutomobiliuNuoma.Core.Repositories
             using (IDbConnection dbConnection = new SqlConnection(_dbConnectionString))
             {
                 dbConnection.Open();
-                var result = dbConnection.QueryFirstOrDefault<Klientas>(
-                    "SELECT * FROM Klientai WHERE KlientasId = @id",
-                    new { id }
+                var result = dbConnection.QueryFirstOrDefault<KlientasIsDuombazes>(
+                    "SELECT * FROM Klientai WHERE Id = @Id",
+                    new { Id = id }
                 );
-                return result;
+
+
+                return new Klientas(result.KlientasId, result.Vardas, result.Pavarde, DateOnly.FromDateTime(result.GimimoMetai));
             }
+
+        }
+
+        public Klientas KoreguotiKlientoInfo(int id, string vardas, string pavarde, DateOnly gimimoMetai)
+        {
+            string sqlCommand = "UPDATE Klientai " +
+                "SET Vardas = @Vardas, Pavarde = @Pavarde, GimimoMetai = @GimimoMetai " +
+                "WHERE Id = @Id; SELECT* FROM Klientai WHERE Id = @Id";
+            using (var connection = new SqlConnection(_dbConnectionString))
+            {
+                var pakeistiDuomenys = new
+                {
+                    Id = id,
+                    Vardas = vardas,
+                    Pavarde = pavarde,
+                    GimimoMetai = gimimoMetai.ToDateTime(new TimeOnly(0, 0))
+
+                };
+
+                var result = connection.QueryFirstOrDefault<KlientasIsDuombazes>(sqlCommand, pakeistiDuomenys);
+
+
+                return new Klientas(result.KlientasId, result.Vardas, result.Pavarde, DateOnly.FromDateTime(result.GimimoMetai));
+            }
+
+           
 
         }
     }

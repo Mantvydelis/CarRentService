@@ -83,7 +83,7 @@ namespace AutomobiliuNuoma.Core.Repositories
 
         }
 
-        public Automobilis GautiElektromobiliPagalId(int id)
+        public Elektromobilis GautiElektromobiliPagalId(int id)
         {
             using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
             dbConnection.Open();
@@ -107,10 +107,10 @@ namespace AutomobiliuNuoma.Core.Repositories
         {
             using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
             dbConnection.Open();
-            var query = @"UPDATE NaftosKuroAutomobilis 
+            var query = @"UPDATE NaftosKuroAuto
                   SET Marke = @Marke, Modelis = @Modelis, NuomosKaina = @NuomosKaina, DegaluSanaudos = @DegaluSanaudos 
-                  WHERE AutomobilisId = @Id;
-                  SELECT * FROM NaftosKuroAutomobilis WHERE AutomobilisId = @Id";
+                  WHERE Id = @Id;
+                  SELECT * FROM NaftosKuroAuto WHERE Id = @Id";
             var result = dbConnection.QueryFirst<NaftosKuroAutomobilis>(query, new { Id = id, Marke = marke, Modelis = modelis, NuomosKaina = nuomosKaina, DegaluSanaudos = degaluSanaudos });
             dbConnection.Close();
             return result;
@@ -118,6 +118,18 @@ namespace AutomobiliuNuoma.Core.Repositories
 
         }
 
+        public Elektromobilis KoreguotiElektromobilioInfo(int id, string marke, string modelis, decimal nuomosKaina, int baterijosTalpa, int krovimoLaikas)
+        {
+            using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
+            dbConnection.Open();
+            var query = @"UPDATE Elektromobiliai
+                  SET Marke = @Marke, Modelis = @Modelis, NuomosKaina = @NuomosKaina, BaterijosTalpa = @BaterijosTalpa 
+                  WHERE Id = @Id;
+                  SELECT * FROM Elektromobiliai WHERE Id = @Id";
+            var result = dbConnection.QueryFirst<Elektromobilis>(query, new { Id = id, Marke = marke, Modelis = modelis, NuomosKaina = nuomosKaina, BaterijosTalpa = baterijosTalpa, KrovimoLaikas = krovimoLaikas });
+            dbConnection.Close();
+            return result;
+        }
 
     }
 }

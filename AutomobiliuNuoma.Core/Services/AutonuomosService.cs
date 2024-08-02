@@ -97,6 +97,26 @@ namespace AutomobiliuNuoma.Core.Services
         {
             return _automobiliaiService.KoreguotiNaftaAutoInfo(id, marke, modelis, nuomosKaina, degaluSanaudos);
         }
+
+        public Elektromobilis GautiElektromobiliPagalId(int id)
+        {
+            return _automobiliaiService.GautiElektromobiliPagalId(id);
+        }
+
+        public Elektromobilis KoreguotiElektromobilioInfo(int id, string marke, string modelis, decimal nuomosKaina, int baterijosTalpa, int krovimoLaikas)
+        {
+            return _automobiliaiService.KoreguotiElektromobilioInfo(id, marke, modelis, nuomosKaina, baterijosTalpa, krovimoLaikas);
+        }
+
+        public Klientas GautiKlientaPagalId(int id)
+        {
+            return _klientaiService.GautiKlientaPagalId(id);
+        }
+
+        public Klientas KoreguotiKlientoInfo(int id, string vardas, string pavarde, DateOnly gimimoMetai)
+        {
+            return _klientaiService.KoreguotiKlientoInfo(id, vardas, pavarde, gimimoMetai);
+        }
     }
 }
 
