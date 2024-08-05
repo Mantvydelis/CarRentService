@@ -36,6 +36,10 @@ namespace AutomobiliuNuoma.Core.Contracts
         Klientas GautiKlientaPagalId(int id);
 
         Klientas KoreguotiKlientoInfo(int id, string vardas, string pavarde, DateOnly gimimoMetai);
+
+        public NuomosUzsakymas GautiUzsakymaPagalId(int id);
+
+        void KoreguotiNuomosInfo(int id, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis);
     }
 
 }

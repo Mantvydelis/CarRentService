@@ -117,6 +117,18 @@ namespace AutomobiliuNuoma.Core.Services
         {
             return _klientaiService.KoreguotiKlientoInfo(id, vardas, pavarde, gimimoMetai);
         }
+
+        public NuomosUzsakymas GautiUzsakymaPagalId(int id)
+        {
+            return _uzsakymaiRepository.GautiUzsakymaPagalId(id);
+
+        }
+
+        public void KoreguotiNuomosInfo(int id, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis)
+        {
+            _uzsakymaiRepository.KoreguotiNuomosInfo(id, klientasId, autoTipas, automobilisId, nuomosPradzia, dienuKiekis);
+
+        }
     }
 }
 

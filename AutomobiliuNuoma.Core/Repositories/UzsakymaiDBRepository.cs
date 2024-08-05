@@ -25,6 +25,7 @@ namespace AutomobiliuNuoma.Core.Repositories
             {
                 string query = @"
                 SELECT 
+                Id AS UzsakymasId,
                 KlientasId, 
                 BenzAutomobilisId AS AutomobilisId, 
                 ElektromobilisId AS AutomobilisId,
@@ -43,14 +44,14 @@ namespace AutomobiliuNuoma.Core.Repositories
             }
         }
 
-            public void PridetiNaujaUzsakyma(NuomosUzsakymas nuomosUzsakymas)
-            {
+        public void PridetiNaujaUzsakyma(NuomosUzsakymas nuomosUzsakymas)
+        {
             using (SqlConnection connection = new SqlConnection(_dbConnectionString))
             {
                 string query = "";
 
 
-                if (nuomosUzsakymas.AutoTipas == "2") 
+                if (nuomosUzsakymas.AutoTipas == "2")
                 {
                     query = "INSERT INTO NuomosUzsakymas (KlientasId, BenzAutomobilisId, NuomosPradzia, DienuKiekis) VALUES (@KlientasId, @AutomobilisId, @NuomosPradzia, @DienuKiekis)";
                 }
@@ -65,6 +66,46 @@ namespace AutomobiliuNuoma.Core.Repositories
                 }
             }
         }
+
+
+        public NuomosUzsakymas GautiUzsakymaPagalId(int id)
+        {
+            using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
+                dbConnection.Open();
+                var result = dbConnection.QueryFirstOrDefault<NuomosUzsakymas>(
+                    @"SELECT Id AS UzsakymasId, KlientasId, BenzAutomobilisId, ElektromobilisId, NuomosPradzia, DienuKiekis 
+          FROM NuomosUzsakymas WHERE Id = @Id", new { Id = id });
+            return result;
+            
+        }
+
+        public void KoreguotiNuomosInfo(int id, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis)
+        {
+            using (SqlConnection connection = new SqlConnection(_dbConnectionString))
+            {
+                string query = "UPDATE NuomosUzsakymas SET KlientasId = @KlientasId, BenzAutomobilisId = @BenzAutomobilisId, ElektromobilisId = @ElektromobilisId, NuomosPradzia = @NuomosPradzia, DienuKiekis = @DienuKiekis WHERE Id = @UzsakymoId";
+
+                connection.Execute(query, new
+                {
+                    KlientasId = klientasId,
+                    AutomobilisId = automobilisId,
+                    NuomosPradzia = nuomosPradzia,
+                    DienuKiekis = dienuKiekis,
+                    Id = id
+                });
+            }
+        }
+
+
+
+
+
     }
-}
+
+
+
+    }
+
+
+
 
