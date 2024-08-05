@@ -16,5 +16,7 @@ namespace AutomobiliuNuoma.Core.Contracts
 
         Klientas KoreguotiKlientoInfo(int id, string vardas, string pavarde, DateOnly gimimoMetai);
 
+        void IstrintiKlienta(int id);
+
     }
 }

@@ -139,6 +139,18 @@ namespace AutomobiliuNuoma.Core.Services
         {
             _automobiliaiService.IstrintiElektromobili(id);
         }
+
+        public void IstrintiKlienta(int id)
+        {
+            _klientaiService.IstrintiKlienta(id);
+        }
+
+        public void IstrintiUzsakyma(int id)
+        {
+
+            _uzsakymaiRepository.IstrintiUzsakyma(id);
+
+        }
     }
 }
 

@@ -90,11 +90,22 @@ namespace AutomobiliuNuoma.Core.Repositories
 
                 var result = connection.QueryFirstOrDefault<KlientasIsDuombazes>(sqlCommand, pakeistiDuomenys);
 
-
                 return new Klientas(result.KlientasId, result.Vardas, result.Pavarde, DateOnly.FromDateTime(result.GimimoMetai));
             }
 
-           
+        }
+
+        public void IstrintiKlienta(int id)
+        {
+            using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
+            dbConnection.Open();
+
+            dbConnection.Execute(@"DELETE FROM NuomosUzsakymas WHERE KlientasId = @id", new { Id = id });
+            dbConnection.Execute(@"DELETE FROM Klientai WHERE Id = @id", new { Id = id });
+
+            dbConnection.Close();
+
+
 
         }
     }

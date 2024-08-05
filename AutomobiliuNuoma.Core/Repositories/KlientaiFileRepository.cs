@@ -46,5 +46,10 @@ namespace AutomobiliuNuoma.Core.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public void IstrintiKlienta(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

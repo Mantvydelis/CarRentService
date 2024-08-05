@@ -15,5 +15,7 @@ namespace AutomobiliuNuoma.Core.Contracts
         public NuomosUzsakymas GautiUzsakymaPagalId(int id);
 
         void KoreguotiNuomosInfo(int id, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis);
+
+        void IstrintiUzsakyma (int id);
     }
 }

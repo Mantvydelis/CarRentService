@@ -64,5 +64,12 @@ namespace AutomobiliuNuoma.Core.Services
             return _klientaiRepository.KoreguotiKlientoInfo(id, vardas, pavarde, gimimoMetai);
         }
 
+        public void IstrintiKlienta(int id)
+        {
+            _klientaiRepository.IstrintiKlienta(id);
+
+        }
+
+
     }
 }

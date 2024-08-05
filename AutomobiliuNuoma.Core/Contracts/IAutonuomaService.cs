@@ -44,6 +44,10 @@ namespace AutomobiliuNuoma.Core.Contracts
         void IstrintiNaftaAuto(int id);
 
         void IstrintiElektromobili(int id);
+
+        void IstrintiKlienta(int id);
+
+        void IstrintiUzsakyma(int id);
     }
 
 }

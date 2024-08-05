@@ -97,6 +97,19 @@ namespace AutomobiliuNuoma.Core.Repositories
             }
         }
 
+        public void IstrintiUzsakyma(int id)
+        {
+            using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
+            dbConnection.Open();
+
+            dbConnection.Execute(@"DELETE FROM NuomosUzsakymas WHERE Id = @id", new { Id = id });
+
+            dbConnection.Close();
+
+
+
+        }
+
 
 
 

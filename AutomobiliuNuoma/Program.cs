@@ -363,8 +363,9 @@ public class Program
                     break;
 
                 case "12": //Pakeisti uzsakymu duomenis duombazeje.
-                    var visiUzsakymi = autonuomaService.GautiVisusUzsakymus();
-                    if (visiUzsakymi.Count == 0)
+                    Console.WriteLine("Pasirinkite uzsakymo Id, kuri norite keisti:");
+                    var visiUzsakymai = autonuomaService.GautiVisusUzsakymus();
+                    if (visiUzsakymai.Count == 0)
                     {
                         Console.WriteLine("Nera uzsakymu.");
                     }
@@ -374,7 +375,7 @@ public class Program
                         var elektromobiliai2 = autonuomaService.GautiVisusElektromobilius();
                         var klientai2 = autonuomaService.GautiVisusKlientus();
 
-                        foreach (var uzsakymas in visiUzsakymi)
+                        foreach (var uzsakymas in visiUzsakymai)
                         {
                             var klientas = klientai2.FirstOrDefault(k => k.KlientasId == uzsakymas.KlientasId);
 
@@ -398,7 +399,7 @@ public class Program
                         }
                     }
 
-                    Console.WriteLine("Pasirinkite uzsakymo Id, kuri norite keisti:");
+                    
                     int idUzsakymo = int.Parse(Console.ReadLine());
                     var dabartinisUzsakymas = autonuomaService.GautiUzsakymaPagalId(idUzsakymo);
 
@@ -517,29 +518,66 @@ public class Program
                             break;
 
 
-
-
-
-
-
-
                     }
                    
-
-
-
 
                     break;
 
 
                 case "14": //Istrinti klienta is duombazes
                     Console.WriteLine("Pasirinkite norima istrinti klienta:");
+                    var visiTrynimoKlientai = autonuomaService.GautiVisusKlientus();
+                    foreach (var k in visiTrynimoKlientai) Console.WriteLine($"{k.KlientasId} {k.Vardas} {k.Pavarde}");
+                    int kuriTrinti = int.Parse(Console.ReadLine());
+                    var dabartinisTrinamasKlientas = autonuomaService.GautiNaftosAutoPagalId(kuriTrinti);
 
+
+                    autonuomaService.IstrintiKlienta(kuriTrinti);
 
                     break;
 
                 case "15": //Istrinti uzsakyma is duombazes
                     Console.WriteLine("Pasirinkite norima istrinti uzsakyma:");
+                    var uzsakymai2 = autonuomaService.GautiVisusUzsakymus();
+                    if (uzsakymai2.Count == 0)
+                    {
+                        Console.WriteLine("Nera uzsakymu.");
+                    }
+                    else
+                    {
+                        var naftosKuroAutomobiliai2 = autonuomaService.GautiVisusNaftosKuroAuto();
+                        var elektromobiliai2 = autonuomaService.GautiVisusElektromobilius();
+                        var klientai2 = autonuomaService.GautiVisusKlientus();
+
+                        foreach (var uzsakymas in uzsakymai2)
+                        {
+                            var klientas = klientai2.FirstOrDefault(k => k.KlientasId == uzsakymas.KlientasId);
+
+                            Automobilis automobilis = null;
+
+                            if (uzsakymas.AutoTipas == "NaftosKuroAutomobilis")
+                            {
+                                automobilis = naftosKuroAutomobiliai2
+                                    .FirstOrDefault(a => a.AutomobilisId == uzsakymas.AutomobilisId);
+                            }
+                            else if (uzsakymas.AutoTipas == "Elektromobilis")
+                            {
+                                automobilis = elektromobiliai2
+                                    .FirstOrDefault(a => a.AutomobilisId == uzsakymas.AutomobilisId);
+                            }
+
+                            if (automobilis != null)
+                            {
+                                Console.WriteLine($"{uzsakymas.UzsakymasId}. Uzsakovas: {klientas.Vardas} {klientas.Pavarde}, Uzsakytas automobilis: {automobilis.Marke} {automobilis.Modelis}, Nuomos Pradzia: {uzsakymas.NuomosPradzia.ToShortDateString()}, Dienu Kiekis: {uzsakymas.DienuKiekis} Pabaigos Data: {uzsakymas.gautiPabaigosData().ToShortDateString()}");
+                            }
+
+                        }
+                    }
+
+                    int idUzsakymoTrynimo = int.Parse(Console.ReadLine());
+                    var TrinamasUzsakymas = autonuomaService.GautiUzsakymaPagalId(idUzsakymoTrynimo);
+
+                    autonuomaService.IstrintiUzsakyma(idUzsakymoTrynimo);
 
 
                     break;
