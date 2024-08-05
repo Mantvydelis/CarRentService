@@ -494,8 +494,8 @@ public class Program
                     switch (autoPasirinkimas)
                     {
                         case "1":
-                            var visiAuto1 = autonuomaService.GautiVisusElektromobilius();
                             Console.WriteLine("Kuri elektromobili norite istrinti?");
+                            var visiAuto1 = autonuomaService.GautiVisusElektromobilius();
                             foreach (var a in visiAuto1) Console.WriteLine($"{a.AutomobilisId}. {a.Marke} {a.Modelis}");
                             int ElektromobilioId = int.Parse(Console.ReadLine());
                             var dabartinisElektromobilis = autonuomaService.GautiElektromobiliPagalId(ElektromobilioId);
@@ -506,12 +506,11 @@ public class Program
 
 
                          case "2":
-                            var visiAuto2 = autonuomaService.GautiVisusNaftosKuroAuto();
                             Console.WriteLine("Kuri naftos kuro automobili norite istrinti?");
+                            var visiAuto2 = autonuomaService.GautiVisusNaftosKuroAuto();
                             foreach (var a in visiAuto2) Console.WriteLine($"{a.AutomobilisId}. {a.Marke} {a.Modelis}");
                             int NaftosKuroAutoId = int.Parse(Console.ReadLine());
                             var dabartinisNaftosKuroAuto = autonuomaService.GautiNaftosAutoPagalId(NaftosKuroAutoId);
-
 
                             autonuomaService.IstrintiNaftaAuto(NaftosKuroAutoId);
 

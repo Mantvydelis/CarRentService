@@ -79,14 +79,14 @@ namespace AutomobiliuNuoma.Core.Services
             return _automobiliaiRepository.KoreguotiElektromobilioInfo(id, marke, modelis, nuomosKaina, baterijosTalpa, krovimoLaikas);
         }
 
-        public NaftosKuroAutomobilis IstrintiNaftaAuto(int id)
+        public void IstrintiNaftaAuto(int id)
         {
-            return _automobiliaiRepository.IstrintiNaftaAuto(id);
+            _automobiliaiRepository.IstrintiNaftaAuto(id);
         }
 
-        public Elektromobilis IstrintiElektromobili(int id)
+        public void IstrintiElektromobili(int id)
         {
-            return _automobiliaiRepository.IstrintiElektromobili(id);
+            _automobiliaiRepository.IstrintiElektromobili(id);
         }
 
     }

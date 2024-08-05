@@ -41,9 +41,9 @@ namespace AutomobiliuNuoma.Core.Contracts
 
         void KoreguotiNuomosInfo(int id, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis);
 
-        NaftosKuroAutomobilis IstrintiNaftaAuto(int id);
+        void IstrintiNaftaAuto(int id);
 
-        Elektromobilis IstrintiElektromobili(int id);
+        void IstrintiElektromobili(int id);
     }
 
 }

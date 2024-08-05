@@ -130,14 +130,14 @@ namespace AutomobiliuNuoma.Core.Services
 
         }
 
-        public NaftosKuroAutomobilis IstrintiNaftaAuto(int id)
+        public void IstrintiNaftaAuto(int id)
         {
-            return _automobiliaiService.IstrintiNaftaAuto(id);
+            _automobiliaiService.IstrintiNaftaAuto(id);
         }
 
-        public Elektromobilis IstrintiElektromobili(int id)
+        public void IstrintiElektromobili(int id)
         {
-            return _automobiliaiService.IstrintiElektromobili(id);
+            _automobiliaiService.IstrintiElektromobili(id);
         }
     }
 }

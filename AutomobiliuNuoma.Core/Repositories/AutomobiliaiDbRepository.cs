@@ -131,24 +131,35 @@ namespace AutomobiliuNuoma.Core.Repositories
             return result;
         }
 
-        public NaftosKuroAutomobilis IstrintiNaftaAuto(int id)
+
+        public void IstrintiNaftaAuto(int id)
         {
             using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
             dbConnection.Open();
-            var result = dbConnection.
-                QueryFirst<NaftosKuroAutomobilis>(@"DELETE FROM NaftosKuroAuto WHERE Id = @id", new { Id = id });
+
+            dbConnection.Execute(@"DELETE FROM NuomosUzsakymas WHERE BenzAutomobilisId = @id", new { Id = id });
+            dbConnection.Execute(@"DELETE FROM NaftosKuroAuto WHERE Id = @id", new { Id = id });
+
             dbConnection.Close();
-            return result;
         }
 
-        public Elektromobilis IstrintiElektromobili(int id)
+
+        public void IstrintiElektromobili(int id)
         {
             using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
             dbConnection.Open();
-            var result = dbConnection.
-                QueryFirst<Elektromobilis>(@"DELETE FROM Elektromobiliai WHERE Id = @id", new { Id = id });
+
+            dbConnection.Execute(@"DELETE FROM NuomosUzsakymas WHERE ElektromobilisId = @id", new { Id = id });
+            dbConnection.Execute(@"DELETE FROM Elektromobiliai WHERE Id = @id", new { Id = id });
+
             dbConnection.Close();
-            return result;
         }
+
+
+
+
     }
-}
+
+        
+    }
+
