@@ -129,6 +129,16 @@ namespace AutomobiliuNuoma.Core.Services
             _uzsakymaiRepository.KoreguotiNuomosInfo(id, klientasId, autoTipas, automobilisId, nuomosPradzia, dienuKiekis);
 
         }
+
+        public NaftosKuroAutomobilis IstrintiNaftaAuto(int id)
+        {
+            return _automobiliaiService.IstrintiNaftaAuto(id);
+        }
+
+        public Elektromobilis IstrintiElektromobili(int id)
+        {
+            return _automobiliaiService.IstrintiElektromobili(id);
+        }
     }
 }
 

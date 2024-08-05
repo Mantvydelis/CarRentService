@@ -97,5 +97,15 @@ namespace AutomobiliuNuoma.Core.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public NaftosKuroAutomobilis IstrintiNaftaAuto(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Elektromobilis IstrintiElektromobili(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

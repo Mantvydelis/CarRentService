@@ -1,4 +1,5 @@
 ﻿using AutomobiliuNuoma.Core.Models;
+using AutomobiliuNuoma.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,10 @@ namespace AutomobiliuNuoma.Core.Contracts
         Elektromobilis GautiElektromobiliPagalId(int id);
 
         Elektromobilis KoreguotiElektromobilioInfo(int id, string marke, string modelis, decimal nuomosKaina, int baterijosTalpa, int krovimoLaikas);
+
+        public NaftosKuroAutomobilis IstrintiNaftaAuto(int id);
+
+        public Elektromobilis IstrintiElektromobili(int id);
 
     }
 

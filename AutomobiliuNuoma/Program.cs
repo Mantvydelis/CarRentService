@@ -500,7 +500,7 @@ public class Program
                             int ElektromobilioId = int.Parse(Console.ReadLine());
                             var dabartinisElektromobilis = autonuomaService.GautiElektromobiliPagalId(ElektromobilioId);
 
-                            //delete funkcija
+                            autonuomaService.IstrintiElektromobili(ElektromobilioId);
 
                             break;
 
@@ -513,7 +513,7 @@ public class Program
                             var dabartinisNaftosKuroAuto = autonuomaService.GautiNaftosAutoPagalId(NaftosKuroAutoId);
 
 
-                            //delete funkcija
+                            autonuomaService.IstrintiNaftaAuto(NaftosKuroAutoId);
 
                             break;
 
