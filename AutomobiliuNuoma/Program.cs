@@ -497,6 +497,11 @@ public class Program
                             var visiAuto1 = autonuomaService.GautiVisusElektromobilius();
                             Console.WriteLine("Kuri elektromobili norite istrinti?");
                             foreach (var a in visiAuto1) Console.WriteLine($"{a.AutomobilisId}. {a.Marke} {a.Modelis}");
+                            int ElektromobilioId = int.Parse(Console.ReadLine());
+                            var dabartinisElektromobilis = autonuomaService.GautiElektromobiliPagalId(ElektromobilioId);
+
+                            //delete funkcija
+
                             break;
 
 
@@ -504,6 +509,12 @@ public class Program
                             var visiAuto2 = autonuomaService.GautiVisusNaftosKuroAuto();
                             Console.WriteLine("Kuri naftos kuro automobili norite istrinti?");
                             foreach (var a in visiAuto2) Console.WriteLine($"{a.AutomobilisId}. {a.Marke} {a.Modelis}");
+                            int NaftosKuroAutoId = int.Parse(Console.ReadLine());
+                            var dabartinisNaftosKuroAuto = autonuomaService.GautiNaftosAutoPagalId(NaftosKuroAutoId);
+
+
+                            //delete funkcija
+
                             break;
 
 
