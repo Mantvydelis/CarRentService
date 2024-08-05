@@ -358,7 +358,7 @@ public class Program
 
                     break;
 
-                case "12": //Pakeisti uzsakymu duomenis duombazeje. NEBAIGTA
+                case "12": //Pakeisti uzsakymu duomenis duombazeje.
                     var visiUzsakymi = autonuomaService.GautiVisusUzsakymus();
                     if (visiUzsakymi.Count == 0)
                     {
@@ -398,9 +398,9 @@ public class Program
                     int idUzsakymo = int.Parse(Console.ReadLine());
                     var dabartinisUzsakymas = autonuomaService.GautiUzsakymaPagalId(idUzsakymo);
 
+                    Console.WriteLine("Pasirinkite i kuri klienta noretumete pakeisti arba spauskite ENTER");
                     var visiUzsakymoKlientai = autonuomaService.GautiVisusKlientus();
                     foreach (var k in visiUzsakymoKlientai) Console.WriteLine($"{k.KlientasId} {k.Vardas} {k.Pavarde}");
-                    Console.WriteLine("Pasirinkite i kuri klienta noretumete pakeisti arba spauskite ENTER");
                     string arNaujasKlientoId = Console.ReadLine();
                     int naujasKlientoId;
                     if (string.IsNullOrEmpty(arNaujasKlientoId))
