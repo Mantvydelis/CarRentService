@@ -490,6 +490,26 @@ public class Program
 
                 case "13": //Istrinti automobili is duombazes
                     Console.WriteLine("Kokio tipo automobili norite istrinti? 1 - elektromobili, 2 - naftos kuro automobili");
+                    string autoPasirinkimas = Console.ReadLine();
+                    switch (autoPasirinkimas)
+                    {
+                        case "1":
+                            break;
+
+
+                         case "2":
+                            break;
+
+
+
+
+
+
+
+
+                    }
+                   
+
 
 
 
