@@ -27,6 +27,8 @@ namespace AutomobiliuNuoma.Core.Models
 
         public int UzsakymasId { get; set; }
 
+        public Darbuotojas DarbuotojasId { get; set; }
+
 
         public NuomosUzsakymas(Klientas uzsakovas, Automobilis nuomuojamasAuto, DateTime nuomosPradzia, int dienuKiekis)
         {
