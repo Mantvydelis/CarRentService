@@ -83,11 +83,12 @@ namespace AutomobiliuNuoma.Core.Repositories
         {
             using (SqlConnection connection = new SqlConnection(_dbConnectionString))
             {
-                string query = "UPDATE NuomosUzsakymas SET KlientasId = @KlientasId, BenzAutomobilisId = @BenzAutomobilisId, ElektromobilisId = @ElektromobilisId, NuomosPradzia = @NuomosPradzia, DienuKiekis = @DienuKiekis WHERE Id = @Id";
+                string query = "UPDATE NuomosUzsakymas SET KlientasId = @KlientasId, BenzAutomobilisId = CASE WHEN @AutoTipas = 'NaftosKuroAutomobilis' THEN @AutomobilisId ELSE NULL END, ElektromobilisId = CASE WHEN @AutoTipas = 'Elektromobilis' THEN @AutomobilisId ELSE NULL END, NuomosPradzia = @NuomosPradzia, DienuKiekis = @DienuKiekis WHERE Id = @Id";
 
                 connection.Execute(query, new
                 {
                     KlientasId = klientasId,
+                    AutoTipas = autoTipas,
                     AutomobilisId = automobilisId,
                     NuomosPradzia = nuomosPradzia,
                     DienuKiekis = dienuKiekis,
