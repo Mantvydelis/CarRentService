@@ -27,8 +27,12 @@ public class Program
             Console.WriteLine("10. Pakeisti duomenis automobiliu duombazeje");
             Console.WriteLine("11. Pakeisti duomenis klientu duombazeje");
             Console.WriteLine("12. Pakeisti uzsakymu duomenis duombazeje");
+            Console.WriteLine("13. Istrinti automobili is duombazes");
+            Console.WriteLine("14. Istrinti klienta is duombazes");
+            Console.WriteLine("15. Istrinti uzsakyma is duombazes");
+            Console.WriteLine("-----------------------------------------------");
 
-            string pasirinkimas = Console.ReadLine();
+           string pasirinkimas = Console.ReadLine();
             switch (pasirinkimas)
             {
                 case "1": /*neveikia*/
@@ -483,6 +487,29 @@ public class Program
 
                     autonuomaService.KoreguotiNuomosInfo(dabartinisUzsakymas.UzsakymasId, naujasKlientoId, autoTipas, naujasAutomobilisId, naujaNuomosPradzia, naujasDienuKiekis);
                     break;
+
+                case "13": //Istrinti automobili is duombazes
+                    Console.WriteLine("Kokio tipo automobili norite istrinti? 1 - elektromobili, 2 - naftos kuro automobili");
+
+
+
+                    break;
+
+
+                case "14": //Istrinti klienta is duombazes
+                    Console.WriteLine("Pasirinkite norima istrinti klienta:");
+
+
+                    break;
+
+                case "15": //Istrinti uzsakyma is duombazes
+                    Console.WriteLine("Pasirinkite norima istrinti uzsakyma:");
+
+
+                    break;
+
+
+
 
 
 
