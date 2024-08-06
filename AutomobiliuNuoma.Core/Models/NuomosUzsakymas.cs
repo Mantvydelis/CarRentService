@@ -27,25 +27,27 @@ namespace AutomobiliuNuoma.Core.Models
 
         public int UzsakymasId { get; set; }
 
-        public Darbuotojas DarbuotojasId { get; set; }
+        public int DarbuotojasId { get; set; }
 
-        public NuomosUzsakymas() { }
+        public NuomosUzsakymas(int klientasId) { }
 
-        public NuomosUzsakymas(Klientas uzsakovas, Automobilis nuomuojamasAuto, DateTime nuomosPradzia, int dienuKiekis)
-        {
-            Uzsakovas = uzsakovas;
-            NuomuojamasAuto = nuomuojamasAuto;
-            NuomosPradzia = nuomosPradzia;
-            DienuKiekis = dienuKiekis;
-        }
+        //public NuomosUzsakymas(Klientas uzsakovas, Automobilis nuomuojamasAuto, DateTime nuomosPradzia, int dienuKiekis, Darbuotojas darbuotojasId)
+        //{
+        //    Uzsakovas = uzsakovas;
+        //    NuomuojamasAuto = nuomuojamasAuto;
+        //    NuomosPradzia = nuomosPradzia;
+        //    DienuKiekis = dienuKiekis;
+        //    DarbuotojasId = darbuotojasId;
+        //}
 
-        public NuomosUzsakymas(int klientasId, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, string autoTipas)
+        public NuomosUzsakymas(int klientasId, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, string autoTipas, int darbuotojasId)
         {
             KlientasId = klientasId;
             AutomobilisId = automobilisId;
             NuomosPradzia = nuomosPradzia;
             DienuKiekis = dienuKiekis;
             AutoTipas = autoTipas;
+            DarbuotojasId = darbuotojasId;
         }
 
         

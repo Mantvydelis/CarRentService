@@ -1,4 +1,5 @@
 ﻿using AutomobiliuNuoma.Core.Contracts;
+using AutomobiliuNuoma.Core.Enums;
 using AutomobiliuNuoma.Core.Models;
 using AutomobiliuNuoma.Core.Repositories;
 using System;
@@ -14,16 +15,18 @@ namespace AutomobiliuNuoma.Core.Services
         private readonly IKlientaiService _klientaiService;
         private readonly IAutomobiliaiService _automobiliaiService;
         private readonly IUzsakymaiRepository _uzsakymaiRepository;
+        private readonly IDarbuotojaiRepository _darbuotojaiRepository;
 
         private List<Automobilis> VisiAutomobiliai = new List<Automobilis>();
 
         private List<NuomosUzsakymas> VisiUzsakymai = new List<NuomosUzsakymas>();
 
-        public AutonuomosService(IKlientaiService klientaiService, IAutomobiliaiService automobiliaiService, IUzsakymaiRepository uzsakymaiRepository)
+        public AutonuomosService(IKlientaiService klientaiService, IAutomobiliaiService automobiliaiService, IUzsakymaiRepository uzsakymaiRepository, IDarbuotojaiRepository darbuotojaiRepository)
         {
             _automobiliaiService = automobiliaiService;
             _klientaiService = klientaiService;
             _uzsakymaiRepository = uzsakymaiRepository;
+            _darbuotojaiRepository = darbuotojaiRepository;
         }
 
         public List<Automobilis> GautiVisusAutomobilius()
@@ -51,9 +54,10 @@ namespace AutomobiliuNuoma.Core.Services
         {
             return _automobiliaiService.GautiVisusNaftosKuroAuto();
         }
-        public void SukurtiNuoma(int klientasId, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, string autoTipas)
+        public void SukurtiNuoma(int klientasId, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, string autoTipas, int darbuotojasId)
         {
-            var nuomosUzsakymas = new NuomosUzsakymas(klientasId, automobilisId, nuomosPradzia, dienuKiekis, autoTipas);
+            var darbuotojas = _darbuotojaiRepository.GautiDarbuotojaPagalId(darbuotojasId);
+            var nuomosUzsakymas = new NuomosUzsakymas(klientasId, automobilisId, nuomosPradzia, dienuKiekis, autoTipas, darbuotojasId);
             _uzsakymaiRepository.PridetiNaujaUzsakyma(nuomosUzsakymas);
         }
 
@@ -124,9 +128,10 @@ namespace AutomobiliuNuoma.Core.Services
 
         }
 
-        public void KoreguotiNuomosInfo(int id, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis)
+        public void KoreguotiNuomosInfo(int id, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, int darbuotojasId)
         {
-            _uzsakymaiRepository.KoreguotiNuomosInfo(id, klientasId, autoTipas, automobilisId, nuomosPradzia, dienuKiekis);
+            var surastiDarbuotojoId = _darbuotojaiRepository.GautiDarbuotojaPagalId(darbuotojasId);
+            _uzsakymaiRepository.KoreguotiNuomosInfo(id, klientasId, autoTipas, automobilisId, nuomosPradzia, dienuKiekis, darbuotojasId);
 
         }
 
@@ -151,6 +156,32 @@ namespace AutomobiliuNuoma.Core.Services
             _uzsakymaiRepository.IstrintiUzsakyma(id);
 
         }
+
+        public void PridetiDarbuotoja(Darbuotojas darbuotojas)
+        {
+            _darbuotojaiRepository.PridetiDarbuotoja(darbuotojas);
+        }
+
+        public List<Darbuotojas> GautiVisusDarbuotojus()
+        {
+            return _darbuotojaiRepository.GautiVisusDarbuotojus();
+        }
+
+        public Darbuotojas GautiDarbuotojaPagalId(int id)
+        {
+            return _darbuotojaiRepository.GautiDarbuotojaPagalId(id);
+        }
+
+        public Darbuotojas KoreguotiDarbuotojoInfo(int id, string vardas, string pavarde, DarbuotojasPareigos pareigos)
+        {
+            return _darbuotojaiRepository.KoreguotiDarbuotojoInfo(id, vardas, pavarde, pareigos);
+        }
+
+        public void IstrintiDarbuotoja(int id)
+        {
+            _darbuotojaiRepository.IstrintiDarbuotoja(id);
+        }
+
     }
 }
 

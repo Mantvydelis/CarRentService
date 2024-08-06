@@ -14,6 +14,15 @@ namespace AutomobiliuNuoma.Core.Models
         public string Pavarde { get; set; }
         public DarbuotojasPareigos Pareigos { get; set; }
 
+
+        public Darbuotojas (int id, string vardas, string pavarde, DarbuotojasPareigos pareigos)
+        {
+            Id = id; Vardas = vardas; Pavarde = pavarde; Pareigos = pareigos;
+
+        }
+
+        public Darbuotojas() { }
+
         public override string ToString()
         {
             return $"{Id} {Vardas} {Pavarde} Pareigos: {Pareigos}";

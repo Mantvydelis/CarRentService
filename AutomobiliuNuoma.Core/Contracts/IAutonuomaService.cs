@@ -1,4 +1,5 @@
-﻿using AutomobiliuNuoma.Core.Models;
+﻿using AutomobiliuNuoma.Core.Enums;
+using AutomobiliuNuoma.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace AutomobiliuNuoma.Core.Contracts
         void PridetiNaujaAutomobili(Automobilis automobilis);
         List<Automobilis> GautiVisusAutomobilius();
         List<Klientas> GautiVisusKlientus();
-        void SukurtiNuoma(int klientasId, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, string autoTipas);
+        void SukurtiNuoma(int klientasId, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, string autoTipas, int darbuotojasId);
 
         List<Elektromobilis> GautiVisusElektromobilius();
         List<NaftosKuroAutomobilis> GautiVisusNaftosKuroAuto();
@@ -39,7 +40,7 @@ namespace AutomobiliuNuoma.Core.Contracts
 
         public NuomosUzsakymas GautiUzsakymaPagalId(int id);
 
-        void KoreguotiNuomosInfo(int id, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis);
+        void KoreguotiNuomosInfo(int id, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, int darbuotojasId);
 
         void IstrintiNaftaAuto(int id);
 
@@ -48,6 +49,16 @@ namespace AutomobiliuNuoma.Core.Contracts
         void IstrintiKlienta(int id);
 
         void IstrintiUzsakyma(int id);
+
+
+        void PridetiDarbuotoja(Darbuotojas darbuotojas);
+
+        List<Darbuotojas> GautiVisusDarbuotojus();
+        Darbuotojas GautiDarbuotojaPagalId(int id);
+
+        Darbuotojas KoreguotiDarbuotojoInfo(int id, string vardas, string pavarde, DarbuotojasPareigos pareigos);
+
+        void IstrintiDarbuotoja(int id);
     }
 
 }

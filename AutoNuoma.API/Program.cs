@@ -23,7 +23,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IAutomobiliaiRepository, AutomobiliaiDbRepository>(_ => new AutomobiliaiDbRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;"));
 builder.Services.AddTransient<IKlientaiRepository, KlientaiDBRepository>(_ => new KlientaiDBRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;"));
 builder.Services.AddTransient<IUzsakymaiRepository, UzsakymaiDBRepository>(_ => new UzsakymaiDBRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;"));
-
+builder.Services.AddTransient<IDarbuotojaiRepository, DarbuotojaiDbRepository>(_ => new DarbuotojaiDbRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;"));
 builder.Services.AddTransient<IKlientaiService, KlientaiService>();
 builder.Services.AddTransient<IAutomobiliaiService, AutomobiliaiService>();
 builder.Services.AddTransient<IAutonuomaService, AutonuomosService>();
@@ -61,9 +61,9 @@ static IAutonuomaService SetupDependencies()
         IKlientaiRepository klientaiRepository = new KlientaiDBRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;");
         IAutomobiliaiRepository automobiliaiRepository = new AutomobiliaiDbRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;");
         IUzsakymaiRepository uzsakymaiRepository = new UzsakymaiDBRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;");
-
+        IDarbuotojaiRepository darbuotojaiRepository = new DarbuotojaiDbRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;");
         IKlientaiService klientaiService = new KlientaiService(klientaiRepository);
         IAutomobiliaiService automobiliaiService = new AutomobiliaiService(automobiliaiRepository);
-        return new AutonuomosService(klientaiService, automobiliaiService, uzsakymaiRepository);
+        return new AutonuomosService(klientaiService, automobiliaiService, uzsakymaiRepository, darbuotojaiRepository);
     }
 

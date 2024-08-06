@@ -30,11 +30,11 @@ namespace AutoNuoma.API.Controllers
         }
 
         [HttpPost("PridetiUzsakyma")]
-        public IActionResult GautiUzsakymaPagalId(int klientasId, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, string autoTipas)
+        public IActionResult GautiUzsakymaPagalId(int klientasId, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, string autoTipas, int darbuotojasId)
         {
             try
             {
-                _autonuomaService.SukurtiNuoma(klientasId, automobilisId, nuomosPradzia, dienuKiekis, autoTipas);
+                _autonuomaService.SukurtiNuoma(klientasId, automobilisId, nuomosPradzia, dienuKiekis, autoTipas, darbuotojasId);
                 return Ok();
             }
             catch
@@ -45,11 +45,11 @@ namespace AutoNuoma.API.Controllers
         }
 
         [HttpPost("KoreguotiUzsakymoInfo")]
-        public IActionResult KoreguotiNuomosInfo(int id, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis)
+        public IActionResult KoreguotiNuomosInfo(int id, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, int darbuotojasId)
         {
             try
             {
-                _autonuomaService.KoreguotiNuomosInfo(id, klientasId, autoTipas, automobilisId, nuomosPradzia, dienuKiekis);
+                _autonuomaService.KoreguotiNuomosInfo(id, klientasId, autoTipas, automobilisId, nuomosPradzia, dienuKiekis, darbuotojasId);
                 return Ok();
 
             }
@@ -61,7 +61,7 @@ namespace AutoNuoma.API.Controllers
         }
 
 
-        [HttpGet("IstrintiUzsakyma")]
+        [HttpDelete("IstrintiUzsakyma")]
         public IActionResult IstrintiUzsakyma(int id)
         {
             _autonuomaService.IstrintiUzsakyma(id);

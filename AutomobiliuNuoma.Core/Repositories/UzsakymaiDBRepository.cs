@@ -35,7 +35,8 @@ namespace AutomobiliuNuoma.Core.Repositories
                     WHEN BenzAutomobilisId IS NOT NULL THEN 'NaftosKuroAutomobilis' 
                     WHEN ElektromobilisId IS NOT NULL THEN 'Elektromobilis'
                     ELSE 'Unknown'
-                END AS AutoTipas
+                END AS AutoTipas,
+                DarbuotojasId
             FROM 
                 NuomosUzsakymas";
 
@@ -51,13 +52,13 @@ namespace AutomobiliuNuoma.Core.Repositories
                 string query = "";
 
 
-                if (nuomosUzsakymas.AutoTipas == "2")
+                if (nuomosUzsakymas.AutoTipas == "NaftosKuroAutomobilis")
                 {
-                    query = "INSERT INTO NuomosUzsakymas (KlientasId, BenzAutomobilisId, NuomosPradzia, DienuKiekis) VALUES (@KlientasId, @AutomobilisId, @NuomosPradzia, @DienuKiekis)";
+                    query = "INSERT INTO NuomosUzsakymas (KlientasId, BenzAutomobilisId, NuomosPradzia, DienuKiekis, DarbuotojasId) VALUES (@KlientasId, @AutomobilisId, @NuomosPradzia, @DienuKiekis, @DarbuotojasId)";
                 }
-                else if (nuomosUzsakymas.AutoTipas == "1")
+                else if (nuomosUzsakymas.AutoTipas == "Elektromobilis")
                 {
-                    query = "INSERT INTO NuomosUzsakymas (KlientasId, ElektromobilisId, NuomosPradzia, DienuKiekis) VALUES (@KlientasId, @AutomobilisId, @NuomosPradzia, @DienuKiekis)";
+                    query = "INSERT INTO NuomosUzsakymas (KlientasId, ElektromobilisId, NuomosPradzia, DienuKiekis, DarbuotojasId) VALUES (@KlientasId, @AutomobilisId, @NuomosPradzia, @DienuKiekis, @DarbuotojasId)";
                 }
 
                 using (var connection1 = new SqlConnection(_dbConnectionString))
@@ -73,17 +74,25 @@ namespace AutomobiliuNuoma.Core.Repositories
             using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
                 dbConnection.Open();
                 var result = dbConnection.QueryFirstOrDefault<NuomosUzsakymas>(
-                    @"SELECT Id AS UzsakymasId, KlientasId, BenzAutomobilisId, ElektromobilisId, NuomosPradzia, DienuKiekis 
+                    @"SELECT Id AS UzsakymasId, KlientasId, BenzAutomobilisId, ElektromobilisId, NuomosPradzia, DienuKiekis, DarbuotojasId 
           FROM NuomosUzsakymas WHERE Id = @Id", new { Id = id });
             return result;
             
         }
 
-        public void KoreguotiNuomosInfo(int id, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis)
+        public void KoreguotiNuomosInfo(int id, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, int darbuotojasId)
         {
             using (SqlConnection connection = new SqlConnection(_dbConnectionString))
             {
-                string query = "UPDATE NuomosUzsakymas SET KlientasId = @KlientasId, BenzAutomobilisId = CASE WHEN @AutoTipas = 'NaftosKuroAutomobilis' THEN @AutomobilisId ELSE NULL END, ElektromobilisId = CASE WHEN @AutoTipas = 'Elektromobilis' THEN @AutomobilisId ELSE NULL END, NuomosPradzia = @NuomosPradzia, DienuKiekis = @DienuKiekis WHERE Id = @Id";
+                string query = @"
+                UPDATE NuomosUzsakymas 
+                 SET KlientasId = @KlientasId, 
+                 BenzAutomobilisId = CASE WHEN @AutoTipas = 'NaftosKuroAutomobilis' THEN @AutomobilisId ELSE NULL END, 
+                 ElektromobilisId = CASE WHEN @AutoTipas = 'Elektromobilis' THEN @AutomobilisId ELSE NULL END, 
+                 NuomosPradzia = @NuomosPradzia, 
+                 DienuKiekis = @DienuKiekis, 
+                 DarbuotojasId = @DarbuotojasId 
+                 WHERE Id = @Id";
 
                 connection.Execute(query, new
                 {
@@ -92,7 +101,8 @@ namespace AutomobiliuNuoma.Core.Repositories
                     AutomobilisId = automobilisId,
                     NuomosPradzia = nuomosPradzia,
                     DienuKiekis = dienuKiekis,
-                    Id = id
+                    Id = id,
+                    DarbuotojasId = darbuotojasId
                 });
             }
         }

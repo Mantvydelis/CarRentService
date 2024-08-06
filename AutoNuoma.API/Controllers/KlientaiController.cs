@@ -23,7 +23,7 @@ namespace AutoNuoma.API.Controllers
             return Ok(visiKlientai);
         }
 
-        [HttpGet("RastiKlientalId")]
+        [HttpGet("RastiKlientaPagalId")]
         public IActionResult GautiKlientaPagalId(int id)
         {
             var klId = _autonuomaService.GautiKlientaPagalId(id);
@@ -62,7 +62,7 @@ namespace AutoNuoma.API.Controllers
 
         }
 
-        [HttpGet("IstrintiKlienta")]
+        [HttpDelete("IstrintiKlienta")]
         public IActionResult IstrintiKlienta(int id)
         {
             _autonuomaService.IstrintiKlienta(id);

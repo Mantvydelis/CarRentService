@@ -109,14 +109,14 @@ namespace AutoNuoma.API.Controllers
 
         }
 
-        [HttpGet("IstrintiElektromobili")]
+        [HttpDelete("IstrintiElektromobili")]
         public IActionResult IstrintiElektromobili(int id)
         {
             _autonuomaService.IstrintiElektromobili(id);
             return Ok();
         }
 
-        [HttpGet("IstrintiNaftosKuroAuto")]
+        [HttpDelete("IstrintiNaftosKuroAuto")]
         public IActionResult IstrintiNaftaAuto(int id)
         {
             _autonuomaService.IstrintiNaftaAuto(id);
