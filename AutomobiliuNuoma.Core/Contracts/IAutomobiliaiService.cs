@@ -13,6 +13,7 @@ namespace AutomobiliuNuoma.Core.Contracts
         void NuskaitytiIsFailo();
         void IrasytiIFaila();
         void PridetiAutomobili(Automobilis automobilis);
+
         List<Automobilis> PaieskaPagalMarke(string marke);
         List<Automobilis> GautiVisusAutomobilius();
         List<Elektromobilis> GautiVisusElektromobilius();

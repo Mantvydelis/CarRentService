@@ -1,6 +1,5 @@
 ﻿using AutomobiliuNuoma.Core.Contracts;
 using AutomobiliuNuoma.Core.Models;
-using AutoNuoma.API.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoNuoma.API.Controllers
@@ -10,13 +9,14 @@ namespace AutoNuoma.API.Controllers
     public class AutomobiliaiController : Controller
     {
         private readonly IAutonuomaService _autonuomaService;
-        private readonly ICacheService _cache;
 
-        public AutomobiliaiController(IAutonuomaService autonuomaService, ICacheService cacheService)
+
+        public AutomobiliaiController(IAutonuomaService autonuomaService)
         {
             _autonuomaService = autonuomaService;
-            _cache = cacheService;
         }
+
+
 
         [HttpGet("GautiVisusElektromobilius")]
         public IActionResult Index()
@@ -32,60 +32,21 @@ namespace AutoNuoma.API.Controllers
             return Ok(visiNaftaAuto);
         }
 
-
-
-        //Rodyti visus automobilius
-        //Prideti automobili i duombaze
-        //Pakeisti duomenis automobiliu duombazeje
-        //Istrinti automobili is duombazes
-
-
-
-
-
-
-
-
-        [HttpGet("GautiElektromobiliPagalId")]
+        [HttpGet("RastiElektromobiliPagalId")]
         public IActionResult GautiElektromobiliPagalId(int id)
         {
-            var ev = _cache.GetElektromobilisByIdFromCache(id);
-            if (ev != null)
-                return Ok(ev);
-
-            var visiEv = _autonuomaService.GautiVisusElektromobilius();
-            foreach (Elektromobilis e in visiEv)
-            {
-                _cache.AddElektromobilisToCache(e);
-            }
-            foreach (Elektromobilis a in visiEv)
-            {
-                if (a.AutomobilisId == id)
-                    return Ok(a);
-            }
-
-            return NotFound();
+            var elId = _autonuomaService.GautiElektromobiliPagalId(id);
+            return Ok(elId);
         }
-        [HttpGet("GautiElektromobiliPagalIdBeStatuso")]
-        public Elektromobilis GautiElektromobiliPagalIdBeStatuso(int id)
+
+        [HttpGet("RastiNaftosKuroAutoPagalId")]
+        public IActionResult GautiNaftosAutoPagalId(int id)
         {
-            var ev = _cache.GetElektromobilisByIdFromCache(id);
-            if (ev != null)
-                return ev;
-
-            var visiEv = _autonuomaService.GautiVisusElektromobilius();
-            foreach (Elektromobilis e in visiEv)
-            {
-                _cache.AddElektromobilisToCache(e);
-            }
-            foreach (Elektromobilis a in visiEv)
-            {
-                if (a.AutomobilisId == id)
-                    return a;
-            }
-
-            return null;
+            var naId = _autonuomaService.GautiNaftosAutoPagalId(id);
+            return Ok(naId);
         }
+
+
         [HttpPost("PridetiElektromobili")]
         public IActionResult GautiElektromobiliPagalId(Elektromobilis ev)
         {
@@ -100,5 +61,67 @@ namespace AutoNuoma.API.Controllers
             }
 
         }
+
+        [HttpPost("PridetiNaftosKuroAuto")]
+        public IActionResult GautiNaftosAutoPagalId(NaftosKuroAutomobilis benz)
+        {
+            try
+            {
+                _autonuomaService.PridetiNaujaAutomobili(benz);
+                return Ok();
+            }
+            catch
+            {
+                return Problem();
+            }
+
+        }
+
+        [HttpPost("KoreguotiElektromobilioInfo")]
+        public IActionResult KoreguotiElektromobilioInfo(int id, string marke, string modelis, decimal nuomosKaina, int baterijosTalpa, int krovimoLaikas)
+        {
+            try
+            {
+                var elId = _autonuomaService.KoreguotiElektromobilioInfo(id, marke, modelis, nuomosKaina, baterijosTalpa, krovimoLaikas);
+                return Ok(elId);
+
+            }
+            catch
+            {
+                return Problem();
+            }
+
+        }
+
+        [HttpPost("KoreguotiNaftosAutoInfo")]
+        public IActionResult KoreguotiNaftaAutoInfo(int id, string marke, string modelis, decimal nuomosKaina, double degaluSanaudos)
+        {
+            try
+            {
+                var naftaId = _autonuomaService.KoreguotiNaftaAutoInfo(id, marke, modelis, nuomosKaina, degaluSanaudos);
+                return Ok(naftaId);
+
+            }
+            catch
+            {
+                return Problem();
+            }
+
+        }
+
+        [HttpGet("IstrintiElektromobili")]
+        public IActionResult IstrintiElektromobili(int id)
+        {
+            _autonuomaService.IstrintiElektromobili(id);
+            return Ok();
+        }
+
+        [HttpGet("IstrintiNaftosKuroAuto")]
+        public IActionResult IstrintiNaftaAuto(int id)
+        {
+            _autonuomaService.IstrintiNaftaAuto(id);
+            return Ok();
+        }
+
     }
 }

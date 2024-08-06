@@ -29,6 +29,7 @@ namespace AutomobiliuNuoma.Core.Models
 
         public Darbuotojas DarbuotojasId { get; set; }
 
+        public NuomosUzsakymas() { }
 
         public NuomosUzsakymas(Klientas uzsakovas, Automobilis nuomuojamasAuto, DateTime nuomosPradzia, int dienuKiekis)
         {
@@ -47,7 +48,7 @@ namespace AutomobiliuNuoma.Core.Models
             AutoTipas = autoTipas;
         }
 
-        public NuomosUzsakymas() { }
+        
 
         public decimal skaiciuotiNuomosKaina() /*REIKS PAKOREGUOTI IR PRIDETI PRIE CASE 8*/
         {

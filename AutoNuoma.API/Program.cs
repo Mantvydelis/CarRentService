@@ -1,8 +1,6 @@
 using AutomobiliuNuoma.Core.Contracts;
 using AutomobiliuNuoma.Core.Repositories;
 using AutomobiliuNuoma.Core.Services;
-using AutoNuoma.API.Contracts;
-using AutoNuoma.API.Service;
 using Microsoft.Extensions.DependencyInjection;
 
 
@@ -29,7 +27,7 @@ builder.Services.AddTransient<IUzsakymaiRepository, UzsakymaiDBRepository>(_ => 
 builder.Services.AddTransient<IKlientaiService, KlientaiService>();
 builder.Services.AddTransient<IAutomobiliaiService, AutomobiliaiService>();
 builder.Services.AddTransient<IAutonuomaService, AutonuomosService>();
-builder.Services.AddSingleton<ICacheService, CacheService>();
+
 
 
 

@@ -1,5 +1,5 @@
 ﻿using AutomobiliuNuoma.Core.Contracts;
-using AutoNuoma.API.Contracts;
+using AutomobiliuNuoma.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoNuoma.API.Controllers
@@ -23,11 +23,58 @@ namespace AutoNuoma.API.Controllers
             return Ok(visiKlientai);
         }
 
+        [HttpGet("RastiKlientalId")]
+        public IActionResult GautiKlientaPagalId(int id)
+        {
+            var klId = _autonuomaService.GautiKlientaPagalId(id);
+            return Ok(klId);
+        }
 
-        //Rodyti visus klientus is duombazes
-        //Prideti klienta i duombaze
-        //Pakeisti duomenis klientu duombazeje
-        //Istrinti klienta is duombazes
+
+        [HttpPost("PridetiKlienta")]
+        public IActionResult GautiKlientaPagalId(Klientas klientas)
+        {
+            try
+            {
+                _autonuomaService.PridetiNaujaKlienta(klientas);
+                return Ok();
+            }
+            catch
+            {
+                return Problem();
+            }
+
+        }
+
+        [HttpPost("KoreguotiKlientoInfo")]
+        public IActionResult KoreguotiKlientoInfo(int id, string vardas, string pavarde, DateOnly gimimoMetai)
+        {
+            try
+            {
+                var klientasId = _autonuomaService.KoreguotiKlientoInfo(id, vardas, pavarde, gimimoMetai);
+                return Ok(klientasId);
+
+            }
+            catch
+            {
+                return Problem();
+            }
+
+        }
+
+        [HttpGet("IstrintiKlienta")]
+        public IActionResult IstrintiKlienta(int id)
+        {
+            _autonuomaService.IstrintiKlienta(id);
+            return Ok();
+        }
+
+
+
+
+
+
+
 
 
 
