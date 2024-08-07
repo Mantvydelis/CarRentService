@@ -1,0 +1,65 @@
+﻿@page
+@using AutomobiliuNuoma.Core.Models
+@model AutomobiliuNuoma.FrontEnd.Pages.KlientaiModel
+@{
+    ViewData["Title"] = "Klientai";
+    Layout = "Shared/_Layout";
+}
+
+
+
+<h4 class="text-center">Įveskite kliento duomenis:</h4>
+<br>
+<form action="/action_page.php" class="text-center">
+    <label for="klId">KlientoID:</label><br>
+    <input type="number" id="klId" name="klId" value=""><br>
+    <label for="klVardas">Vardas:</label><br>
+    <input type="text" id="klVardas" name="klVardas" value=""><br>
+    <label for="klPavarde">Pavardė:</label><br>
+    <input type="text" id="klPavarde" name="klPavarde" value=""><br>
+    <label for="klGimimoData">Gimimo data:</label><br>
+    <input type="date" id="klGimimoData" name="klGimimoData" value=""><br><br>
+    <input type="submit" value="Priduoti">
+</form>
+
+<br>
+<br>
+
+
+<h4 class="text-center">Esami klientai:</h4>
+<br>
+
+    <table class="my-table">
+    <colgroup>
+        <col span="1" style="background-color: #a2baee">
+    </colgroup>
+    <tr class="my-table-row-headings">
+        <th class="my-table-column">ID</th>
+        <th>Vardas</th>
+        <th>Pavardė</th>
+        <th>Gimimo Metai</th>
+    </tr>
+    @foreach (Klientas kl in Model.Klientai)
+    {
+        <tr class="my-table-row">
+            <td class="my-table-column">@kl.KlientasId</td>
+            <td>@kl.Vardas</td>
+            <td>@kl.Pavarde</td>
+            <td>@kl.GimimoMetai.ToString("yyyy-MM-dd") </td>
+        </tr>
+    }
+   </table>
+
+
+<br>
+<br>
+
+
+
+
+
+
+   
+
+
+

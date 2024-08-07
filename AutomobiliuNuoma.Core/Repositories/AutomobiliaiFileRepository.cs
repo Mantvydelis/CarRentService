@@ -107,5 +107,10 @@ namespace AutomobiliuNuoma.Core.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public Automobilis PaieskaPagalMarke(string marke)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

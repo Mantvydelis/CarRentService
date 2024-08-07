@@ -1,0 +1,66 @@
+﻿@page
+@using AutomobiliuNuoma.Core.Models
+@model AutomobiliuNuoma.FrontEnd.Pages.DarbuotojaiModel
+@{
+    ViewData["Title"] = "Darbuotojai";
+    Layout = "Shared/_Layout";
+}
+
+<h4 class="text-center">Įveskite darbuotojo duomenis:</h4>
+<br>
+<form action="/action_page.php" class="text-center">
+
+    <label for="dbId">Darbuotojo ID:</label><br>
+    <input type="number" id="dbId" name="dbId" value=""><br>
+
+    <label for="dbVardas">Darbuotojo vardas:</label><br>
+    <input type="text" id="dbVardas" name="dbVardas" value=""><br>
+
+    <label for="dbPavarde">Darbuotojo pavardė:</label><br>
+    <input type="text" id="dbPavarde" name="dbPavarde" value=""><br>
+
+    <label for="dbPareigos">Darbuotojo pareigos:</label><br>
+    <input type="number" id="dbPareigos" name="dbPareigos" value=""><br><br>
+
+    <input type="submit" value="Priduoti">
+</form>
+
+
+<br>
+<br>
+<br>
+
+
+
+
+
+
+
+
+
+
+
+<h4 class="text-center">Esami darbuotojai::</h4>
+<br>
+
+<table class="my-table" class="text-center">
+    <colgroup>
+        <col span="1" style="background-color: #a2baee">
+    </colgroup>
+    <tr class="my-table-row-headings">
+        <th class="my-table-column">ID</th>
+        <th>Vardas</th>
+        <th>Pavardė</th>
+        <th>Pareigos</th>
+    </tr>
+    @foreach (Darbuotojas db in Model.Darbuotojai)
+    {
+        <tr class="my-table-row">
+            <td class="my-table-column">@db.Id</td>
+            <td>@db.Vardas</td>
+            <td>@db.Pavarde</td>
+            <td>@db.Pareigos</td>
+
+        </tr>
+    }
+</table>

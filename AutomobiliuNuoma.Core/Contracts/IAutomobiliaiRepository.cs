@@ -27,5 +27,9 @@ namespace AutomobiliuNuoma.Core.Contracts
         void IstrintiNaftaAuto(int id);
 
         void IstrintiElektromobili(int id);
+
+       
+
+
     }
 }

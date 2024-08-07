@@ -1,0 +1,67 @@
+﻿@page
+@using AutomobiliuNuoma.Core.Models
+@model AutomobiliuNuoma.FrontEnd.Pages.ElektromobiliaiModel
+@{
+    ViewData["Title"] = "Elektromobiliai";
+    Layout = "Shared/_Layout";
+}
+
+
+
+<h4 class="text-center">Įveskite elektromobilio duomenis:</h4>
+<br>
+<form action="/action_page.php" class="text-center">
+    <label for="evId">ElektromobilioID:</label><br>
+    <input type="number" id="evId" name="evId" value=""><br>
+    <label for="evMarke">Elektromobilio markė:</label><br>
+    <input type="text" id="evMarke" name="evMarke" value=""><br>
+    <label for="evModelis">Elektromobilio modelis:</label><br>
+    <input type="text" id="evModelis" name="evModelis" value=""><br>
+    <label for="evNuomosKaina">Elektromobilio nuomos kaina:</label><br>
+    <input type="number" id="evNuomosKaina" name="evNuomosKaina" value=""><br>
+    <label for="evBaterijosTalpa">Elektromobilio baterijos talpa:</label><br>
+    <input type="number" id="evBaterijosTalpa" name="evBaterijosTalpa" value=""><br>
+    <label for="evKrovimoLaikas">Elektromobilio įkrovimo laikas:</label><br>
+    <input type="number" id="evKrovimoLaikas" name="evKrovimoLaikas" value=""><br><br>
+    <input type="submit" value="Priduoti">
+</form>
+
+
+<br>
+<br>
+<br>
+
+
+<h4 class="text-center">Esami elektromobiliai:</h4>
+<br>
+
+<table class="my-table" class="text-center">
+    <colgroup>
+        <col span="1" style="background-color: #a2baee">
+    </colgroup>
+    <tr class="my-table-row-headings">
+        <th class ="my-table-column">ID</th>
+        <th>Markė</th>
+        <th>Modelis</th>
+        <th>Nuomos Kaina</th>
+        <th>Baterijos Talpa</th>
+        <th>Baterijos Įkrovimo Laikas</th>
+    </tr>
+    @foreach (Elektromobilis ev in Model.Elektromobiliai)
+    {
+        <tr class="my-table-row">
+            <td class="my-table-column">@ev.AutomobilisId</td>
+            <td>@ev.Marke</td>
+            <td>@ev.Modelis</td>
+            <td>@ev.NuomosKaina.ToString("F2") eur.</td>
+            <td>@ev.BaterijosTalpa KmV</td>
+            <td>@ev.KrovimoLaikas val.</td>
+        </tr>
+    }
+</table>
+
+<br>
+
+
+
+

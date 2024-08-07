@@ -59,6 +59,8 @@ namespace AutomobiliuNuoma.Core.Contracts
         Darbuotojas KoreguotiDarbuotojoInfo(int id, string vardas, string pavarde, DarbuotojasPareigos pareigos);
 
         void IstrintiDarbuotoja(int id);
+
+   
     }
 
 }

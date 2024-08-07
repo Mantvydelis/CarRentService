@@ -76,12 +76,6 @@ namespace AutomobiliuNuoma.Core.Repositories
             }
         }
 
-        public Automobilis PaieskaPagalId(int id)
-        {
-
-            throw new NotImplementedException();
-
-        }
 
         public Elektromobilis GautiElektromobiliPagalId(int id)
         {
@@ -154,9 +148,6 @@ namespace AutomobiliuNuoma.Core.Repositories
 
             dbConnection.Close();
         }
-
-
-
 
     }
 

@@ -14,8 +14,13 @@ namespace AutomobiliuNuoma.Core.Models
         public string Pavarde { get; set; }
         public DarbuotojasPareigos Pareigos { get; set; }
 
+        public double BazinisAtlyginimas { get; set; }
 
-        public Darbuotojas (int id, string vardas, string pavarde, DarbuotojasPareigos pareigos)
+        public int AtliktuUzsakymuKiekis { get; set; }
+
+
+
+        public Darbuotojas(int id, string vardas, string pavarde, DarbuotojasPareigos pareigos)
         {
             Id = id; Vardas = vardas; Pavarde = pavarde; Pareigos = pareigos;
 
@@ -29,6 +34,19 @@ namespace AutomobiliuNuoma.Core.Models
         }
 
 
+        public double SkaiciuotiAtlyginima(double bazinisAtlyginimas, int atliktuUzsakymuKiekis)
+        {
+            switch (Pareigos)
+            {
+                case DarbuotojasPareigos.Direktorius:
+                case DarbuotojasPareigos.Mechanikas:
+                    return bazinisAtlyginimas;
+                case DarbuotojasPareigos.Vadybininkas:
+                    return bazinisAtlyginimas + (atliktuUzsakymuKiekis * 7);
+                default:
+                    return bazinisAtlyginimas;
+            }
+        }
 
     }
 }

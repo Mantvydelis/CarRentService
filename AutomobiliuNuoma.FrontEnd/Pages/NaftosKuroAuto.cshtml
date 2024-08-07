@@ -1,0 +1,59 @@
+﻿@page
+@using AutomobiliuNuoma.Core.Models
+@model AutomobiliuNuoma.FrontEnd.Pages.NaftosKuroAutoModel
+@{
+    ViewData["Title"] = "Naftos kuro auto";
+    Layout = "Shared/_Layout";
+}
+
+
+
+<h4 class="text-center">Įveskite naftos kuro automobilio duomenis:</h4>
+<br>
+<form action="/action_page.php" class="text-center">
+    <label for="naId">AutomobilioID:</label><br>
+    <input type="number" id="naId" name="naId" value=""><br>
+    <label for="naMarke">Automobilio markė:</label><br>
+    <input type="text" id="naMarke" name="naMarke" value=""><br>
+    <label for="naModelis">Automobilio modelis:</label><br>
+    <input type="text" id="naModelis" name="naModelis" value=""><br>
+    <label for="naNuomosKaina">Automobilio nuomos kaina:</label><br>
+    <input type="number" id="naNuomosKaina" name="naNuomosKaina" value=""><br>
+    <label for="naDegaluSanaudos">Automobilio degalų sanaudos:</label><br>
+    <input type="number" id="naDegaluSanaudos" name="naDegaluSanaudos" value=""><br><br>
+    <input type="submit" value="Priduoti">
+</form>
+
+<br>
+<br>
+
+
+<h4 class="text-center">Esami naftos kuro automobiliai:</h4>
+<br>
+<table class="my-table">
+    <colgroup>
+        <col span="1" style="background-color: #a2baee">
+    </colgroup>
+    <tr class="my-table-row-headings">
+        <th class="my-table-column">ID</th>
+        <th>Markė</th>
+        <th>Modelis</th>
+        <th>Nuomos Kaina</th>
+        <th>Kuro Sąnaudos</th>
+    </tr>
+    @foreach (NaftosKuroAutomobilis na in Model.NaftosKuroAutomobiliai)
+    {
+        <tr class="my-table-row">
+            <td class="my-table-column">@na.AutomobilisId</td>
+            <td>@na.Marke</td>
+            <td>@na.Modelis</td>
+            <td>@na.NuomosKaina.ToString("F2") eur.</td>
+            <td>@na.DegaluSanaudos L/100km</td>
+        </tr>
+    }
+</table>
+
+
+<br>
+
+
