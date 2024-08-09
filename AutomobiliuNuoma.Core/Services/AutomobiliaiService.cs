@@ -12,9 +12,11 @@ namespace AutomobiliuNuoma.Core.Services
     public class AutomobiliaiService : IAutomobiliaiService
     {
         private readonly IAutomobiliaiRepository _automobiliaiRepository;
-        public AutomobiliaiService(IAutomobiliaiRepository automobiliaiRepository)
+        private readonly IMongoDbCacheRepository _mongoCache;
+        public AutomobiliaiService(IAutomobiliaiRepository automobiliaiRepository, IMongoDbCacheRepository mongoDbCache)
         {
             _automobiliaiRepository = automobiliaiRepository;
+            _mongoCache = mongoDbCache;
         }
         public async Task<List<Automobilis>> GautiVisusAutomobilius()
         {
@@ -32,10 +34,12 @@ namespace AutomobiliuNuoma.Core.Services
         public async Task<List<Elektromobilis>> GautiVisusElektromobilius()
         {
             return await _automobiliaiRepository.GautiVisusElektromobilius();
+            
         }
         public async Task<List<NaftosKuroAutomobilis>> GautiVisusNaftosKuroAuto()
         {
             return await _automobiliaiRepository.GautiVisusNaftosKuroAutomobilius();
+            
         }
 
         public async Task IrasytiIFaila()
@@ -62,11 +66,20 @@ namespace AutomobiliuNuoma.Core.Services
 
         public async Task PridetiAutomobili(Automobilis automobilis)
         {
-            if (automobilis is Elektromobilis)
-                await _automobiliaiRepository.IrasytiElektromobili((Elektromobilis)automobilis);
-            else
-                await _automobiliaiRepository.IrasytiNaftosKuroAutomobili((NaftosKuroAutomobilis)automobilis);
+            if (automobilis is Elektromobilis elektromobilis)
+            {
+                await _mongoCache.PridetiElektromobili(elektromobilis);
+                await _automobiliaiRepository.IrasytiElektromobili(elektromobilis);
+            }
+            else if (automobilis is NaftosKuroAutomobilis naftosKuroAutomobilis)
+            {
+                await _automobiliaiRepository.IrasytiNaftosKuroAutomobili(naftosKuroAutomobilis);
+                await _mongoCache.PridetiNaftosKuroAuto(naftosKuroAutomobilis);
+            }
+
+
         }
+
 
         public async Task<NaftosKuroAutomobilis> GautiNaftosAutoPagalId(int id)
         {

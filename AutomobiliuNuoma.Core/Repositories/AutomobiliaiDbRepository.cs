@@ -32,18 +32,19 @@ namespace AutomobiliuNuoma.Core.Repositories
             using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
             dbConnection.Open();
             var result = await dbConnection.
-                QueryAsync<Elektromobilis>(@"SELECT * FROM [dbo].[Elektromobiliai]");
+                QueryAsync<Elektromobilis>(@"SELECT [Id] AS AutomobilisId, [Marke],[Modelis],[NuomosKaina],[BaterijosTalpa] FROM [dbo].[Elektromobiliai]");
             dbConnection.Close();
             return result.ToList();
+
         }
 
 
-         public async Task<List<NaftosKuroAutomobilis>> GautiVisusNaftosKuroAutomobilius()
+        public async Task<List<NaftosKuroAutomobilis>> GautiVisusNaftosKuroAutomobilius()
         {
             using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
             dbConnection.Open();
             var result = await dbConnection.
-                QueryAsync<NaftosKuroAutomobilis>(@"SELECT * FROM [dbo].[NaftosKuroAuto]");
+                QueryAsync<NaftosKuroAutomobilis>(@"SELECT [Id] AS AutomobilisId, [Marke],[Modelis],[NuomosKaina],[DegaluSanaudos] FROM [dbo].[NaftosKuroAuto]");
             dbConnection.Close();
             return result.ToList();
         }
@@ -72,22 +73,48 @@ namespace AutomobiliuNuoma.Core.Repositories
 
         public async Task<Elektromobilis> GautiElektromobiliPagalId(int id)
         {
-            using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
-            dbConnection.Open();
-            var result = await dbConnection.
-                QueryFirstAsync<Elektromobilis>(@"SELECT * FROM Elektromobiliai WHERE Id = @id", new { Id = id });
-            dbConnection.Close();
-            return result;
+
+            using (IDbConnection dbConnection = new SqlConnection(_dbConnectionString))
+            {
+
+                dbConnection.Open();
+                var result = await dbConnection.QueryFirstOrDefaultAsync<Elektromobilis>(
+                    "SELECT Id AS AutomobilisId, Marke, Modelis, NuomosKaina, BaterijosTalpa, KrovimoLaikas FROM Elektromobiliai WHERE Id = @Id",
+                    new { Id = id }
+                );
+                if (result != null)
+                {
+                    return new Elektromobilis(result.AutomobilisId, result.Marke, result.Modelis, result.NuomosKaina, result.BaterijosTalpa, result.KrovimoLaikas);
+                }
+                return null;
+
+            }
+
+
+
         }
 
         public async Task<NaftosKuroAutomobilis> GautiNaftosAutoPagalId(int id)
         {
-            using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
-            dbConnection.Open();
-            var result = await dbConnection.
-                QueryFirstAsync<NaftosKuroAutomobilis>(@"SELECT * FROM NaftosKuroAuto WHERE Id = @id", new { Id = id });
-            dbConnection.Close();
-            return result;
+
+            using (IDbConnection dbConnection = new SqlConnection(_dbConnectionString))
+            {
+
+                dbConnection.Open();
+                var result = await dbConnection.QueryFirstOrDefaultAsync<NaftosKuroAutomobilis>(
+                    "SELECT Id AS AutomobilisId, Marke, Modelis, NuomosKaina, DegaluSanaudos FROM NaftosKuroAuto WHERE Id = @Id",
+                    new { Id = id }
+                );
+                if (result != null)
+                {
+                    return new NaftosKuroAutomobilis(result.AutomobilisId, result.Marke, result.Modelis, result.NuomosKaina, result.DegaluSanaudos);
+                }
+                return null;
+
+            }
+
+
+
         }
 
         public async Task<NaftosKuroAutomobilis> KoreguotiNaftaAutoInfo(int id, string marke, string modelis, decimal nuomosKaina, double degaluSanaudos)

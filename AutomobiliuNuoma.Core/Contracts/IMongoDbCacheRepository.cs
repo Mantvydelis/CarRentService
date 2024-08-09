@@ -28,5 +28,28 @@ namespace AutomobiliuNuoma.Core.Contracts
         Task IstrintiDarbuotoja(int id);
 
         Task IstrintiKlienta(int klientasId);
+
+        Task IstrintiCache();
+
+        Task<Elektromobilis> GautiElektromobiliPagalId(int id);
+
+
+        Task<NaftosKuroAutomobilis> GautiNaftosKuroAutoPagalId(int id);
+
+
+        Task PridetiElektromobili(Elektromobilis elektromobilis);
+
+
+        Task PridetiNaftosKuroAuto(NaftosKuroAutomobilis naftosKuroAutomobilis);
+
+        Task<List<Elektromobilis>> GautiVisusElektromobilius();
+
+
+        Task<List<NaftosKuroAutomobilis>> GautiVisusNaftosKuroAuto();
+
+        Task<Elektromobilis> KoreguotiElektromobilioInfo(int automobilisId, string marke, string modelis, decimal nuomosKaina, int baterijosTalpa, int krovimoLaikas);
+
+        Task<NaftosKuroAutomobilis> KoreguotiNaftosKuroAutoInfo(int automobilisId, string marke, string modelis, decimal nuomosKaina, double degaluSanaudos);
+
     }
 }

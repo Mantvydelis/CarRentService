@@ -23,6 +23,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<IMongoClient, MongoClient>(_ => new MongoClient("mongodb+srv://mantvydassemeta:Slaptazodis@cluster0.awg2t.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"));
 builder.Services.AddTransient<IMongoDbCacheRepository, MongoDbCacheRepository>();
+builder.Services.AddSingleton<ICacheService, CacheService>();
 builder.Services.AddTransient<IAutomobiliaiRepository, AutomobiliaiDbRepository>(_ => new AutomobiliaiDbRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;"));
 builder.Services.AddTransient<IKlientaiRepository, KlientaiDBRepository>(_ => new KlientaiDBRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;"));
 builder.Services.AddTransient<IUzsakymaiRepository, UzsakymaiDBRepository>(_ => new UzsakymaiDBRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;"));
@@ -30,6 +31,7 @@ builder.Services.AddTransient<IDarbuotojaiRepository, DarbuotojaiDbRepository>(_
 builder.Services.AddTransient<IKlientaiService, KlientaiService>();
 builder.Services.AddTransient<IAutomobiliaiService, AutomobiliaiService>();
 builder.Services.AddTransient<IAutonuomaService, AutonuomosService>();
+
 
 
 
@@ -53,7 +55,12 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+var cacheService = app.Services.GetRequiredService<ICacheService>();
+cacheService.DeleteCaches();
+
 app.Run();
+
+
 
 
 

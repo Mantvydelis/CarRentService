@@ -68,11 +68,48 @@ namespace AutomobiliuNuoma.Core.Services
         }
         public async Task<List<Elektromobilis>> GautiVisusElektromobilius()
         {
-            return await _automobiliaiService.GautiVisusElektromobilius();
+
+            List<Elektromobilis> results;
+
+            if ((results = _mongoCache.GautiVisusElektromobilius().Result) != null && results.Any())
+                return results;
+
+            results = await _automobiliaiService.GautiVisusElektromobilius();
+
+            if (results != null && results.Any())
+            {
+                foreach (var elektromobilis in results)
+                {
+                    await _mongoCache.PridetiElektromobili(elektromobilis);
+                }
+            }
+
+            return results;
+
+
         }
         public async Task<List<NaftosKuroAutomobilis>> GautiVisusNaftosKuroAuto()
         {
-            return await _automobiliaiService.GautiVisusNaftosKuroAuto();
+
+            List<NaftosKuroAutomobilis> results;
+
+            if ((results = _mongoCache.GautiVisusNaftosKuroAuto().Result) != null && results.Any())
+                return results;
+
+            results = await _automobiliaiService.GautiVisusNaftosKuroAuto();
+
+            if (results != null && results.Any())
+            {
+                foreach (var naftosKuroAuto in results)
+                {
+                    await _mongoCache.PridetiNaftosKuroAuto(naftosKuroAuto);
+                }
+            }
+
+            return results;
+
+
+
         }
         public async Task SukurtiNuoma(int klientasId, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, string autoTipas, int darbuotojasId)
         {
@@ -115,23 +152,48 @@ namespace AutomobiliuNuoma.Core.Services
 
         public async Task<NaftosKuroAutomobilis> GautiNaftosAutoPagalId(int id)
         {
-            return await _automobiliaiService.GautiNaftosAutoPagalId(id);
+            NaftosKuroAutomobilis result;
+            if ((result = _mongoCache.GautiNaftosKuroAutoPagalId(id).Result) != null)
+                return result;
+            result = await _automobiliaiService.GautiNaftosAutoPagalId(id);
+            await _mongoCache.PridetiNaftosKuroAuto(result);
+            return result;
+
+
         }
 
         public async Task<NaftosKuroAutomobilis> KoreguotiNaftaAutoInfo(int id, string marke, string modelis, decimal nuomosKaina, double degaluSanaudos)
         {
-            return await _automobiliaiService.KoreguotiNaftaAutoInfo(id, marke, modelis, nuomosKaina, degaluSanaudos);
+            var result1 = await _automobiliaiService.KoreguotiNaftaAutoInfo(id, marke, modelis, nuomosKaina, degaluSanaudos);
+            var result2 = await _mongoCache.KoreguotiNaftosKuroAutoInfo(id, marke, modelis, nuomosKaina, degaluSanaudos);
+
+
+            return result1 ?? result2;
+
+
         }
 
         public async Task<Elektromobilis> GautiElektromobiliPagalId(int id)
         {
-            return await _automobiliaiService.GautiElektromobiliPagalId(id);
+            Elektromobilis result;
+            if ((result = _mongoCache.GautiElektromobiliPagalId(id).Result) != null)
+                return result;
+            result = await _automobiliaiService.GautiElektromobiliPagalId(id);
+            await _mongoCache.PridetiElektromobili(result);
+            return result;
+
         }
 
         public async Task <Elektromobilis> KoreguotiElektromobilioInfo(int id, string marke, string modelis, decimal nuomosKaina, int baterijosTalpa, int krovimoLaikas)
         {
-            return await _automobiliaiService.KoreguotiElektromobilioInfo(id, marke, modelis, nuomosKaina, baterijosTalpa, krovimoLaikas);
+            var result1 = await _automobiliaiService.KoreguotiElektromobilioInfo(id, marke, modelis, nuomosKaina, baterijosTalpa, krovimoLaikas);
+            var result2 = await _mongoCache.KoreguotiElektromobilioInfo(id, marke, modelis, nuomosKaina, baterijosTalpa, krovimoLaikas);
+
+
+            return result1 ?? result2;
+
         }
+       
 
         public async Task<Klientas> GautiKlientaPagalId(int id)
         {
@@ -147,7 +209,7 @@ namespace AutomobiliuNuoma.Core.Services
         {
 
             var result1 = await _klientaiService.KoreguotiKlientoInfo(id, vardas, pavarde, gimimoMetai);
-            var result2 = await _mongoCache.KoreguotiKlientoInfo(id, vardas, pavarde, gimimoMetai); /*neveikia*/
+            var result2 = await _mongoCache.KoreguotiKlientoInfo(id, vardas, pavarde, gimimoMetai);
 
             return result1 ?? result2;
         }

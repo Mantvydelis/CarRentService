@@ -14,11 +14,15 @@ namespace AutomobiliuNuoma.Core.Repositories
     {
         private IMongoCollection<Darbuotojas> _darbuotojaiCache;
         private IMongoCollection<Klientas> _klientaiCache;
+        private IMongoCollection<Elektromobilis> _elektromobiliaiCache;
+        private IMongoCollection<NaftosKuroAutomobilis> _naftosKuroAutoCache;
 
         public MongoDbCacheRepository(IMongoClient mongoClient)
         {
             _darbuotojaiCache = mongoClient.GetDatabase("darbuotojai").GetCollection<Darbuotojas>("darbuotojai_cache");
             _klientaiCache = mongoClient.GetDatabase("klientai").GetCollection<Klientas>("klientai_cache");
+            _elektromobiliaiCache = mongoClient.GetDatabase("elektromobiliai").GetCollection<Elektromobilis>("elektromobiliai_cache");
+            _naftosKuroAutoCache = mongoClient.GetDatabase("naftosKuroAuto").GetCollection<NaftosKuroAutomobilis>("naftosKuroAuto_cache");
         }
 
 
@@ -150,6 +154,134 @@ namespace AutomobiliuNuoma.Core.Repositories
 
 
         }
+
+        public async Task IstrintiCache()
+        {
+            var istrintiKlientus = _klientaiCache.Database.DropCollectionAsync("klientai_cache");
+            var istrintiDarbuotojus = _darbuotojaiCache.Database.DropCollectionAsync("darbuotojai_cache");
+            var istrintiElektromobilius = _elektromobiliaiCache.Database.DropCollectionAsync("elektromobiliai_cache");
+            var istrintiNaftosKuroAuto = _naftosKuroAutoCache.Database.DropCollectionAsync("naftosKuroAuto_cache");
+
+            await Task.WhenAll(istrintiDarbuotojus, istrintiKlientus, istrintiElektromobilius, istrintiNaftosKuroAuto);
+        }
+
+
+         public async Task<Elektromobilis> GautiElektromobiliPagalId(int id)
+        {
+            try
+            {
+                return (await _elektromobiliaiCache.FindAsync<Elektromobilis>(x => x.AutomobilisId == id)).First();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<NaftosKuroAutomobilis> GautiNaftosKuroAutoPagalId(int id)
+        {
+            try
+            {
+                return (await _naftosKuroAutoCache.FindAsync<NaftosKuroAutomobilis>(x => x.AutomobilisId == id)).First();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task PridetiElektromobili(Elektromobilis elektromobilis)
+        {
+            await _elektromobiliaiCache.InsertOneAsync(elektromobilis);
+        }
+
+        public async Task PridetiNaftosKuroAuto(NaftosKuroAutomobilis naftosKuroAutomobilis)
+        {
+            await _naftosKuroAutoCache.InsertOneAsync(naftosKuroAutomobilis);
+        }
+
+
+        
+        public async Task<List<Elektromobilis>> GautiVisusElektromobilius()
+        {
+            try
+            {
+
+                var allElektromobiliai = await _elektromobiliaiCache.FindAsync<Elektromobilis>(_ => true);
+                return await allElektromobiliai.ToListAsync();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<NaftosKuroAutomobilis>> GautiVisusNaftosKuroAuto()
+        {
+            try
+            {
+
+                var allNaftosKuroAuto = await _naftosKuroAutoCache.FindAsync<NaftosKuroAutomobilis>(_ => true);
+                return await allNaftosKuroAuto.ToListAsync();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+
+        public async Task<Elektromobilis> KoreguotiElektromobilioInfo(int automobilisId, string marke, string modelis, decimal nuomosKaina, int baterijosTalpa, int krovimoLaikas)
+        {
+
+            var filter = Builders<Elektromobilis>.Filter.Eq(d => d.AutomobilisId, automobilisId);
+
+            var update = Builders<Elektromobilis>.Update
+                 .Set(d => d.Marke, marke)
+                 .Set(d => d.Modelis, modelis)
+                 .Set(d => d.NuomosKaina, nuomosKaina)
+                 .Set(d => d.BaterijosTalpa, baterijosTalpa)
+                 .Set(d => d.KrovimoLaikas, krovimoLaikas);
+
+            var result = await _elektromobiliaiCache.UpdateOneAsync(filter, update);
+
+            if (result.MatchedCount > 0)
+            {
+                return await _elektromobiliaiCache.Find(filter).FirstOrDefaultAsync();
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
+
+        public async Task<NaftosKuroAutomobilis> KoreguotiNaftosKuroAutoInfo(int automobilisId, string marke, string modelis, decimal nuomosKaina, double degaluSanaudos)
+        {
+
+            var filter = Builders<NaftosKuroAutomobilis>.Filter.Eq(d => d.AutomobilisId, automobilisId);
+
+            var update = Builders<NaftosKuroAutomobilis>.Update
+                 .Set(d => d.Marke, marke)
+                 .Set(d => d.Modelis, modelis)
+                 .Set(d => d.NuomosKaina, nuomosKaina)
+                 .Set(d => d.DegaluSanaudos, degaluSanaudos);
+
+            var result = await _naftosKuroAutoCache.UpdateOneAsync(filter, update);
+
+            if (result.MatchedCount > 0)
+            {
+                return await _naftosKuroAutoCache.Find(filter).FirstOrDefaultAsync();
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
+
 
 
 
