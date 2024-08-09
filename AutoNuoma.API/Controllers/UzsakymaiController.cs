@@ -16,25 +16,25 @@ namespace AutoNuoma.API.Controllers
         }
 
         [HttpGet("GautiVisusUzsakymus")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var visiUzsakymai = _autonuomaService.GautiVisusUzsakymus();
+            var visiUzsakymai = await _autonuomaService.GautiVisusUzsakymus();
             return Ok(visiUzsakymai);
         }
 
         [HttpGet("RastiUzsakymaPagalId")]
-        public IActionResult GautiUzsakymaPagalId(int id)
+        public async Task<IActionResult> GautiUzsakymaPagalId(int id)
         {
-            var klId = _autonuomaService.GautiUzsakymaPagalId(id);
+            var klId = await _autonuomaService.GautiUzsakymaPagalId(id);
             return Ok(klId);
         }
 
         [HttpPost("PridetiUzsakyma")]
-        public IActionResult GautiUzsakymaPagalId(int klientasId, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, string autoTipas, int darbuotojasId)
+        public async Task<IActionResult> GautiUzsakymaPagalId(int klientasId, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, string autoTipas, int darbuotojasId)
         {
             try
             {
-                _autonuomaService.SukurtiNuoma(klientasId, automobilisId, nuomosPradzia, dienuKiekis, autoTipas, darbuotojasId);
+                await _autonuomaService.SukurtiNuoma(klientasId, automobilisId, nuomosPradzia, dienuKiekis, autoTipas, darbuotojasId);
                 return Ok();
             }
             catch
@@ -45,11 +45,11 @@ namespace AutoNuoma.API.Controllers
         }
 
         [HttpPost("KoreguotiUzsakymoInfo")]
-        public IActionResult KoreguotiNuomosInfo(int id, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, int darbuotojasId)
+        public async Task<IActionResult> KoreguotiNuomosInfo(int id, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, int darbuotojasId)
         {
             try
             {
-                _autonuomaService.KoreguotiNuomosInfo(id, klientasId, autoTipas, automobilisId, nuomosPradzia, dienuKiekis, darbuotojasId);
+                await _autonuomaService.KoreguotiNuomosInfo(id, klientasId, autoTipas, automobilisId, nuomosPradzia, dienuKiekis, darbuotojasId);
                 return Ok();
 
             }
@@ -62,9 +62,9 @@ namespace AutoNuoma.API.Controllers
 
 
         [HttpDelete("IstrintiUzsakyma")]
-        public IActionResult IstrintiUzsakyma(int id)
+        public async Task<IActionResult> IstrintiUzsakyma(int id)
         {
-            _autonuomaService.IstrintiUzsakyma(id);
+            await _autonuomaService.IstrintiUzsakyma(id);
             return Ok();
         }
 

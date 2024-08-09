@@ -16,12 +16,12 @@ namespace AutomobiliuNuoma.Core.Repositories
             _filePath = autoFilePath;
         }
 
-        public NaftosKuroAutomobilis GautiNaftosAuto(int id)
+        public Task<NaftosKuroAutomobilis> GautiNaftosAuto(int id)
         {
             throw new NotImplementedException();
         }
 
-        public List<Elektromobilis> GautiVisusElektromobilius()
+        public async Task<List<Elektromobilis>> GautiVisusElektromobilius()
         {
             List<Elektromobilis> visiAuto = new List<Elektromobilis>();
             using (StreamReader sr = new StreamReader(_filePath))
@@ -38,27 +38,27 @@ namespace AutomobiliuNuoma.Core.Repositories
             return visiAuto;
         }
 
-        public List<NaftosKuroAutomobilis> GautiVisusNaftosKuroAutomobilius()
+        public async Task<List<NaftosKuroAutomobilis>> GautiVisusNaftosKuroAutomobilius()
         {
             throw new NotImplementedException();
         }
 
-        public void IrasytiAutomobilius()
+        public async Task IrasytiAutomobilius()
         {
             throw new NotImplementedException();
         }
 
-        public void IrasytiElektromobili(Elektromobilis elektromobilis)
+        public async Task IrasytiElektromobili(Elektromobilis elektromobilis)
         {
             throw new NotImplementedException();
         }
 
-        public void IrasytiNaftosKuroAutomobili(NaftosKuroAutomobilis automobilis)
+        public async Task IrasytiNaftosKuroAutomobili(NaftosKuroAutomobilis automobilis)
         {
             throw new NotImplementedException();
         }
 
-        public List<Automobilis> NuskaitytiAutomobilius()
+        public async Task<List<Automobilis>> NuskaitytiAutomobilius()
         {
             List<Automobilis> visiAuto = new List<Automobilis>();
             using (StreamReader sr = new StreamReader(_filePath))
@@ -78,37 +78,47 @@ namespace AutomobiliuNuoma.Core.Repositories
             return visiAuto;
         }
 
-        public Elektromobilis GautiElektromobiliPagalId(int id)
+        public async Task<Elektromobilis> GautiElektromobiliPagalId(int id)
         {
             throw new NotImplementedException();
         }
 
-        public NaftosKuroAutomobilis GautiNaftosAutoPagalId(int id)
+        public async Task<NaftosKuroAutomobilis> GautiNaftosAutoPagalId(int id)
         {
             throw new NotImplementedException();
         }
 
-        public NaftosKuroAutomobilis KoreguotiNaftaAutoInfo(int id, string marke, string modelis, decimal nuomosKaina, double degaluSanaudos)
+        public async Task<NaftosKuroAutomobilis> KoreguotiNaftaAutoInfo(int id, string marke, string modelis, decimal nuomosKaina, double degaluSanaudos)
         {
             throw new NotImplementedException();
         }
 
-        public Elektromobilis KoreguotiElektromobilioInfo(int id, string marke, string modelis, decimal nuomosKaina, int baterijosTalpa, int krovimoLaikas)
+        public async Task<Elektromobilis> KoreguotiElektromobilioInfo(int id, string marke, string modelis, decimal nuomosKaina, int baterijosTalpa, int krovimoLaikas)
         {
             throw new NotImplementedException();
         }
 
-        public void IstrintiNaftaAuto(int id)
+        public async Task IstrintiNaftaAuto(int id)
         {
             throw new NotImplementedException();
         }
 
-        public void IstrintiElektromobili(int id)
+        public async Task IstrintiElektromobili(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Automobilis PaieskaPagalMarke(string marke)
+        public async Task<Automobilis> PaieskaPagalMarke(string marke)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<List<Elektromobilis>> IAutomobiliaiRepository.GautiVisusElektromobilius()
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<List<NaftosKuroAutomobilis>> IAutomobiliaiRepository.GautiVisusNaftosKuroAutomobilius()
         {
             throw new NotImplementedException();
         }

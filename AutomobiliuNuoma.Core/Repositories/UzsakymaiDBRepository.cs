@@ -19,7 +19,7 @@ namespace AutomobiliuNuoma.Core.Repositories
         {
             _dbConnectionString = connectionString;
         }
-        public List<NuomosUzsakymas> GautiVisusNuomosUzsakymus()
+        public async Task<List<NuomosUzsakymas>> GautiVisusNuomosUzsakymus()
         {
             using (SqlConnection connection = new SqlConnection(_dbConnectionString))
             {
@@ -40,12 +40,12 @@ namespace AutomobiliuNuoma.Core.Repositories
             FROM 
                 NuomosUzsakymas";
 
-                var uzsakymai = connection.Query<NuomosUzsakymas>(query).ToList();
-                return uzsakymai;
+                var uzsakymai = await connection.QueryAsync<NuomosUzsakymas>(query);
+                return uzsakymai.ToList();
             }
         }
 
-        public void PridetiNaujaUzsakyma(NuomosUzsakymas nuomosUzsakymas)
+        public async Task PridetiNaujaUzsakyma(NuomosUzsakymas nuomosUzsakymas)
         {
             using (SqlConnection connection = new SqlConnection(_dbConnectionString))
             {
@@ -63,24 +63,24 @@ namespace AutomobiliuNuoma.Core.Repositories
 
                 using (var connection1 = new SqlConnection(_dbConnectionString))
                 {
-                    connection.Execute(query, nuomosUzsakymas);
+                   await connection.ExecuteAsync(query, nuomosUzsakymas);
                 }
             }
         }
 
 
-        public NuomosUzsakymas GautiUzsakymaPagalId(int id)
+        public async Task<NuomosUzsakymas> GautiUzsakymaPagalId(int id)
         {
             using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
                 dbConnection.Open();
-                var result = dbConnection.QueryFirstOrDefault<NuomosUzsakymas>(
+                var result = await dbConnection.QueryFirstOrDefaultAsync<NuomosUzsakymas>(
                     @"SELECT Id AS UzsakymasId, KlientasId, BenzAutomobilisId, ElektromobilisId, NuomosPradzia, DienuKiekis, DarbuotojasId 
           FROM NuomosUzsakymas WHERE Id = @Id", new { Id = id });
             return result;
             
         }
 
-        public void KoreguotiNuomosInfo(int id, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, int darbuotojasId)
+        public async Task KoreguotiNuomosInfo(int id, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, int darbuotojasId)
         {
             using (SqlConnection connection = new SqlConnection(_dbConnectionString))
             {
@@ -94,7 +94,7 @@ namespace AutomobiliuNuoma.Core.Repositories
                  DarbuotojasId = @DarbuotojasId 
                  WHERE Id = @Id";
 
-                connection.Execute(query, new
+                await connection.ExecuteAsync(query, new
                 {
                     KlientasId = klientasId,
                     AutoTipas = autoTipas,
@@ -107,12 +107,12 @@ namespace AutomobiliuNuoma.Core.Repositories
             }
         }
 
-        public void IstrintiUzsakyma(int id)
+        public async Task IstrintiUzsakyma(int id)
         {
             using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
             dbConnection.Open();
 
-            dbConnection.Execute(@"DELETE FROM NuomosUzsakymas WHERE Id = @id", new { Id = id });
+           await dbConnection.ExecuteAsync(@"DELETE FROM NuomosUzsakymas WHERE Id = @id", new { Id = id });
 
             dbConnection.Close();
 

@@ -2,6 +2,7 @@ using AutomobiliuNuoma.Core.Contracts;
 using AutomobiliuNuoma.Core.Repositories;
 using AutomobiliuNuoma.Core.Services;
 using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Driver;
 
 
 
@@ -20,6 +21,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
+builder.Services.AddSingleton<IMongoClient, MongoClient>(_ => new MongoClient("mongodb+srv://mantvydassemeta:Slaptazodis@cluster0.awg2t.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"));
+builder.Services.AddTransient<IMongoDbCacheRepository, MongoDbCacheRepository>();
 builder.Services.AddTransient<IAutomobiliaiRepository, AutomobiliaiDbRepository>(_ => new AutomobiliaiDbRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;"));
 builder.Services.AddTransient<IKlientaiRepository, KlientaiDBRepository>(_ => new KlientaiDBRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;"));
 builder.Services.AddTransient<IUzsakymaiRepository, UzsakymaiDBRepository>(_ => new UzsakymaiDBRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;"));
@@ -56,14 +59,15 @@ app.Run();
 
 static IAutonuomaService SetupDependencies()
     {
-        //IKlientaiRepository klientaiRepository = new KlientaiFileRepository("Klientai.csv");
-        //IAutomobiliaiRepository automobiliaiRepository = new AutomobiliaiFileRepository("Auto.csv");
-        IKlientaiRepository klientaiRepository = new KlientaiDBRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;");
-        IAutomobiliaiRepository automobiliaiRepository = new AutomobiliaiDbRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;");
-        IUzsakymaiRepository uzsakymaiRepository = new UzsakymaiDBRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;");
-        IDarbuotojaiRepository darbuotojaiRepository = new DarbuotojaiDbRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;");
-        IKlientaiService klientaiService = new KlientaiService(klientaiRepository);
-        IAutomobiliaiService automobiliaiService = new AutomobiliaiService(automobiliaiRepository);
-        return new AutonuomosService(klientaiService, automobiliaiService, uzsakymaiRepository, darbuotojaiRepository);
-    }
+    //IKlientaiRepository klientaiRepository = new KlientaiFileRepository("Klientai.csv");
+    //IAutomobiliaiRepository automobiliaiRepository = new AutomobiliaiFileRepository("Auto.csv");
+    //IKlientaiRepository klientaiRepository = new KlientaiDBRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;");
+    //IAutomobiliaiRepository automobiliaiRepository = new AutomobiliaiDbRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;");
+    //IUzsakymaiRepository uzsakymaiRepository = new UzsakymaiDBRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;");
+    //IDarbuotojaiRepository darbuotojaiRepository = new DarbuotojaiDbRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;");
+    //IKlientaiService klientaiService = new KlientaiService(klientaiRepository);
+    //IAutomobiliaiService automobiliaiService = new AutomobiliaiService(automobiliaiRepository);
+    //return new AutonuomosService(klientaiService, automobiliaiService, uzsakymaiRepository, darbuotojaiRepository);
+    return null;
+}
 

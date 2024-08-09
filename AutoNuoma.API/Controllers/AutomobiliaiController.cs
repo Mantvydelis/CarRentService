@@ -19,40 +19,40 @@ namespace AutoNuoma.API.Controllers
 
 
         [HttpGet("GautiVisusElektromobilius")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var visiEv = _autonuomaService.GautiVisusElektromobilius();
+            var visiEv = await _autonuomaService.GautiVisusElektromobilius();
             return Ok(visiEv);
         }
 
         [HttpGet("GautiVisusNaftosAuto")]
-        public IActionResult GautiVisusNaftosKuroAuto()
+        public async Task<IActionResult> GautiVisusNaftosKuroAuto()
         {
-            var visiNaftaAuto = _autonuomaService.GautiVisusNaftosKuroAuto();
+            var visiNaftaAuto = await _autonuomaService.GautiVisusNaftosKuroAuto();
             return Ok(visiNaftaAuto);
         }
 
         [HttpGet("RastiElektromobiliPagalId")]
-        public IActionResult GautiElektromobiliPagalId(int id)
+        public async Task<IActionResult> GautiElektromobiliPagalId(int id)
         {
-            var elId = _autonuomaService.GautiElektromobiliPagalId(id);
+            var elId = await _autonuomaService.GautiElektromobiliPagalId(id);
             return Ok(elId);
         }
 
         [HttpGet("RastiNaftosKuroAutoPagalId")]
-        public IActionResult GautiNaftosAutoPagalId(int id)
+        public async Task<IActionResult> GautiNaftosAutoPagalId(int id)
         {
-            var naId = _autonuomaService.GautiNaftosAutoPagalId(id);
+            var naId = await _autonuomaService.GautiNaftosAutoPagalId(id);
             return Ok(naId);
         }
 
 
         [HttpPost("PridetiElektromobili")]
-        public IActionResult GautiElektromobiliPagalId(Elektromobilis ev)
+        public async Task<IActionResult> GautiElektromobiliPagalId(Elektromobilis ev)
         {
             try
             {
-                _autonuomaService.PridetiNaujaAutomobili(ev);
+                await _autonuomaService.PridetiNaujaAutomobili(ev);
                 return Ok();
             }
             catch
@@ -63,11 +63,11 @@ namespace AutoNuoma.API.Controllers
         }
 
         [HttpPost("PridetiNaftosKuroAuto")]
-        public IActionResult GautiNaftosAutoPagalId(NaftosKuroAutomobilis benz)
+        public async Task<IActionResult> GautiNaftosAutoPagalId(NaftosKuroAutomobilis benz)
         {
             try
             {
-                _autonuomaService.PridetiNaujaAutomobili(benz);
+                await _autonuomaService.PridetiNaujaAutomobili(benz);
                 return Ok();
             }
             catch
@@ -78,11 +78,11 @@ namespace AutoNuoma.API.Controllers
         }
 
         [HttpPost("KoreguotiElektromobilioInfo")]
-        public IActionResult KoreguotiElektromobilioInfo(int id, string marke, string modelis, decimal nuomosKaina, int baterijosTalpa, int krovimoLaikas)
+        public async Task<IActionResult> KoreguotiElektromobilioInfo(int id, string marke, string modelis, decimal nuomosKaina, int baterijosTalpa, int krovimoLaikas)
         {
             try
             {
-                var elId = _autonuomaService.KoreguotiElektromobilioInfo(id, marke, modelis, nuomosKaina, baterijosTalpa, krovimoLaikas);
+                var elId = await _autonuomaService.KoreguotiElektromobilioInfo(id, marke, modelis, nuomosKaina, baterijosTalpa, krovimoLaikas);
                 return Ok(elId);
 
             }
@@ -94,11 +94,11 @@ namespace AutoNuoma.API.Controllers
         }
 
         [HttpPost("KoreguotiNaftosAutoInfo")]
-        public IActionResult KoreguotiNaftaAutoInfo(int id, string marke, string modelis, decimal nuomosKaina, double degaluSanaudos)
+        public async Task<IActionResult> KoreguotiNaftaAutoInfo(int id, string marke, string modelis, decimal nuomosKaina, double degaluSanaudos)
         {
             try
             {
-                var naftaId = _autonuomaService.KoreguotiNaftaAutoInfo(id, marke, modelis, nuomosKaina, degaluSanaudos);
+                var naftaId = await _autonuomaService.KoreguotiNaftaAutoInfo(id, marke, modelis, nuomosKaina, degaluSanaudos);
                 return Ok(naftaId);
 
             }
@@ -110,16 +110,16 @@ namespace AutoNuoma.API.Controllers
         }
 
         [HttpDelete("IstrintiElektromobili")]
-        public IActionResult IstrintiElektromobili(int id)
+        public async Task<IActionResult> IstrintiElektromobili(int id)
         {
-            _autonuomaService.IstrintiElektromobili(id);
+            await _autonuomaService.IstrintiElektromobili(id);
             return Ok();
         }
 
         [HttpDelete("IstrintiNaftosKuroAuto")]
-        public IActionResult IstrintiNaftaAuto(int id)
+        public async Task<IActionResult> IstrintiNaftaAuto(int id)
         {
-            _autonuomaService.IstrintiNaftaAuto(id);
+            await _autonuomaService.IstrintiNaftaAuto(id);
             return Ok();
         }
 

@@ -18,27 +18,25 @@ namespace AutomobiliuNuoma.Core.Repositories
         {
             _dbConnectionString = connectionString;
         }
-        public List<Klientas> GautiVisusKlientus()
+        public async Task<List<Klientas>> GautiVisusKlientus()
         {
             using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
             dbConnection.Open();
-            var result = dbConnection.Query<KlientasIsDuombazes>(@"SELECT [Id] AS KlientasId
-             ,[Vardas]
-             ,[Pavarde]
-             ,[GimimoMetai] FROM [dbo].[Klientai]").ToList();
+            var result = await dbConnection.QueryAsync<dynamic>(@"SELECT [Id] AS KlientasId
+            ,[Vardas]
+            ,[Pavarde]
+            ,[GimimoMetai] FROM [dbo].[Klientai]");
             dbConnection.Close();
-            return result.Select(dto => new Klientas(dto.KlientasId, dto.Vardas, dto.Pavarde, DateOnly.FromDateTime(dto.GimimoMetai))).ToList();
+            return result.Select(dto => new Klientas(
+                dto.KlientasId,
+                dto.Vardas,
+                dto.Pavarde,
+                DateOnly.FromDateTime(dto.GimimoMetai)
+            )).ToList();
         }
 
-        private class KlientasIsDuombazes
-        {
-            public int KlientasId { get; set; }
-            public string Vardas { get; set; }
-            public string Pavarde { get; set; }
-            public DateTime GimimoMetai { get; set; }
-        }
 
-        public void PridetiNaujaKlienta(Klientas klientas)
+        public async Task PridetiNaujaKlienta(Klientas klientas)
         {
             string sqlCommand = "INSERT INTO Klientai ([Vardas],[Pavarde],[GimimoMetai]) VALUES (@Vardas, @Pavarde, @GimimoMetai)";
 
@@ -51,28 +49,32 @@ namespace AutomobiliuNuoma.Core.Repositories
                     GimimoMetai = klientas.GimimoMetai.ToDateTime(new TimeOnly(0, 0))
                 };
 
-                connection.Execute(sqlCommand, naujiduomenys);
+                await connection.ExecuteAsync(sqlCommand, naujiduomenys);
             }
         }
 
-        public Klientas GautiKlientaPagalId(int id)
+        public async Task<Klientas> GautiKlientaPagalId(int id)
         {
 
             using (IDbConnection dbConnection = new SqlConnection(_dbConnectionString))
             {
+
                 dbConnection.Open();
-                var result = dbConnection.QueryFirstOrDefault<KlientasIsDuombazes>(
-                    "SELECT * FROM Klientai WHERE Id = @Id",
+                var result = await dbConnection.QueryFirstOrDefaultAsync<dynamic>(
+                    "SELECT Id AS KlientasId, Vardas, Pavarde, GimimoMetai FROM Klientai WHERE Id = @Id",
                     new { Id = id }
                 );
+                if (result != null)
+                {
+                    return new Klientas(result.KlientasId, result.Vardas, result.Pavarde, DateOnly.FromDateTime(result.GimimoMetai));
+                }
+                return null;
 
-
-                return new Klientas(result.KlientasId, result.Vardas, result.Pavarde, DateOnly.FromDateTime(result.GimimoMetai));
             }
 
         }
 
-        public Klientas KoreguotiKlientoInfo(int id, string vardas, string pavarde, DateOnly gimimoMetai)
+        public async Task<Klientas> KoreguotiKlientoInfo(int id, string vardas, string pavarde, DateOnly gimimoMetai)
         {
             string sqlCommand = "UPDATE Klientai " +
                 "SET Vardas = @Vardas, Pavarde = @Pavarde, GimimoMetai = @GimimoMetai " +
@@ -88,20 +90,20 @@ namespace AutomobiliuNuoma.Core.Repositories
 
                 };
 
-                var result = connection.QueryFirstOrDefault<KlientasIsDuombazes>(sqlCommand, pakeistiDuomenys);
+                var result = await connection.QueryFirstOrDefaultAsync<dynamic>(sqlCommand, pakeistiDuomenys);
 
                 return new Klientas(result.KlientasId, result.Vardas, result.Pavarde, DateOnly.FromDateTime(result.GimimoMetai));
             }
 
         }
 
-        public void IstrintiKlienta(int id)
+        public async Task IstrintiKlienta(int id)
         {
             using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
             dbConnection.Open();
 
-            dbConnection.Execute(@"DELETE FROM NuomosUzsakymas WHERE KlientasId = @id", new { Id = id });
-            dbConnection.Execute(@"DELETE FROM Klientai WHERE Id = @id", new { Id = id });
+            await dbConnection.ExecuteAsync(@"DELETE FROM NuomosUzsakymas WHERE KlientasId = @id", new { Id = id });
+            await dbConnection.ExecuteAsync(@"DELETE FROM Klientai WHERE Id = @id", new { Id = id });
 
             dbConnection.Close();
 

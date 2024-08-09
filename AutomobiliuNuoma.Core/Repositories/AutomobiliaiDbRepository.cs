@@ -18,86 +18,79 @@ namespace AutomobiliuNuoma.Core.Repositories
         {
             _dbConnectionString = connectionString;
         }
-        public void IrasytiAutomobilius()
+        public async Task IrasytiAutomobilius()
         {
             throw new NotImplementedException();
         }
 
-        public List<Automobilis> NuskaitytiAutomobilius()
+        public async Task<List<Automobilis>> NuskaitytiAutomobilius()
         {
             throw new NotImplementedException();
         }
-        public List<Elektromobilis> GautiVisusElektromobilius()
+        public async Task<List<Elektromobilis>> GautiVisusElektromobilius()
         {
             using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
             dbConnection.Open();
-            List<Elektromobilis> result = dbConnection.
-                Query<Elektromobilis>(@"SELECT [Id] AS AutomobilisId
-      ,[Marke]
-      ,[Modelis]
-      ,[NuomosKaina]
-      ,[BaterijosTalpa]
-      ,[KrovimoLaikas] FROM [dbo].[Elektromobiliai]").ToList();
+            var result = await dbConnection.
+                QueryAsync<Elektromobilis>(@"SELECT * FROM [dbo].[Elektromobiliai]");
             dbConnection.Close();
-            return result;
-        }
-        public List<NaftosKuroAutomobilis> GautiVisusNaftosKuroAutomobilius()
-        {
-            using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
-            dbConnection.Open();
-            var result = dbConnection.
-                Query<NaftosKuroAutomobilis>(@"SELECT [Id] AS AutomobilisId
-      ,[Marke]
-      ,[Modelis]
-      ,[NuomosKaina]
-      ,[DegaluSanaudos] FROM [dbo].[NaftosKuroAuto]").ToList();
-            dbConnection.Close();
-            return result;
+            return result.ToList();
         }
 
-        public void IrasytiElektromobili(Elektromobilis elektromobilis)
+
+         public async Task<List<NaftosKuroAutomobilis>> GautiVisusNaftosKuroAutomobilius()
+        {
+            using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
+            dbConnection.Open();
+            var result = await dbConnection.
+                QueryAsync<NaftosKuroAutomobilis>(@"SELECT * FROM [dbo].[NaftosKuroAuto]");
+            dbConnection.Close();
+            return result.ToList();
+        }
+
+        public async Task IrasytiElektromobili(Elektromobilis elektromobilis)
         {
             string sqlCommand = "INSERT INTO Elektromobiliai ([Marke],[Modelis],[NuomosKaina],[BaterijosTalpa]" +
                 ",[KrovimoLaikas]) VALUES (@Marke, @Modelis, @NuomosKaina, @BaterijosTalpa, @KrovimoLaikas)";
 
             using (var connection = new SqlConnection(_dbConnectionString))
             {
-                connection.Execute(sqlCommand, elektromobilis);
+                await connection.ExecuteAsync(sqlCommand, elektromobilis);
             }
         }
 
-        public void IrasytiNaftosKuroAutomobili(NaftosKuroAutomobilis naftosKuroAutomobilis)
+        public async Task IrasytiNaftosKuroAutomobili(NaftosKuroAutomobilis naftosKuroAutomobilis)
         {
             string sqlCommand = "INSERT INTO NaftosKuroAuto ([Marke],[Modelis],[NuomosKaina],[DegaluSanaudos]) VALUES (@Marke, @Modelis, @NuomosKaina, @DegaluSanaudos)";
 
             using (var connection = new SqlConnection(_dbConnectionString))
             {
-                connection.Execute(sqlCommand, naftosKuroAutomobilis);
+               await connection.ExecuteAsync(sqlCommand, naftosKuroAutomobilis);
             }
         }
 
 
-        public Elektromobilis GautiElektromobiliPagalId(int id)
+        public async Task<Elektromobilis> GautiElektromobiliPagalId(int id)
         {
             using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
             dbConnection.Open();
-            var result = dbConnection.
-                QueryFirst<Elektromobilis>(@"SELECT * FROM Elektromobiliai WHERE Id = @id", new { Id = id });
+            var result = await dbConnection.
+                QueryFirstAsync<Elektromobilis>(@"SELECT * FROM Elektromobiliai WHERE Id = @id", new { Id = id });
             dbConnection.Close();
             return result;
         }
 
-        public NaftosKuroAutomobilis GautiNaftosAutoPagalId(int id)
+        public async Task<NaftosKuroAutomobilis> GautiNaftosAutoPagalId(int id)
         {
             using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
             dbConnection.Open();
-            var result = dbConnection.
-                QueryFirst<NaftosKuroAutomobilis>(@"SELECT * FROM NaftosKuroAuto WHERE Id = @id", new { Id = id });
+            var result = await dbConnection.
+                QueryFirstAsync<NaftosKuroAutomobilis>(@"SELECT * FROM NaftosKuroAuto WHERE Id = @id", new { Id = id });
             dbConnection.Close();
             return result;
         }
 
-        public NaftosKuroAutomobilis KoreguotiNaftaAutoInfo(int id, string marke, string modelis, decimal nuomosKaina, double degaluSanaudos)
+        public async Task<NaftosKuroAutomobilis> KoreguotiNaftaAutoInfo(int id, string marke, string modelis, decimal nuomosKaina, double degaluSanaudos)
         {
             using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
             dbConnection.Open();
@@ -105,14 +98,14 @@ namespace AutomobiliuNuoma.Core.Repositories
                   SET Marke = @Marke, Modelis = @Modelis, NuomosKaina = @NuomosKaina, DegaluSanaudos = @DegaluSanaudos 
                   WHERE Id = @Id;
                   SELECT * FROM NaftosKuroAuto WHERE Id = @Id";
-            var result = dbConnection.QueryFirst<NaftosKuroAutomobilis>(query, new { Id = id, Marke = marke, Modelis = modelis, NuomosKaina = nuomosKaina, DegaluSanaudos = degaluSanaudos });
+            var result =  await dbConnection.QueryFirstAsync<NaftosKuroAutomobilis>(query, new { Id = id, Marke = marke, Modelis = modelis, NuomosKaina = nuomosKaina, DegaluSanaudos = degaluSanaudos });
             dbConnection.Close();
             return result;
 
 
         }
 
-        public Elektromobilis KoreguotiElektromobilioInfo(int id, string marke, string modelis, decimal nuomosKaina, int baterijosTalpa, int krovimoLaikas)
+        public async Task<Elektromobilis> KoreguotiElektromobilioInfo(int id, string marke, string modelis, decimal nuomosKaina, int baterijosTalpa, int krovimoLaikas)
         {
             using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
             dbConnection.Open();
@@ -120,31 +113,31 @@ namespace AutomobiliuNuoma.Core.Repositories
                   SET Marke = @Marke, Modelis = @Modelis, NuomosKaina = @NuomosKaina, BaterijosTalpa = @BaterijosTalpa 
                   WHERE Id = @Id;
                   SELECT * FROM Elektromobiliai WHERE Id = @Id";
-            var result = dbConnection.QueryFirst<Elektromobilis>(query, new { Id = id, Marke = marke, Modelis = modelis, NuomosKaina = nuomosKaina, BaterijosTalpa = baterijosTalpa, KrovimoLaikas = krovimoLaikas });
+            var result = await dbConnection.QueryFirstAsync<Elektromobilis>(query, new { Id = id, Marke = marke, Modelis = modelis, NuomosKaina = nuomosKaina, BaterijosTalpa = baterijosTalpa, KrovimoLaikas = krovimoLaikas });
             dbConnection.Close();
             return result;
         }
 
 
-        public void IstrintiNaftaAuto(int id)
+        public async Task IstrintiNaftaAuto(int id)
         {
             using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
             dbConnection.Open();
 
-            dbConnection.Execute(@"DELETE FROM NuomosUzsakymas WHERE BenzAutomobilisId = @id", new { Id = id });
-            dbConnection.Execute(@"DELETE FROM NaftosKuroAuto WHERE Id = @id", new { Id = id });
+            await dbConnection.ExecuteAsync(@"DELETE FROM NuomosUzsakymas WHERE BenzAutomobilisId = @id", new { Id = id });
+            await dbConnection.ExecuteAsync(@"DELETE FROM NaftosKuroAuto WHERE Id = @id", new { Id = id });
 
             dbConnection.Close();
         }
 
 
-        public void IstrintiElektromobili(int id)
+        public async Task IstrintiElektromobili(int id)
         {
             using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
             dbConnection.Open();
 
-            dbConnection.Execute(@"DELETE FROM NuomosUzsakymas WHERE ElektromobilisId = @id", new { Id = id });
-            dbConnection.Execute(@"DELETE FROM Elektromobiliai WHERE Id = @id", new { Id = id });
+            await dbConnection.ExecuteAsync(@"DELETE FROM NuomosUzsakymas WHERE ElektromobilisId = @id", new { Id = id });
+            await dbConnection.ExecuteAsync(@"DELETE FROM Elektromobiliai WHERE Id = @id", new { Id = id });
 
             dbConnection.Close();
         }

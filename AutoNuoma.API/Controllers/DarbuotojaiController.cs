@@ -11,24 +11,27 @@ namespace AutoNuoma.API.Controllers
     public class DarbuotojaiController : Controller
     {
         private readonly IAutonuomaService _autonuomaService;
-        public DarbuotojaiController(IAutonuomaService autonuomaService)
+        private readonly IMongoDbCacheRepository _mongoDbCacheRepository;
+
+        public DarbuotojaiController(IAutonuomaService autonuomaService, IMongoDbCacheRepository mongoDbCacheRepository)
         {
             _autonuomaService = autonuomaService;
+            _mongoDbCacheRepository = mongoDbCacheRepository;
         }
 
         [HttpGet("GautiVisusDarbuotojus")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var visiDarbuotojai = _autonuomaService.GautiVisusDarbuotojus();
+            var visiDarbuotojai = await _autonuomaService.GautiVisusDarbuotojus();
             return Ok(visiDarbuotojai);
         }
 
         [HttpPost("PridetiDarbuotoja")]
-        public IActionResult PridetiDarbuotoja(Darbuotojas darbuotojas)
+        public async Task<IActionResult> PridetiDarbuotoja(Darbuotojas darbuotojas)
         {
             try
             {
-                _autonuomaService.PridetiDarbuotoja(darbuotojas);
+               await _autonuomaService.PridetiDarbuotoja(darbuotojas);
                 return Ok();
             }
             catch
@@ -39,18 +42,18 @@ namespace AutoNuoma.API.Controllers
         }
 
         [HttpGet("RastiDarbuotojaPagalId")]
-        public IActionResult GautiKlientaPagalId(int id)
+        public async Task<IActionResult> GautiDarbuotojaPagalId(int id)
         {
-            var darbuootojasId = _autonuomaService.GautiDarbuotojaPagalId(id);
-            return Ok(darbuootojasId);
+            var darbuotojasId = await _autonuomaService.GautiDarbuotojaPagalId(id);
+            return Ok(darbuotojasId);
         }
 
         [HttpPost("KoreguotiDarbuotojoInfo")]
-        public IActionResult KoreguotiDarbuotojoInfo(int id, string vardas, string pavarde, DarbuotojasPareigos pareigos)
+        public async Task<IActionResult> KoreguotiDarbuotojoInfo(int id, string vardas, string pavarde, DarbuotojasPareigos pareigos)
         {
             try
             {
-                var darbuotojasId = _autonuomaService.KoreguotiDarbuotojoInfo(id, vardas, pavarde, pareigos);
+                var darbuotojasId = await _autonuomaService.KoreguotiDarbuotojoInfo(id, vardas, pavarde, pareigos);
                 return Ok(darbuotojasId);
 
             }
@@ -62,9 +65,9 @@ namespace AutoNuoma.API.Controllers
         }
 
         [HttpDelete("IstrintiDarbuotoja")]
-        public IActionResult IstrintiDarbuotoja(int id)
+        public async Task<IActionResult> IstrintiDarbuotoja(int id)
         {
-            _autonuomaService.IstrintiDarbuotoja(id);
+            await _autonuomaService.IstrintiDarbuotoja(id);
             return Ok();
         }
 
@@ -72,6 +75,6 @@ namespace AutoNuoma.API.Controllers
 
 
 
-        //KoreguotiDarbuotojoInfo
+    
     }
 }

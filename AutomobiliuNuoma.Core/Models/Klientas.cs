@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace AutomobiliuNuoma.Core.Models
         public string Pavarde { get; set; }
         public DateOnly GimimoMetai { get; set; }
 
+        [BsonId]
         public int KlientasId { get; set; }
         public Klientas() { }
         public Klientas(string vardas, string pavarde, DateOnly gimimoMetai)

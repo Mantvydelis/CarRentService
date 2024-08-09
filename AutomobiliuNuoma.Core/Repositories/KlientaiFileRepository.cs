@@ -16,7 +16,7 @@ namespace AutomobiliuNuoma.Core.Repositories
         {
             _filePath = filePath;
         }
-        public List<Klientas> GautiVisusKlientus()
+        public async Task<List<Klientas>> GautiVisusKlientus()
         {
             List<Klientas> visiKlientai = new List<Klientas>();
             using (StreamReader sr = new StreamReader(_filePath))
@@ -31,23 +31,23 @@ namespace AutomobiliuNuoma.Core.Repositories
             return visiKlientai;
         }
 
-        public void PridetiNaujaKlienta(Klientas klientas)
+        public async Task PridetiNaujaKlienta(Klientas klientas)
         {
             throw new NotImplementedException();
         }
 
-        public Klientas GautiKlientaPagalId(int id)
+        public async Task<Klientas> GautiKlientaPagalId(int id)
         {
             throw new NotImplementedException();
 
         }
 
-        public Klientas KoreguotiKlientoInfo(int id, string vardas, string pavarde, DateOnly gimimoMetai)
+        public async Task<Klientas> KoreguotiKlientoInfo(int id, string vardas, string pavarde, DateOnly gimimoMetai)
         {
             throw new NotImplementedException();
         }
 
-        public void IstrintiKlienta(int id)
+        public async Task IstrintiKlienta(int id)
         {
             throw new NotImplementedException();
         }

@@ -18,67 +18,86 @@ namespace AutomobiliuNuoma.Core.Services
         private readonly IAutomobiliaiService _automobiliaiService;
         private readonly IUzsakymaiRepository _uzsakymaiRepository;
         private readonly IDarbuotojaiRepository _darbuotojaiRepository;
+        private readonly IMongoDbCacheRepository _mongoCache;
 
         private List<Automobilis> VisiAutomobiliai = new List<Automobilis>();
 
         private List<NuomosUzsakymas> VisiUzsakymai = new List<NuomosUzsakymas>();
 
-        public AutonuomosService(IKlientaiService klientaiService, IAutomobiliaiService automobiliaiService, IUzsakymaiRepository uzsakymaiRepository, IDarbuotojaiRepository darbuotojaiRepository)
+        public AutonuomosService(IKlientaiService klientaiService, IAutomobiliaiService automobiliaiService, IUzsakymaiRepository uzsakymaiRepository, IDarbuotojaiRepository darbuotojaiRepository, IMongoDbCacheRepository mongoDbCacheRepository)
         {
             _automobiliaiService = automobiliaiService;
             _klientaiService = klientaiService;
             _uzsakymaiRepository = uzsakymaiRepository;
             _darbuotojaiRepository = darbuotojaiRepository;
+            _mongoCache = mongoDbCacheRepository;
         }
 
-        public List<Automobilis> GautiVisusAutomobilius()
+        public async Task<List<Automobilis>> GautiVisusAutomobilius()
         {
             if (VisiAutomobiliai.Count == 0)
-                VisiAutomobiliai = _automobiliaiService.GautiVisusAutomobilius();
+                VisiAutomobiliai = await _automobiliaiService.GautiVisusAutomobilius();
             return VisiAutomobiliai;
         }
 
-        public void PridetiNaujaAutomobili(Automobilis automobilis)
+        public async Task PridetiNaujaAutomobili(Automobilis automobilis)
         {
-            _automobiliaiService.PridetiAutomobili(automobilis);
+            await _automobiliaiService.PridetiAutomobili(automobilis);
         }
 
 
-        public List<Klientas> GautiVisusKlientus()
+        public async Task<List<Klientas>> GautiVisusKlientus()
         {
-            return _klientaiService.GautiVisusKlientus();
+
+            List<Klientas> results;
+
+            if ((results = _mongoCache.GautiVisusKlientus().Result) != null && results.Any())
+                return results;
+
+            results = await _klientaiService.GautiVisusKlientus();
+
+            if (results != null && results.Any())
+            {
+                foreach (var klientas in results)
+                {
+                    await _mongoCache.PridetiKlienta(klientas);
+                }
+            }
+
+            return results;
         }
-        public List<Elektromobilis> GautiVisusElektromobilius()
+        public async Task<List<Elektromobilis>> GautiVisusElektromobilius()
         {
-            return _automobiliaiService.GautiVisusElektromobilius();
+            return await _automobiliaiService.GautiVisusElektromobilius();
         }
-        public List<NaftosKuroAutomobilis> GautiVisusNaftosKuroAuto()
+        public async Task<List<NaftosKuroAutomobilis>> GautiVisusNaftosKuroAuto()
         {
-            return _automobiliaiService.GautiVisusNaftosKuroAuto();
+            return await _automobiliaiService.GautiVisusNaftosKuroAuto();
         }
-        public void SukurtiNuoma(int klientasId, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, string autoTipas, int darbuotojasId)
+        public async Task SukurtiNuoma(int klientasId, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, string autoTipas, int darbuotojasId)
         {
-            var darbuotojas = _darbuotojaiRepository.GautiDarbuotojaPagalId(darbuotojasId);
+            var darbuotojas = await _darbuotojaiRepository.GautiDarbuotojaPagalId(darbuotojasId);
             var nuomosUzsakymas = new NuomosUzsakymas(klientasId, automobilisId, nuomosPradzia, dienuKiekis, autoTipas, darbuotojasId);
-            _uzsakymaiRepository.PridetiNaujaUzsakyma(nuomosUzsakymas);
+            await _uzsakymaiRepository.PridetiNaujaUzsakyma(nuomosUzsakymas);
         }
 
 
 
-        public void PridetiNaujaKlienta(Klientas klientas)
+        public async Task PridetiNaujaKlienta(Klientas klientas)
         {
-            _klientaiService.PridetiNaujaKlienta(klientas);
+            await _klientaiService.PridetiNaujaKlienta(klientas);
+            await _mongoCache.PridetiKlienta(klientas);
         }
 
 
-        public void SkaiciuotiBendraNuomosKaina()
+        public async Task SkaiciuotiBendraNuomosKaina()
         {
             throw new NotImplementedException();
         }
 
-        public List<NuomosUzsakymas> gautiUzsakymusPagalKlienta(string klientoVardas, string klientoPavarde)
+        public async Task<List<NuomosUzsakymas>> gautiUzsakymusPagalKlienta(string klientoVardas, string klientoPavarde)
         {
-            Klientas klientas = _klientaiService.PaieskaPagalVardaPavarde(klientoVardas, klientoPavarde);
+            Klientas klientas = await _klientaiService.PaieskaPagalVardaPavarde(klientoVardas, klientoPavarde);
 
             if (klientas == null)
             {
@@ -88,100 +107,140 @@ namespace AutomobiliuNuoma.Core.Services
             return VisiUzsakymai.Where(u => u.Uzsakovas == klientas).ToList();
         }
 
-        public List<NuomosUzsakymas> GautiVisusUzsakymus()
+        public async Task<List<NuomosUzsakymas>> GautiVisusUzsakymus()
         {
-            return _uzsakymaiRepository.GautiVisusNuomosUzsakymus();
+            return await _uzsakymaiRepository.GautiVisusNuomosUzsakymus();
 
         }
 
-        public NaftosKuroAutomobilis GautiNaftosAutoPagalId(int id)
+        public async Task<NaftosKuroAutomobilis> GautiNaftosAutoPagalId(int id)
         {
-            return _automobiliaiService.GautiNaftosAutoPagalId(id);
+            return await _automobiliaiService.GautiNaftosAutoPagalId(id);
         }
 
-        public NaftosKuroAutomobilis KoreguotiNaftaAutoInfo(int id, string marke, string modelis, decimal nuomosKaina, double degaluSanaudos)
+        public async Task<NaftosKuroAutomobilis> KoreguotiNaftaAutoInfo(int id, string marke, string modelis, decimal nuomosKaina, double degaluSanaudos)
         {
-            return _automobiliaiService.KoreguotiNaftaAutoInfo(id, marke, modelis, nuomosKaina, degaluSanaudos);
+            return await _automobiliaiService.KoreguotiNaftaAutoInfo(id, marke, modelis, nuomosKaina, degaluSanaudos);
         }
 
-        public Elektromobilis GautiElektromobiliPagalId(int id)
+        public async Task<Elektromobilis> GautiElektromobiliPagalId(int id)
         {
-            return _automobiliaiService.GautiElektromobiliPagalId(id);
+            return await _automobiliaiService.GautiElektromobiliPagalId(id);
         }
 
-        public Elektromobilis KoreguotiElektromobilioInfo(int id, string marke, string modelis, decimal nuomosKaina, int baterijosTalpa, int krovimoLaikas)
+        public async Task <Elektromobilis> KoreguotiElektromobilioInfo(int id, string marke, string modelis, decimal nuomosKaina, int baterijosTalpa, int krovimoLaikas)
         {
-            return _automobiliaiService.KoreguotiElektromobilioInfo(id, marke, modelis, nuomosKaina, baterijosTalpa, krovimoLaikas);
+            return await _automobiliaiService.KoreguotiElektromobilioInfo(id, marke, modelis, nuomosKaina, baterijosTalpa, krovimoLaikas);
         }
 
-        public Klientas GautiKlientaPagalId(int id)
+        public async Task<Klientas> GautiKlientaPagalId(int id)
         {
-            return _klientaiService.GautiKlientaPagalId(id);
+            Klientas result;
+            if ((result = _mongoCache.GautiKlientaPagalId(id).Result) != null)
+                return result;
+            result = await _klientaiService.GautiKlientaPagalId(id);
+            await _mongoCache.PridetiKlienta(result);
+            return result;
         }
 
-        public Klientas KoreguotiKlientoInfo(int id, string vardas, string pavarde, DateOnly gimimoMetai)
+        public async Task<Klientas> KoreguotiKlientoInfo(int id, string vardas, string pavarde, DateOnly gimimoMetai)
         {
-            return _klientaiService.KoreguotiKlientoInfo(id, vardas, pavarde, gimimoMetai);
+
+            var result1 = await _klientaiService.KoreguotiKlientoInfo(id, vardas, pavarde, gimimoMetai);
+            var result2 = await _mongoCache.KoreguotiKlientoInfo(id, vardas, pavarde, gimimoMetai); /*neveikia*/
+
+            return result1 ?? result2;
         }
 
-        public NuomosUzsakymas GautiUzsakymaPagalId(int id)
+        public async Task<NuomosUzsakymas> GautiUzsakymaPagalId(int id)
         {
-            return _uzsakymaiRepository.GautiUzsakymaPagalId(id);
-
-        }
-
-        public void KoreguotiNuomosInfo(int id, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, int darbuotojasId)
-        {
-            var surastiDarbuotojoId = _darbuotojaiRepository.GautiDarbuotojaPagalId(darbuotojasId);
-            _uzsakymaiRepository.KoreguotiNuomosInfo(id, klientasId, autoTipas, automobilisId, nuomosPradzia, dienuKiekis, darbuotojasId);
-
-        }
-
-        public void IstrintiNaftaAuto(int id)
-        {
-            _automobiliaiService.IstrintiNaftaAuto(id);
-        }
-
-        public void IstrintiElektromobili(int id)
-        {
-            _automobiliaiService.IstrintiElektromobili(id);
-        }
-
-        public void IstrintiKlienta(int id)
-        {
-            _klientaiService.IstrintiKlienta(id);
-        }
-
-        public void IstrintiUzsakyma(int id)
-        {
-
-            _uzsakymaiRepository.IstrintiUzsakyma(id);
+            return await _uzsakymaiRepository.GautiUzsakymaPagalId(id);
 
         }
 
-        public void PridetiDarbuotoja(Darbuotojas darbuotojas)
+        public async Task KoreguotiNuomosInfo(int id, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, int darbuotojasId)
         {
-            _darbuotojaiRepository.PridetiDarbuotoja(darbuotojas);
+            var surastiDarbuotojoId = await _darbuotojaiRepository.GautiDarbuotojaPagalId(darbuotojasId);
+            await _uzsakymaiRepository.KoreguotiNuomosInfo(id, klientasId, autoTipas, automobilisId, nuomosPradzia, dienuKiekis, darbuotojasId);
+
         }
 
-        public List<Darbuotojas> GautiVisusDarbuotojus()
+        public async Task IstrintiNaftaAuto(int id)
         {
-            return _darbuotojaiRepository.GautiVisusDarbuotojus();
+            await _automobiliaiService.IstrintiNaftaAuto(id);
         }
 
-        public Darbuotojas GautiDarbuotojaPagalId(int id)
+        public async Task IstrintiElektromobili(int id)
         {
-            return _darbuotojaiRepository.GautiDarbuotojaPagalId(id);
+            await _automobiliaiService.IstrintiElektromobili(id);
         }
 
-        public Darbuotojas KoreguotiDarbuotojoInfo(int id, string vardas, string pavarde, DarbuotojasPareigos pareigos)
+        public async Task IstrintiKlienta(int id)
         {
-            return _darbuotojaiRepository.KoreguotiDarbuotojoInfo(id, vardas, pavarde, pareigos);
+            await _klientaiService.IstrintiKlienta(id);
+            await _mongoCache.IstrintiKlienta(id);
         }
 
-        public void IstrintiDarbuotoja(int id)
+        public async Task IstrintiUzsakyma(int id)
         {
-            _darbuotojaiRepository.IstrintiDarbuotoja(id);
+
+            await _uzsakymaiRepository.IstrintiUzsakyma(id);
+
+        }
+
+        public async Task PridetiDarbuotoja(Darbuotojas darbuotojas)
+        {
+            await _darbuotojaiRepository.PridetiDarbuotoja(darbuotojas);
+            await _mongoCache.PridetiDarbuotoja(darbuotojas);
+        }
+
+        public async Task<List<Darbuotojas>> GautiVisusDarbuotojus()
+        {
+            List<Darbuotojas> results;
+
+            if ((results = _mongoCache.GautiVisusDarbuotojus().Result) != null && results.Any())
+                return results;
+
+            results = await _darbuotojaiRepository.GautiVisusDarbuotojus();
+
+            if (results != null && results.Any())
+            {
+                foreach (var darbuotojas in results)
+                {
+                    await _mongoCache.PridetiDarbuotoja(darbuotojas);
+                }
+            }
+
+            return results;
+        }
+
+        public async Task<Darbuotojas> GautiDarbuotojaPagalId(int id)
+        {
+            Darbuotojas result;
+            if ((result = _mongoCache.GautiDarbuotojaPagalId(id).Result) != null)
+                return result;
+            result = await _darbuotojaiRepository.GautiDarbuotojaPagalId(id);
+            await _mongoCache.PridetiDarbuotoja(result);
+            return result;
+
+
+            
+        }
+
+        public async Task<Darbuotojas> KoreguotiDarbuotojoInfo(int id, string vardas, string pavarde, DarbuotojasPareigos pareigos)
+        {
+            var result1 = await _darbuotojaiRepository.KoreguotiDarbuotojoInfo(id, vardas, pavarde, pareigos);
+            var result2 = await _mongoCache.KoreguotiDarbuotojoInfo(id, vardas, pavarde, pareigos);
+
+            return result1 ?? result2;
+
+        }
+
+        public async Task IstrintiDarbuotoja(int id)
+        {
+            await _darbuotojaiRepository.IstrintiDarbuotoja(id);
+            await _mongoCache.IstrintiDarbuotoja(id);
+
         }
 
 

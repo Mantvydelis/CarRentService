@@ -9,17 +9,17 @@ namespace AutomobiliuNuoma.Core.Contracts
 {
     public interface IKlientaiService
     {
-        void NuskaitytiIsFailo();
-        void IrasytiIFaila();
-        List<Klientas> GautiVisusKlientus();
-        Klientas PaieskaPagalVardaPavarde(string vardas, string pavarde);
+        Task NuskaitytiIsFailo();
+        Task IrasytiIFaila();
+        Task<List<Klientas>> GautiVisusKlientus();
+        Task<Klientas> PaieskaPagalVardaPavarde(string vardas, string pavarde);
 
-        void PridetiNaujaKlienta(Klientas klientas);
+        Task PridetiNaujaKlienta(Klientas klientas);
 
-        Klientas GautiKlientaPagalId(int id);
+        Task<Klientas> GautiKlientaPagalId(int id);
 
-        Klientas KoreguotiKlientoInfo(int id, string vardas, string pavarde, DateOnly gimimoMetai);
+        Task<Klientas> KoreguotiKlientoInfo(int id, string vardas, string pavarde, DateOnly gimimoMetai);
 
-        void IstrintiKlienta(int id);
+        Task IstrintiKlienta(int id);
     }
 }

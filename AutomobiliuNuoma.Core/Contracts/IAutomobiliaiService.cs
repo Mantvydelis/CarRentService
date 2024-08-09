@@ -10,26 +10,26 @@ namespace AutomobiliuNuoma.Core.Contracts
 {
     public interface IAutomobiliaiService
     {
-        void NuskaitytiIsFailo();
-        void IrasytiIFaila();
-        void PridetiAutomobili(Automobilis automobilis);
+        Task NuskaitytiIsFailo();
+        Task IrasytiIFaila();
+        Task PridetiAutomobili(Automobilis automobilis);
 
-        List<Automobilis> PaieskaPagalMarke(string marke);
-        List<Automobilis> GautiVisusAutomobilius();
-        List<Elektromobilis> GautiVisusElektromobilius();
-        List<NaftosKuroAutomobilis> GautiVisusNaftosKuroAuto();
+        Task<List<Automobilis>> PaieskaPagalMarke(string marke);
+        Task<List<Automobilis>> GautiVisusAutomobilius();
+        Task<List<Elektromobilis>> GautiVisusElektromobilius();
+        Task<List<NaftosKuroAutomobilis>> GautiVisusNaftosKuroAuto();
 
-        NaftosKuroAutomobilis GautiNaftosAutoPagalId(int id);
+        Task<NaftosKuroAutomobilis> GautiNaftosAutoPagalId(int id);
 
-        NaftosKuroAutomobilis KoreguotiNaftaAutoInfo(int id, string marke, string modelis, decimal nuomosKaina, double degaluSanaudos);
+        Task<NaftosKuroAutomobilis> KoreguotiNaftaAutoInfo(int id, string marke, string modelis, decimal nuomosKaina, double degaluSanaudos);
 
-        Elektromobilis GautiElektromobiliPagalId(int id);
+        Task<Elektromobilis> GautiElektromobiliPagalId(int id);
 
-        Elektromobilis KoreguotiElektromobilioInfo(int id, string marke, string modelis, decimal nuomosKaina, int baterijosTalpa, int krovimoLaikas);
+        Task<Elektromobilis> KoreguotiElektromobilioInfo(int id, string marke, string modelis, decimal nuomosKaina, int baterijosTalpa, int krovimoLaikas);
 
-        public void IstrintiNaftaAuto(int id);
+        Task IstrintiNaftaAuto(int id);
 
-        public void IstrintiElektromobili(int id);
+        Task IstrintiElektromobili(int id);
 
     }
 

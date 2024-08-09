@@ -9,14 +9,14 @@ namespace AutomobiliuNuoma.Core.Contracts
 {
     public interface IKlientaiRepository
     {
-        List<Klientas> GautiVisusKlientus();
-        void PridetiNaujaKlienta(Klientas klientas);
+        Task<List<Klientas>> GautiVisusKlientus();
+        Task PridetiNaujaKlienta(Klientas klientas);
 
-        Klientas GautiKlientaPagalId(int id);
+        Task<Klientas> GautiKlientaPagalId(int id);
 
-        Klientas KoreguotiKlientoInfo(int id, string vardas, string pavarde, DateOnly gimimoMetai);
+        Task<Klientas> KoreguotiKlientoInfo(int id, string vardas, string pavarde, DateOnly gimimoMetai);
 
-        void IstrintiKlienta(int id);
+        Task IstrintiKlienta(int id);
 
     }
 }

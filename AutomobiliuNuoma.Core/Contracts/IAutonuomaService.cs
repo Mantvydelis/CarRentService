@@ -10,55 +10,55 @@ namespace AutomobiliuNuoma.Core.Contracts
 {
     public interface IAutonuomaService
     {
-        void PridetiNaujaAutomobili(Automobilis automobilis);
-        List<Automobilis> GautiVisusAutomobilius();
-        List<Klientas> GautiVisusKlientus();
-        void SukurtiNuoma(int klientasId, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, string autoTipas, int darbuotojasId);
+        Task PridetiNaujaAutomobili(Automobilis automobilis);
+        Task<List<Automobilis>> GautiVisusAutomobilius();
+        Task<List<Klientas>> GautiVisusKlientus();
+        Task SukurtiNuoma(int klientasId, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, string autoTipas, int darbuotojasId);
 
-        List<Elektromobilis> GautiVisusElektromobilius();
-        List<NaftosKuroAutomobilis> GautiVisusNaftosKuroAuto();
+        Task<List<Elektromobilis>> GautiVisusElektromobilius();
+        Task<List<NaftosKuroAutomobilis>> GautiVisusNaftosKuroAuto();
 
-        void PridetiNaujaKlienta(Klientas klientas);
+        Task PridetiNaujaKlienta(Klientas klientas);
 
-        List<NuomosUzsakymas> GautiVisusUzsakymus();
+        Task<List<NuomosUzsakymas>> GautiVisusUzsakymus();
 
-        void SkaiciuotiBendraNuomosKaina();
+        Task SkaiciuotiBendraNuomosKaina();
 
-        List<NuomosUzsakymas> gautiUzsakymusPagalKlienta(string klientoVardas, string klientoPavarde);
+        Task<List<NuomosUzsakymas>> gautiUzsakymusPagalKlienta(string klientoVardas, string klientoPavarde);
 
-        NaftosKuroAutomobilis GautiNaftosAutoPagalId(int id);
+        Task<NaftosKuroAutomobilis> GautiNaftosAutoPagalId(int id);
 
-        NaftosKuroAutomobilis KoreguotiNaftaAutoInfo(int id, string marke, string modelis, decimal nuomosKaina, double degaluSanaudos);
+        Task<NaftosKuroAutomobilis> KoreguotiNaftaAutoInfo(int id, string marke, string modelis, decimal nuomosKaina, double degaluSanaudos);
 
-        Elektromobilis GautiElektromobiliPagalId(int id);
+        Task<Elektromobilis> GautiElektromobiliPagalId(int id);
 
-        Elektromobilis KoreguotiElektromobilioInfo(int id, string marke, string modelis, decimal nuomosKaina, int baterijosTalpa, int krovimoLaikas);
+        Task<Elektromobilis> KoreguotiElektromobilioInfo(int id, string marke, string modelis, decimal nuomosKaina, int baterijosTalpa, int krovimoLaikas);
 
-        Klientas GautiKlientaPagalId(int id);
+        Task<Klientas> GautiKlientaPagalId(int id);
 
-        Klientas KoreguotiKlientoInfo(int id, string vardas, string pavarde, DateOnly gimimoMetai);
+        Task<Klientas> KoreguotiKlientoInfo(int id, string vardas, string pavarde, DateOnly gimimoMetai);
 
-        public NuomosUzsakymas GautiUzsakymaPagalId(int id);
+        Task<NuomosUzsakymas> GautiUzsakymaPagalId(int id);
 
-        void KoreguotiNuomosInfo(int id, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, int darbuotojasId);
+        Task KoreguotiNuomosInfo(int id, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, int darbuotojasId);
 
-        void IstrintiNaftaAuto(int id);
+        Task IstrintiNaftaAuto(int id);
 
-        void IstrintiElektromobili(int id);
+        Task IstrintiElektromobili(int id);
 
-        void IstrintiKlienta(int id);
+        Task IstrintiKlienta(int id);
 
-        void IstrintiUzsakyma(int id);
+        Task IstrintiUzsakyma(int id);
 
 
-        void PridetiDarbuotoja(Darbuotojas darbuotojas);
+        Task PridetiDarbuotoja(Darbuotojas darbuotojas);
 
-        List<Darbuotojas> GautiVisusDarbuotojus();
-        Darbuotojas GautiDarbuotojaPagalId(int id);
+        Task<List<Darbuotojas>> GautiVisusDarbuotojus();
+        Task<Darbuotojas> GautiDarbuotojaPagalId(int id);
 
-        Darbuotojas KoreguotiDarbuotojoInfo(int id, string vardas, string pavarde, DarbuotojasPareigos pareigos);
+        Task<Darbuotojas> KoreguotiDarbuotojoInfo(int id, string vardas, string pavarde, DarbuotojasPareigos pareigos);
 
-        void IstrintiDarbuotoja(int id);
+        Task IstrintiDarbuotoja(int id);
 
    
     }

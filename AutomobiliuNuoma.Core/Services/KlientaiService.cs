@@ -11,30 +11,37 @@ namespace AutomobiliuNuoma.Core.Services
     public class KlientaiService : IKlientaiService
     {
         private readonly IKlientaiRepository _klientaiRepository;
+        private readonly IMongoDbCacheRepository _mongoCache;
+
+
+
         private List<Klientas> VisiKlientai = new List<Klientas>();
-        public KlientaiService(IKlientaiRepository klientaiRepository)
+        public KlientaiService(IKlientaiRepository klientaiRepository, IMongoDbCacheRepository mongoDbCache)
         {
             _klientaiRepository = klientaiRepository;
+            _mongoCache = mongoDbCache;
         }
 
-        public List<Klientas> GautiVisusKlientus()
+        public async Task<List<Klientas>> GautiVisusKlientus()
         {
+
             if (VisiKlientai.Count == 0)
-                VisiKlientai = _klientaiRepository.GautiVisusKlientus();
+                VisiKlientai = await _klientaiRepository.GautiVisusKlientus();
             return VisiKlientai;
+
         }
 
-        public void IrasytiIFaila()
+        public async Task IrasytiIFaila()
         {
             throw new NotImplementedException();
         }
 
-        public void NuskaitytiIsFailo()
+        public async Task NuskaitytiIsFailo()
         {
             throw new NotImplementedException();
         }
 
-        public Klientas PaieskaPagalVardaPavarde(string vardas, string pavarde)
+        public async Task<Klientas> PaieskaPagalVardaPavarde(string vardas, string pavarde)
         {
             Klientas klientas = new Klientas();
             foreach (Klientas k in VisiKlientai)
@@ -48,25 +55,27 @@ namespace AutomobiliuNuoma.Core.Services
             return klientas;
         }
 
-        public void PridetiNaujaKlienta(Klientas klientas)
+        public async Task PridetiNaujaKlienta(Klientas klientas)
         {
-            _klientaiRepository.PridetiNaujaKlienta(klientas);
-        }
-
-        public Klientas GautiKlientaPagalId(int id)
-        {
-            return _klientaiRepository.GautiKlientaPagalId(id);
+            await _klientaiRepository.PridetiNaujaKlienta(klientas);
+            await _mongoCache.PridetiKlienta(klientas);
 
         }
 
-        public Klientas KoreguotiKlientoInfo(int id, string vardas, string pavarde, DateOnly gimimoMetai)
+        public async Task<Klientas> GautiKlientaPagalId(int id)
         {
-            return _klientaiRepository.KoreguotiKlientoInfo(id, vardas, pavarde, gimimoMetai);
+            return await _klientaiRepository.GautiKlientaPagalId(id);
+
         }
 
-        public void IstrintiKlienta(int id)
+        public async Task<Klientas> KoreguotiKlientoInfo(int id, string vardas, string pavarde, DateOnly gimimoMetai)
         {
-            _klientaiRepository.IstrintiKlienta(id);
+            return await _klientaiRepository.KoreguotiKlientoInfo(id, vardas, pavarde, gimimoMetai);
+        }
+
+        public async Task IstrintiKlienta(int id)
+        {
+            await _klientaiRepository.IstrintiKlienta(id);
 
         }
 

@@ -22,47 +22,49 @@ namespace AutomobiliuNuoma.Core.Repositories
             _dbConnectionString = connectionString;
         }
 
-        public Darbuotojas GautiDarbuotojaPagalId(int id)
+        public async Task<Darbuotojas> GautiDarbuotojaPagalId(int id)
         {
             using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
             dbConnection.Open();
-            var result = dbConnection.
-                QueryFirst<Darbuotojas>(@"SELECT * FROM Darbuotojai WHERE Id = @id", new { Id = id });
+            var result = await dbConnection.
+                QueryFirstAsync<Darbuotojas>(@"SELECT * FROM Darbuotojai WHERE Id = @id", new { Id = id });
             dbConnection.Close();
             return result;
         }
 
-        public List<Darbuotojas> GautiVisusDarbuotojus()
+
+
+        public async Task<List<Darbuotojas>> GautiVisusDarbuotojus()
         {
             using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
             dbConnection.Open();
-            var result = dbConnection.Query<Darbuotojas>(@"SELECT [Id]
+            var result = await dbConnection.QueryAsync<Darbuotojas>(@"SELECT [Id]
              ,[Vardas]
              ,[Pavarde]
-             ,[Pareigos] FROM [dbo].[Darbuotojai]").ToList();
+             ,[Pareigos] FROM [dbo].[Darbuotojai]");
             dbConnection.Close();
             return result.Select(dto => new Darbuotojas(dto.Id, dto.Vardas, dto.Pavarde, dto.Pareigos)).ToList();
         }
 
 
-        public void IstrintiDarbuotoja(int id)
+        public async Task IstrintiDarbuotoja(int id)
         {
             using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
             dbConnection.Open();
 
-            dbConnection.Execute(@"DELETE FROM Darbuotojai WHERE Id = @id", new { Id = id });
+            await dbConnection.ExecuteAsync(@"DELETE FROM Darbuotojai WHERE Id = @id", new { Id = id });
 
             dbConnection.Close();
         }
 
-        public Darbuotojas KoreguotiDarbuotojoInfo(int id, string vardas, string pavarde, DarbuotojasPareigos pareigos)
+        public async Task<Darbuotojas> KoreguotiDarbuotojoInfo(int id, string vardas, string pavarde, DarbuotojasPareigos pareigos)
         {
 
             using (SqlConnection connection = new SqlConnection(_dbConnectionString))
             {
                 string query = "UPDATE Darbuotojai SET Vardas = @Vardas, Pavarde = @Pavarde, Pareigos = @Pareigos WHERE Id = @Id";
 
-                connection.Execute(query, new
+                await connection.ExecuteAsync(query, new
                 {
                     Id = id,
                     Vardas = vardas,
@@ -76,13 +78,13 @@ namespace AutomobiliuNuoma.Core.Repositories
 
         }
 
-        public void PridetiDarbuotoja(Darbuotojas darbuotojas)
+        public async Task PridetiDarbuotoja(Darbuotojas darbuotojas)
         {
             string sqlCommand = "INSERT INTO Darbuotojai ([Vardas],[Pavarde],[Pareigos]) VALUES (@Vardas, @Pavarde, @Pareigos)";
 
             using (var connection = new SqlConnection(_dbConnectionString))
             {
-                connection.Execute(sqlCommand, darbuotojas);
+                await connection.ExecuteAsync(sqlCommand, darbuotojas);
             }
         }
     }

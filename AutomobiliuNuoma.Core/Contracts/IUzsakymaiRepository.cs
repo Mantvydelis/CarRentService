@@ -9,13 +9,13 @@ namespace AutomobiliuNuoma.Core.Contracts
 {
     public interface IUzsakymaiRepository
     {
-        List<NuomosUzsakymas> GautiVisusNuomosUzsakymus();
-        void PridetiNaujaUzsakyma(NuomosUzsakymas nuomosUzsakymas);
+        Task<List<NuomosUzsakymas>> GautiVisusNuomosUzsakymus();
+        Task PridetiNaujaUzsakyma(NuomosUzsakymas nuomosUzsakymas);
 
-        public NuomosUzsakymas GautiUzsakymaPagalId(int id);
+        Task <NuomosUzsakymas> GautiUzsakymaPagalId(int id);
 
-        void KoreguotiNuomosInfo(int id, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, int darbuotojasId);
+        Task KoreguotiNuomosInfo(int id, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, int darbuotojasId);
 
-        void IstrintiUzsakyma (int id);
+        Task IstrintiUzsakyma (int id);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutomobiliuNuoma.Core.Contracts;
 using AutomobiliuNuoma.Core.Models;
+using AutomobiliuNuoma.Core.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoNuoma.API.Controllers
@@ -10,33 +11,37 @@ namespace AutoNuoma.API.Controllers
     public class KlientaiController : Controller
     {
         private readonly IAutonuomaService _autonuomaService;
+        private readonly IMongoDbCacheRepository _mongoDbCacheRepository;
 
-        public KlientaiController(IAutonuomaService autonuomaService)
+        public KlientaiController(IAutonuomaService autonuomaService, IMongoDbCacheRepository mongoDbCacheRepository )
         {
             _autonuomaService = autonuomaService;
+            _mongoDbCacheRepository = mongoDbCacheRepository;
         }
 
         [HttpGet("GautiVisusKlientus")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var visiKlientai = _autonuomaService.GautiVisusKlientus();
+            var visiKlientai = await _autonuomaService.GautiVisusKlientus();
             return Ok(visiKlientai);
         }
 
         [HttpGet("RastiKlientaPagalId")]
-        public IActionResult GautiKlientaPagalId(int id)
+        public async Task<IActionResult> GautiKlientaPagalId(int id)
         {
-            var klId = _autonuomaService.GautiKlientaPagalId(id);
-            return Ok(klId);
+            var klientas = await _autonuomaService.GautiKlientaPagalId(id);
+            return Ok(klientas);
+ 
         }
 
 
         [HttpPost("PridetiKlienta")]
-        public IActionResult GautiKlientaPagalId(Klientas klientas)
+        public async Task<IActionResult> GautiKlientaPagalId(Klientas klientas)
         {
+
             try
             {
-                _autonuomaService.PridetiNaujaKlienta(klientas);
+                await _autonuomaService.PridetiNaujaKlienta(klientas);
                 return Ok();
             }
             catch
@@ -47,11 +52,11 @@ namespace AutoNuoma.API.Controllers
         }
 
         [HttpPost("KoreguotiKlientoInfo")]
-        public IActionResult KoreguotiKlientoInfo(int id, string vardas, string pavarde, DateOnly gimimoMetai)
+        public async Task<IActionResult> KoreguotiKlientoInfo(int id, string vardas, string pavarde, DateOnly gimimoMetai)
         {
             try
             {
-                var klientasId = _autonuomaService.KoreguotiKlientoInfo(id, vardas, pavarde, gimimoMetai);
+                var klientasId = await _autonuomaService.KoreguotiKlientoInfo(id, vardas, pavarde, gimimoMetai);
                 return Ok(klientasId);
 
             }
@@ -63,9 +68,9 @@ namespace AutoNuoma.API.Controllers
         }
 
         [HttpDelete("IstrintiKlienta")]
-        public IActionResult IstrintiKlienta(int id)
+        public async Task<IActionResult> IstrintiKlienta(int id)
         {
-            _autonuomaService.IstrintiKlienta(id);
+            await _autonuomaService.IstrintiKlienta(id);
             return Ok();
         }
 
