@@ -51,5 +51,13 @@ namespace AutomobiliuNuoma.Core.Contracts
 
         Task<NaftosKuroAutomobilis> KoreguotiNaftosKuroAutoInfo(int automobilisId, string marke, string modelis, decimal nuomosKaina, double degaluSanaudos);
 
+        Task PridetiUzsakyma(NuomosUzsakymas uzsakymas);
+
+        Task<List<NuomosUzsakymas>> GautiVisusNuomosUzsakymus();
+
+        Task<long> GautiElektromobiliuSkaiciu();
+
+
+
     }
 }

@@ -9,11 +9,13 @@ namespace AutoNuoma.API.Controllers
     public class AutomobiliaiController : Controller
     {
         private readonly IAutonuomaService _autonuomaService;
+        private readonly IAutomobiliaiService _automobiliaiService;
 
 
-        public AutomobiliaiController(IAutonuomaService autonuomaService)
+        public AutomobiliaiController(IAutonuomaService autonuomaService, IAutomobiliaiService automobiliaiService)
         {
             _autonuomaService = autonuomaService;
+            _automobiliaiService = automobiliaiService;
         }
 
 
@@ -122,6 +124,22 @@ namespace AutoNuoma.API.Controllers
             await _autonuomaService.IstrintiNaftaAuto(id);
             return Ok();
         }
+
+
+        [HttpGet("GautiElektromobiliuSkaiciu")]
+        public async Task<IActionResult> GautiElektromobiliuSkaiciu()
+        {
+            var elId = await _automobiliaiService.GautiElektromobiliuSkaiciu();
+            return Ok(elId);
+        }
+
+        [HttpGet("GautiNaftosKuroAutomobiliuSkaiciu")]
+        public async Task<IActionResult> GautiNaftosKuroAutoSkaiciu()
+        {
+            var naId = await _automobiliaiService.GautiNaftosKuroAutoSkaiciu();
+            return Ok(naId);
+        }
+
 
     }
 }

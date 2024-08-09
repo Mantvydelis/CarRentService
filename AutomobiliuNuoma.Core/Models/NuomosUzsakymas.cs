@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Authentication;
@@ -25,11 +26,12 @@ namespace AutomobiliuNuoma.Core.Models
 
         public string AutoTipas { get; set; }
 
+        [BsonId]
         public int UzsakymasId { get; set; }
 
         public int DarbuotojasId { get; set; }
 
-        public NuomosUzsakymas(int klientasId) { }
+        //public NuomosUzsakymas(int klientasId) { }
 
         //public NuomosUzsakymas(Klientas uzsakovas, Automobilis nuomuojamasAuto, DateTime nuomosPradzia, int dienuKiekis, Darbuotojas darbuotojasId)
         //{
@@ -50,7 +52,9 @@ namespace AutomobiliuNuoma.Core.Models
             DarbuotojasId = darbuotojasId;
         }
 
-        
+        public NuomosUzsakymas()
+        {
+        }
 
         public decimal skaiciuotiNuomosKaina() /*REIKS PAKOREGUOTI IR PRIDETI PRIE CASE 8*/
         {

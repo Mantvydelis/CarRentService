@@ -35,11 +35,6 @@ builder.Services.AddTransient<IAutonuomaService, AutonuomosService>();
 
 
 
-
-
-
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

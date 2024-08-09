@@ -122,5 +122,15 @@ namespace AutomobiliuNuoma.Core.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public Task<int> GautiElektromobiliuSkaiciu()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> GautiNaftosKuroAutoSkaiciu()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

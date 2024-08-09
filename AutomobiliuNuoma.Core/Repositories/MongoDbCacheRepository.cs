@@ -16,6 +16,7 @@ namespace AutomobiliuNuoma.Core.Repositories
         private IMongoCollection<Klientas> _klientaiCache;
         private IMongoCollection<Elektromobilis> _elektromobiliaiCache;
         private IMongoCollection<NaftosKuroAutomobilis> _naftosKuroAutoCache;
+        private IMongoCollection<NuomosUzsakymas> _nuomosUzsakymasCache;
 
         public MongoDbCacheRepository(IMongoClient mongoClient)
         {
@@ -23,6 +24,7 @@ namespace AutomobiliuNuoma.Core.Repositories
             _klientaiCache = mongoClient.GetDatabase("klientai").GetCollection<Klientas>("klientai_cache");
             _elektromobiliaiCache = mongoClient.GetDatabase("elektromobiliai").GetCollection<Elektromobilis>("elektromobiliai_cache");
             _naftosKuroAutoCache = mongoClient.GetDatabase("naftosKuroAuto").GetCollection<NaftosKuroAutomobilis>("naftosKuroAuto_cache");
+            _nuomosUzsakymasCache = mongoClient.GetDatabase("nuomosUzsakymai").GetCollection<NuomosUzsakymas>("nuomosUzsakymai_cache");
         }
 
 
@@ -161,12 +163,13 @@ namespace AutomobiliuNuoma.Core.Repositories
             var istrintiDarbuotojus = _darbuotojaiCache.Database.DropCollectionAsync("darbuotojai_cache");
             var istrintiElektromobilius = _elektromobiliaiCache.Database.DropCollectionAsync("elektromobiliai_cache");
             var istrintiNaftosKuroAuto = _naftosKuroAutoCache.Database.DropCollectionAsync("naftosKuroAuto_cache");
+            var istrintiUzsakymus = _nuomosUzsakymasCache.Database.DropCollectionAsync("nuomosUzsakymai_cache");
 
-            await Task.WhenAll(istrintiDarbuotojus, istrintiKlientus, istrintiElektromobilius, istrintiNaftosKuroAuto);
+            await Task.WhenAll(istrintiDarbuotojus, istrintiKlientus, istrintiElektromobilius, istrintiNaftosKuroAuto, istrintiUzsakymus);
         }
 
 
-         public async Task<Elektromobilis> GautiElektromobiliPagalId(int id)
+        public async Task<Elektromobilis> GautiElektromobiliPagalId(int id)
         {
             try
             {
@@ -201,7 +204,7 @@ namespace AutomobiliuNuoma.Core.Repositories
         }
 
 
-        
+
         public async Task<List<Elektromobilis>> GautiVisusElektromobilius()
         {
             try
@@ -281,6 +284,37 @@ namespace AutomobiliuNuoma.Core.Repositories
 
         }
 
+
+
+
+
+
+        public async Task PridetiUzsakyma(NuomosUzsakymas uzsakymas)
+        {
+            await _nuomosUzsakymasCache.InsertOneAsync(uzsakymas);
+        }
+
+
+        public async Task<List<NuomosUzsakymas>> GautiVisusNuomosUzsakymus()
+        {
+            try
+            {
+
+                var visiUzsakymai = await _nuomosUzsakymasCache.FindAsync<NuomosUzsakymas>(_ => true);
+                return await visiUzsakymai.ToListAsync();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+
+        public async Task<long> GautiElektromobiliuSkaiciu()
+        {
+            return await _elektromobiliaiCache.CountDocumentsAsync(x => true);
+
+        }
 
 
 

@@ -115,9 +115,13 @@ namespace AutomobiliuNuoma.Core.Services
         {
             var darbuotojas = await _darbuotojaiRepository.GautiDarbuotojaPagalId(darbuotojasId);
             var nuomosUzsakymas = new NuomosUzsakymas(klientasId, automobilisId, nuomosPradzia, dienuKiekis, autoTipas, darbuotojasId);
-            await _uzsakymaiRepository.PridetiNaujaUzsakyma(nuomosUzsakymas);
-        }
+           
 
+            await _uzsakymaiRepository.PridetiNaujaUzsakyma(nuomosUzsakymas);
+            await _mongoCache.PridetiUzsakyma(nuomosUzsakymas);
+
+
+        }
 
 
         public async Task PridetiNaujaKlienta(Klientas klientas)
@@ -146,7 +150,29 @@ namespace AutomobiliuNuoma.Core.Services
 
         public async Task<List<NuomosUzsakymas>> GautiVisusUzsakymus()
         {
-            return await _uzsakymaiRepository.GautiVisusNuomosUzsakymus();
+
+
+            //return await _uzsakymaiRepository.GautiVisusNuomosUzsakymus();
+
+
+            List<NuomosUzsakymas> results;
+
+            if ((results = _mongoCache.GautiVisusNuomosUzsakymus().Result) != null && results.Any())
+                return results;
+
+            results = await _uzsakymaiRepository.GautiVisusNuomosUzsakymus();
+
+            if (results != null && results.Any())
+            {
+                foreach (var nuomosUzsakymas in results)
+                {
+                    await _mongoCache.PridetiUzsakyma(nuomosUzsakymas);
+                }
+            }
+
+            return results;
+
+
 
         }
 

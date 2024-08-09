@@ -28,7 +28,7 @@ namespace AutomobiliuNuoma.Core.Services
             visiAutomobiliai.AddRange(naftoskuro.Result);
 
             return visiAutomobiliai.ToList();
-            //..
+
         }
 
         public async Task<List<Elektromobilis>> GautiVisusElektromobilius()
@@ -110,6 +110,19 @@ namespace AutomobiliuNuoma.Core.Services
         {
             await _automobiliaiRepository.IstrintiElektromobili(id);
         }
+
+        public async Task<int> GautiElektromobiliuSkaiciu()
+        {
+           return await _automobiliaiRepository.GautiElektromobiliuSkaiciu();
+
+        }
+
+        public async Task<int> GautiNaftosKuroAutoSkaiciu()
+        {
+            return await _automobiliaiRepository.GautiNaftosKuroAutoSkaiciu();
+        }
+
+
 
     }
 }

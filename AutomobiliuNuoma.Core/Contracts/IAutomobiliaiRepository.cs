@@ -28,7 +28,12 @@ namespace AutomobiliuNuoma.Core.Contracts
 
         Task IstrintiElektromobili(int id);
 
-       
+        Task<int> GautiElektromobiliuSkaiciu();
+
+        Task<int> GautiNaftosKuroAutoSkaiciu();
+
+
+
 
 
     }

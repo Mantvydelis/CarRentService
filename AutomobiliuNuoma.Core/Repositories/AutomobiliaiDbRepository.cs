@@ -169,6 +169,28 @@ namespace AutomobiliuNuoma.Core.Repositories
             dbConnection.Close();
         }
 
+
+        public async Task<int> GautiElektromobiliuSkaiciu()
+        {
+            using IDbConnection dbConnection = new SqlConnection (_dbConnectionString);
+            dbConnection.Open();
+            var result = await dbConnection.ExecuteScalarAsync<int>(@"SELECT COUNT(Id) FROM Elektromobiliai");
+            dbConnection.Close() ;
+            return result;
+
+        }
+
+        public async Task<int> GautiNaftosKuroAutoSkaiciu()
+        {
+            using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
+            dbConnection.Open();
+            var result = await dbConnection.ExecuteScalarAsync<int>(@"SELECT COUNT(Id) FROM NaftosKuroAuto");
+            dbConnection.Close();
+            return result;
+
+        }
+
+
     }
 
         
