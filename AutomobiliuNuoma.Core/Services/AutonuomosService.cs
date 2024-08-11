@@ -136,7 +136,7 @@ namespace AutomobiliuNuoma.Core.Services
             throw new NotImplementedException();
         }
 
-        public async Task<List<NuomosUzsakymas>> gautiUzsakymusPagalKlienta(string klientoVardas, string klientoPavarde)
+        public async Task<List<NuomosUzsakymas>> gautiUzsakymusPagalKlienta(string klientoVardas, string klientoPavarde) /*Cia koreguoti*/
         {
             Klientas klientas = await _klientaiService.PaieskaPagalVardaPavarde(klientoVardas, klientoPavarde);
 
@@ -151,8 +151,6 @@ namespace AutomobiliuNuoma.Core.Services
         public async Task<List<NuomosUzsakymas>> GautiVisusUzsakymus()
         {
 
-
-            //return await _uzsakymaiRepository.GautiVisusNuomosUzsakymus();
 
 
             List<NuomosUzsakymas> results;
@@ -242,7 +240,14 @@ namespace AutomobiliuNuoma.Core.Services
 
         public async Task<NuomosUzsakymas> GautiUzsakymaPagalId(int id)
         {
-            return await _uzsakymaiRepository.GautiUzsakymaPagalId(id);
+
+
+            NuomosUzsakymas result;
+            if ((result = _mongoCache.GautiUzsakymaPagalId(id).Result) != null)
+                return result;
+            result = await _uzsakymaiRepository.GautiUzsakymaPagalId(id);
+            await _mongoCache.PridetiUzsakyma(result);
+            return result;
 
         }
 
@@ -250,6 +255,7 @@ namespace AutomobiliuNuoma.Core.Services
         {
             var surastiDarbuotojoId = await _darbuotojaiRepository.GautiDarbuotojaPagalId(darbuotojasId);
             await _uzsakymaiRepository.KoreguotiNuomosInfo(id, klientasId, autoTipas, automobilisId, nuomosPradzia, dienuKiekis, darbuotojasId);
+            await _mongoCache.KoreguotiNuomosUzsakymoInfo(id, klientasId, autoTipas, automobilisId, nuomosPradzia, dienuKiekis, darbuotojasId);
 
         }
 

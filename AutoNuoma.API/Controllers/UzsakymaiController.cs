@@ -29,6 +29,14 @@ namespace AutoNuoma.API.Controllers
             return Ok(klId);
         }
 
+        [HttpGet("RastiUzsakymaPagalVardaPavarde")]
+        public async Task<IActionResult> gautiUzsakymusPagalKlienta(string klientoVardas, string klientoPavarde)
+        {
+            var klId = await _autonuomaService.gautiUzsakymusPagalKlienta(klientoVardas, klientoPavarde);
+            return Ok(klId);
+        }
+
+
         [HttpPost("PridetiUzsakyma")]
         public async Task<IActionResult> GautiUzsakymaPagalId(int klientasId, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, string autoTipas, int darbuotojasId)
         {

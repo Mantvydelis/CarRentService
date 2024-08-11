@@ -317,6 +317,47 @@ namespace AutomobiliuNuoma.Core.Repositories
         }
 
 
+        public async Task<NuomosUzsakymas> GautiUzsakymaPagalId(int id)
+        {
+            try
+            {
+                return (await _nuomosUzsakymasCache.FindAsync<NuomosUzsakymas>(x => x.UzsakymasId == id)).First();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+
+
+        public async Task<NuomosUzsakymas> KoreguotiNuomosUzsakymoInfo(int uzsakymasid, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, int darbuotojasId)
+        {
+            var filter = Builders<NuomosUzsakymas>.Filter.Eq(d => d.UzsakymasId, uzsakymasid);
+
+            var update = Builders<NuomosUzsakymas>.Update
+                 .Set(d => d.UzsakymasId, uzsakymasid)
+                 .Set(d => d.KlientasId, klientasId)
+                 .Set(d => d.AutoTipas, autoTipas)
+                 .Set(d => d.AutomobilisId, automobilisId)
+                 .Set(d => d.NuomosPradzia, nuomosPradzia)
+                 .Set(d => d.DienuKiekis, dienuKiekis)
+                 .Set(d => d.DarbuotojasId, darbuotojasId);
+
+            var result = await _nuomosUzsakymasCache.UpdateOneAsync(filter, update);
+
+            if (result.MatchedCount > 0)
+            {
+                return await _nuomosUzsakymasCache.Find(filter).FirstOrDefaultAsync();
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
+
 
 
 

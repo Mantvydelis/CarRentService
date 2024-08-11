@@ -57,7 +57,9 @@ namespace AutomobiliuNuoma.Core.Contracts
 
         Task<long> GautiElektromobiliuSkaiciu();
 
+        Task<NuomosUzsakymas> GautiUzsakymaPagalId(int id);
 
+        Task<NuomosUzsakymas> KoreguotiNuomosUzsakymoInfo(int uzsakymasid, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, int darbuotojasId);
 
     }
 }
