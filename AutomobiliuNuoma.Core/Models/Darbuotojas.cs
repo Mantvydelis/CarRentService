@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace AutomobiliuNuoma.Core.Models
 {
     public class Darbuotojas
     {
+        [Key]
         public int Id { get; set; }
         public string Vardas { get; set; }
         public string Pavarde { get; set; }
@@ -20,9 +22,9 @@ namespace AutomobiliuNuoma.Core.Models
 
 
 
-        public Darbuotojas(int id, string vardas, string pavarde, DarbuotojasPareigos pareigos)
+        public Darbuotojas(int id, string vardas, string pavarde, DarbuotojasPareigos pareigos, double bazinisAtlyginimas, int atliktuUzsakymuKiekis)
         {
-            Id = id; Vardas = vardas; Pavarde = pavarde; Pareigos = pareigos;
+            Id = id; Vardas = vardas; Pavarde = pavarde; Pareigos = pareigos; BazinisAtlyginimas = bazinisAtlyginimas; AtliktuUzsakymuKiekis = atliktuUzsakymuKiekis;
 
         }
 

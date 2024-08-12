@@ -121,16 +121,16 @@ namespace AutomobiliuNuoma.Core.Repositories
         }
 
 
-        public async Task<NuomosUzsakymas> gautiUzsakymusPagalKlienta(int klientasid)
-        {
-            using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
-            dbConnection.Open();
-            var result = await dbConnection.QueryFirstOrDefaultAsync<NuomosUzsakymas>(
-                @"SELECT Id AS UzsakymasId, KlientasId, BenzAutomobilisId, ElektromobilisId, NuomosPradzia, DienuKiekis, DarbuotojasId 
-          FROM NuomosUzsakymas WHERE KlientasId = @KlientasId", new { KlientasId = klientasid });
-            return result;
+        //public async Task<NuomosUzsakymas> gautiUzsakymusPagalKlienta(int klientasid)
+        //{
+        //    using IDbConnection dbConnection = new SqlConnection(_dbConnectionString);
+        //    dbConnection.Open();
+        //    var result = await dbConnection.QueryFirstOrDefaultAsync<NuomosUzsakymas>(
+        //        @"SELECT Id AS UzsakymasId, KlientasId, BenzAutomobilisId, ElektromobilisId, NuomosPradzia, DienuKiekis, DarbuotojasId 
+        //  FROM NuomosUzsakymas WHERE KlientasId = @KlientasId", new { KlientasId = klientasid });
+        //    return result;
 
-        }
+        //}
 
 
 

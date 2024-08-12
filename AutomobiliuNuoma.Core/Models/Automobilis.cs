@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace AutomobiliuNuoma.Core.Models
     public class Automobilis
     {
         [BsonId]
+        [Key]
         public int AutomobilisId { get; set; }
         public string Marke { get; set; }
         public string Modelis { get; set; }

@@ -19,6 +19,7 @@ namespace AutomobiliuNuoma.Core.Services
         private readonly IUzsakymaiRepository _uzsakymaiRepository;
         private readonly IDarbuotojaiRepository _darbuotojaiRepository;
         private readonly IMongoDbCacheRepository _mongoCache;
+        
 
         private List<Automobilis> VisiAutomobiliai = new List<Automobilis>();
 
@@ -136,7 +137,7 @@ namespace AutomobiliuNuoma.Core.Services
             throw new NotImplementedException();
         }
 
-        public async Task<List<NuomosUzsakymas>> gautiUzsakymusPagalKlienta(string klientoVardas, string klientoPavarde) /*Cia koreguoti*/
+        public async Task<List<NuomosUzsakymas>> gautiUzsakymusPagalKlienta(string klientoVardas, string klientoPavarde)
         {
             Klientas klientas = await _klientaiService.PaieskaPagalVardaPavarde(klientoVardas, klientoPavarde);
 
@@ -145,7 +146,7 @@ namespace AutomobiliuNuoma.Core.Services
                 return new List<NuomosUzsakymas>();
             }
 
-            return VisiUzsakymai.Where(u => u.Uzsakovas == klientas).ToList();
+            return VisiUzsakymai.Where(u => u.KlientasId == klientas.KlientasId).ToList();
         }
 
         public async Task<List<NuomosUzsakymas>> GautiVisusUzsakymus()
@@ -321,10 +322,10 @@ namespace AutomobiliuNuoma.Core.Services
             
         }
 
-        public async Task<Darbuotojas> KoreguotiDarbuotojoInfo(int id, string vardas, string pavarde, DarbuotojasPareigos pareigos)
+        public async Task<Darbuotojas> KoreguotiDarbuotojoInfo(int id, string vardas, string pavarde, DarbuotojasPareigos pareigos, double bazinisAtlyginimas, int atliktuUzsakymuSkaicius)
         {
-            var result1 = await _darbuotojaiRepository.KoreguotiDarbuotojoInfo(id, vardas, pavarde, pareigos);
-            var result2 = await _mongoCache.KoreguotiDarbuotojoInfo(id, vardas, pavarde, pareigos);
+            var result1 = await _darbuotojaiRepository.KoreguotiDarbuotojoInfo(id, vardas, pavarde, pareigos, bazinisAtlyginimas, atliktuUzsakymuSkaicius);
+            var result2 = await _mongoCache.KoreguotiDarbuotojoInfo(id, vardas, pavarde, pareigos, bazinisAtlyginimas, atliktuUzsakymuSkaicius);
 
             return result1 ?? result2;
 

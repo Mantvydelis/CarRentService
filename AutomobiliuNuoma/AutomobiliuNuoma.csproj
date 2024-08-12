@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Program.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\AutomobiliuNuoma.Core\AutomobiliuNuoma.Core.csproj" />
   </ItemGroup>
 

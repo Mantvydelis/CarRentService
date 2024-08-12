@@ -66,7 +66,7 @@ namespace AutomobiliuNuoma.Core.Repositories
 
         }
 
-        public async Task<Darbuotojas> KoreguotiDarbuotojoInfo(int id, string vardas, string pavarde, DarbuotojasPareigos pareigos)
+        public async Task<Darbuotojas> KoreguotiDarbuotojoInfo(int id, string vardas, string pavarde, DarbuotojasPareigos pareigos, double bazinisAtlyginimas, int atliktuUzsakymuSkaicius)
         {
 
             var filter = Builders<Darbuotojas>.Filter.Eq(d => d.Id, id);
@@ -74,7 +74,9 @@ namespace AutomobiliuNuoma.Core.Repositories
             var update = Builders<Darbuotojas>.Update
                  .Set(d => d.Vardas, vardas)
                  .Set(d => d.Pavarde, pavarde)
-                 .Set(d => d.Pareigos, pareigos);
+                 .Set(d => d.Pareigos, pareigos)
+                 .Set(d => d.BazinisAtlyginimas, bazinisAtlyginimas)
+                 .Set(d => d.AtliktuUzsakymuKiekis, atliktuUzsakymuSkaicius);
 
             var result = await _darbuotojaiCache.UpdateOneAsync(filter, update);
 

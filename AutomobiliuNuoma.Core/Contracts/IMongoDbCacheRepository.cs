@@ -17,7 +17,7 @@ namespace AutomobiliuNuoma.Core.Contracts
 
         Task<Klientas> GautiKlientaPagalId(int id);
 
-        Task<Darbuotojas> KoreguotiDarbuotojoInfo(int id, string vardas, string pavarde, DarbuotojasPareigos pareigos);
+        Task<Darbuotojas> KoreguotiDarbuotojoInfo(int id, string vardas, string pavarde, DarbuotojasPareigos pareigos, double bazinisAtlyginimas, int atliktuUzsakymuSkaicius);
 
         Task<Klientas> KoreguotiKlientoInfo(int klientasId, string vardas, string pavarde, DateOnly gimimoMetai);
 

@@ -41,9 +41,12 @@ namespace AutomobiliuNuoma.Core.Repositories
             var result = await dbConnection.QueryAsync<Darbuotojas>(@"SELECT [Id]
              ,[Vardas]
              ,[Pavarde]
-             ,[Pareigos] FROM [dbo].[Darbuotojai]");
+             ,[Pareigos] 
+             ,[BazinisAtlyginimas]
+             ,[AtliktuUzsakymuKiekis]
+             FROM [dbo].[Darbuotojai]");
             dbConnection.Close();
-            return result.Select(dto => new Darbuotojas(dto.Id, dto.Vardas, dto.Pavarde, dto.Pareigos)).ToList();
+            return result.Select(dto => new Darbuotojas(dto.Id, dto.Vardas, dto.Pavarde, dto.Pareigos, dto.BazinisAtlyginimas, dto.AtliktuUzsakymuKiekis)).ToList();
         }
 
 
@@ -57,12 +60,12 @@ namespace AutomobiliuNuoma.Core.Repositories
             dbConnection.Close();
         }
 
-        public async Task<Darbuotojas> KoreguotiDarbuotojoInfo(int id, string vardas, string pavarde, DarbuotojasPareigos pareigos)
+        public async Task<Darbuotojas> KoreguotiDarbuotojoInfo(int id, string vardas, string pavarde, DarbuotojasPareigos pareigos, double bazinisAtlyginimas, int atliktuUzsakymuSkaicius)
         {
 
             using (SqlConnection connection = new SqlConnection(_dbConnectionString))
             {
-                string query = "UPDATE Darbuotojai SET Vardas = @Vardas, Pavarde = @Pavarde, Pareigos = @Pareigos WHERE Id = @Id";
+                string query = "UPDATE Darbuotojai SET Vardas = @Vardas, Pavarde = @Pavarde, Pareigos = @Pareigos, BazinisAtlyginims = @BazinisAtlyginimas, AtliktuUzsakymuKiekis = @AtliktuUzsakymuKiekis WHERE Id = @Id";
 
                 await connection.ExecuteAsync(query, new
                 {
@@ -70,11 +73,13 @@ namespace AutomobiliuNuoma.Core.Repositories
                     Vardas = vardas,
                     Pavarde = pavarde,
                     Pareigos = pareigos,
+                    BazinisAtlyginimas = bazinisAtlyginimas,
+                    AtliktuUzsakymuSkaicius = atliktuUzsakymuSkaicius
                 });
 
                 
             }
-            return new Darbuotojas(id, vardas, pavarde, pareigos);
+            return new Darbuotojas(id, vardas, pavarde, pareigos, bazinisAtlyginimas, atliktuUzsakymuSkaicius);
 
         }
 

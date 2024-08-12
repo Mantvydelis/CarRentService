@@ -12,6 +12,7 @@ namespace AutoNuoma.API.Controllers
         private readonly IAutomobiliaiService _automobiliaiService;
 
 
+
         public AutomobiliaiController(IAutonuomaService autonuomaService, IAutomobiliaiService automobiliaiService)
         {
             _autonuomaService = autonuomaService;
