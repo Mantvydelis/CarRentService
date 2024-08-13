@@ -14,9 +14,9 @@ namespace AutomobiliuNuoma.FrontEnd.Pages
         {
             _autonuomaService = autonuomaService;
         }
-        public void OnGet()
+        public async Task OnGet()
         {
-            Klientai = _autonuomaService.GautiVisusKlientus();
+            Klientai = await _autonuomaService.GautiVisusKlientus();
         }
     }
 }

@@ -7,31 +7,6 @@
 }
 
 
-
-<h4 class="text-center">Įveskite elektromobilio duomenis:</h4>
-<br>
-<form action="/action_page.php" class="text-center">
-    <label for="evId">ElektromobilioID:</label><br>
-    <input type="number" id="evId" name="evId" value=""><br>
-    <label for="evMarke">Elektromobilio markė:</label><br>
-    <input type="text" id="evMarke" name="evMarke" value=""><br>
-    <label for="evModelis">Elektromobilio modelis:</label><br>
-    <input type="text" id="evModelis" name="evModelis" value=""><br>
-    <label for="evNuomosKaina">Elektromobilio nuomos kaina:</label><br>
-    <input type="number" id="evNuomosKaina" name="evNuomosKaina" value=""><br>
-    <label for="evBaterijosTalpa">Elektromobilio baterijos talpa:</label><br>
-    <input type="number" id="evBaterijosTalpa" name="evBaterijosTalpa" value=""><br>
-    <label for="evKrovimoLaikas">Elektromobilio įkrovimo laikas:</label><br>
-    <input type="number" id="evKrovimoLaikas" name="evKrovimoLaikas" value=""><br><br>
-    <input type="submit" value="Priduoti">
-</form>
-
-
-<br>
-<br>
-<br>
-
-
 <h4 class="text-center">Esami elektromobiliai:</h4>
 <br>
 
@@ -40,7 +15,7 @@
         <col span="1" style="background-color: #a2baee">
     </colgroup>
     <tr class="my-table-row-headings">
-        <th class ="my-table-column">ID</th>
+        <th class="my-table-column">ID</th>
         <th>Markė</th>
         <th>Modelis</th>
         <th>Nuomos Kaina</th>
@@ -61,6 +36,204 @@
 </table>
 
 <br>
+<br>
+<br>
+
+
+
+<h4 class="text-center">Įveskite naujo elektromobilio duomenis:</h4>
+<br>
+
+
+<form id="elektromobilisAddForm" class="text-center">
+
+    <label for="marke">Markė:</label><br>
+    <input type="text" id="marke" name="marke" required><br><br>
+
+    <label for="modelis">Modelis:</label><br>
+    <input type="text" id="modelis" name="modelis" required><br><br>
+
+    <label for="nuomosKaina">Nuomos Kaina:</label><br>
+    <input type="number" id="nuomosKaina" name="nuomosKaina" step="0.01" required><br><br>
+
+    <label for="baterijosTalpa">Baterijos Talpa:</label><br>
+    <input type="number" id="baterijosTalpa" name="baterijosTalpa" required><br><br>
+
+    <label for="krovimoLaikas">Įkrovimo Laikas:</label><br>
+    <input type="number" id="krovimoLaikas" name="krovimoLaikas" required><br><br>
+
+    <button type="submit" id="submit-button">Priduoti</button>
+</form>
+
+
+<script>
+    function sendFormDataInsert(endpoint, formData) {
+        const plainFormData = Object.fromEntries(formData.entries());
+        const jsonString = JSON.stringify(plainFormData);
+        var submitButton = document.getElementById('submit-button');
+        submitButton.innerText = 'Automobililis pridedamas, palaukite';
+        submitButton.style.background = '#3CD5EF';
+        fetch(endpoint, {
+            method: 'POST',
+            body: jsonString,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                alert('Automobilis sekmingai pridetas');
+                window.location.href = '/Elektromobiliai'
+            })
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
+
+    document.getElementById('elektromobilisAddForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const endpoint = 'http://localhost:5101/Automobiliai/PridetiElektromobili';
+        const formData = new FormData(this);
+        sendFormDataInsert(endpoint, formData);
+    });
+</script>
+
+<br>
+<br>
+<br>
+
+<h4 class="text-center">Pakoreguokite turimo elektromobilio duomenis:</h4>
+<br>
+
+
+<form id="elektromobilisCorrectForm" class="text-center">
+
+    <label for="automobilisId">Automobilio Id:</label><br>
+    <input type="text" id="automobilisId" name="automobilisId" required><br><br>
+
+    <label for="marke">Markė:</label><br>
+    <input type="text" id="marke" name="marke"><br><br>
+
+    <label for="">Modelis:</label><br>
+    <input type="text" id="modelis" name="modelis"><br><br>
+
+    <label for="nuomosKaina">Nuomos Kaina:</label><br>
+    <input type="number" id="nuomosKaina" name="nuomosKaina" step="0.01"><br><br>
+
+    <label for="baterijosTalpa">Baterijos Talpa:</label><br>
+    <input type="number" id="baterijosTalpa" name="baterijosTalpa"><br><br>
+
+    <label for="krovimoLaikas">Įkrovimo Laikas:</label><br>
+    <input type="number" id="krovimoLaikas" name="krovimoLaikas"><br><br>
+
+    <button type="submit" id="submit-button2">Priduoti</button>
+</form>
+
+
+<script>
+    function sendFormDataCorrect(endpoint, formData) {
+        const plainFormData = Object.fromEntries(formData.entries());
+        const jsonString = JSON.stringify(plainFormData);
+        var submitButton = document.getElementById('submit-button2');
+        submitButton.innerText = 'Automobililis koreguojamas, palaukite';
+        submitButton.style.background = '#3CD5EF';
+        fetch(endpoint, {
+            method: 'POST',
+            body: jsonString,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                alert('Automobilis sekmingai pakoreguotas');
+                window.location.href = '/Elektromobiliai'
+            })
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
+
+    document.getElementById('elektromobilisCorrectForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const endpoint = 'http://localhost:5101/Automobiliai/KoreguotiElektromobilioInfo';
+        const formData = new FormData(this);
+        sendFormDataCorrect(endpoint, formData);
+    });
+</script>
+
+
+
+<br>
+<br>
+<br>
+
+<h4 class="text-center">Pasirinkite norimo ištrinti elektromobilio ID:</h4>
+<br>
+
+
+<form id="elektromobilisDeleteForm" class="text-center">
+
+    <label for="automobilisId">Automobilio ID:</label><br>
+    <input type="text" id="deleteId" name="automobilisId" required><br><br>
+
+    <button type="submit" id="submit-button3">Priduoti</button>
+</form>
+
+
+<script>
+    function sendFormDataDelete(endpoint, formData) {
+        const plainFormData = Object.fromEntries(formData.entries());
+        const jsonString = JSON.stringify(plainFormData);
+        var submitButton = document.getElementById('submit-button3');
+        submitButton.innerText = 'Automobililis istrinamas, palaukite';
+        submitButton.style.background = '#3CD5EF';
+        endpoint += '/' + document.getElementById('deleteId').value;
+        fetch(endpoint, {
+            method: 'DELETE',
+            body: jsonString,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                alert('Automobilis sėkmingai ištrintas');
+                window.location.href = '/Elektromobiliai'
+            })
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
+
+    document.getElementById('elektromobilisDeleteForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const endpoint = 'http://localhost:5101/Automobiliai/IstrintiElektromobili';
+        const formData = new FormData(this);
+        sendFormDataDelete(endpoint, formData);
+    });
+</script>
+
+
+
 
 
 

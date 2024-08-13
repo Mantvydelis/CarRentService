@@ -7,29 +7,10 @@
 }
 
 
-
-<h4 class="text-center">Įveskite kliento duomenis:</h4>
-<br>
-<form action="/action_page.php" class="text-center">
-    <label for="klId">KlientoID:</label><br>
-    <input type="number" id="klId" name="klId" value=""><br>
-    <label for="klVardas">Vardas:</label><br>
-    <input type="text" id="klVardas" name="klVardas" value=""><br>
-    <label for="klPavarde">Pavardė:</label><br>
-    <input type="text" id="klPavarde" name="klPavarde" value=""><br>
-    <label for="klGimimoData">Gimimo data:</label><br>
-    <input type="date" id="klGimimoData" name="klGimimoData" value=""><br><br>
-    <input type="submit" value="Priduoti">
-</form>
-
-<br>
-<br>
-
-
 <h4 class="text-center">Esami klientai:</h4>
 <br>
 
-    <table class="my-table">
+<table class="my-table">
     <colgroup>
         <col span="1" style="background-color: #a2baee">
     </colgroup>
@@ -48,7 +29,196 @@
             <td>@kl.GimimoMetai.ToString("yyyy-MM-dd") </td>
         </tr>
     }
-   </table>
+</table>
+<br>
+<br>
+<br>
+
+
+<h4 class="text-center">Įveskite naujo kliento duomenis:</h4>
+<br>
+
+<form id="klientasForm" class="text-center">
+
+    <label for="vardas">Vardas:</label><br>
+    <input type="text" id="vardas" name="vardas" required><br>
+
+    <label for="pavarde">Pavardė:</label><br>
+    <input type="text" id="pavarde" name="pavarde" required><br>
+
+    <label for="gimimoMetai">Gimimo data:</label><br>
+    <input type="date" id="gimimoMetai" name="gimimoMetai" required><br><br>
+
+    <button type="submit" id="submit-button">Priduoti</button>
+</form>
+
+
+<script>
+    function sendFormData(endpoint, formData) {
+        const plainFormData = Object.fromEntries(formData.entries());
+        const jsonString = JSON.stringify(plainFormData);
+        var submitButton = document.getElementById('submit-button');
+        submitButton.innerText = 'Klientas pridedamas, palaukite';
+        submitButton.style.background = '#3CD5EF';
+        fetch(endpoint, {
+            method: 'POST',
+            body: jsonString,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                alert('Kientas sekmingai pridetas');
+                window.location.href = '/Klientai'
+            })
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
+
+    document.getElementById('klientasForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const endpoint = 'http://localhost:5101/Klientai/PridetiKlienta';
+        const formData = new FormData(this);
+        sendFormData(endpoint, formData);
+    });
+</script>
+
+
+<br>
+<br>
+
+
+<h4 class="text-center">Pakoreguokite turimo kliento duomenis:</h4>
+<br>
+
+
+<form id="klientasCorrectForm" class="text-center">
+
+    <label for="klientasId">Kliento Id:</label><br>
+    <input type="text" id="klientasId" name="klientasId" required><br>
+
+    <label for="vardas">Vardas:</label><br>
+    <input type="text" id="vardas" name="vardas" required><br>
+
+    <label for="pavarde">Pavardė:</label><br>
+    <input type="text" id="pavarde" name="pavarde" required><br>
+
+    <label for="gimimoMetai">Gimimo data:</label><br>
+    <input type="date" id="gimimoMetai" name="gimimoMetai" required><br><br>
+
+    <button type="submit" id="submit-button2">Priduoti</button>
+</form>
+
+
+<script>
+    function sendFormDataCorrect(endpoint, formData) {
+        const plainFormData = Object.fromEntries(formData.entries());
+        const jsonString = JSON.stringify(plainFormData);
+        var submitButton = document.getElementById('submit-button2');
+        submitButton.innerText = 'Klientas koreguojamas, palaukite';
+        submitButton.style.background = '#3CD5EF';
+        fetch(endpoint, {
+            method: 'POST',
+            body: jsonString,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                alert('Klientas sekmingai atnaujintas');
+                window.location.href = '/Klientas'
+            })
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
+
+    document.getElementById('klientasCorrectForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const endpoint = 'http://localhost:5101/Klientai/KoreguotiKlientoInfo';
+        const formData = new FormData(this);
+        sendFormDataCorrect(endpoint, formData);
+    });
+</script>
+
+<br>
+<br>
+<br>
+
+<h4 class="text-center">Pasirinkite norimo ištrinti kliento ID:</h4>
+<br>
+
+
+<form id="klientaiDeleteForm" class="text-center">
+
+    <label for="klientasId">Kliento ID:</label><br>
+    <input type="text" id="deleteId" name="klientasId" required><br><br>
+
+    <button type="submit" id="submit-button3">Priduoti</button>
+</form>
+
+
+<script>
+    function sendFormDataDelete(endpoint, formData) {
+        const plainFormData = Object.fromEntries(formData.entries());
+        const jsonString = JSON.stringify(plainFormData);
+        var submitButton = document.getElementById('submit-button3');
+        submitButton.innerText = 'Klientas istrinamas, palaukite';
+        submitButton.style.background = '#3CD5EF';
+        endpoint += '/' + document.getElementById('deleteId').value;
+        fetch(endpoint, {
+            method: 'DELETE',
+            body: jsonString,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                alert('Klientas sėkmingai ištrintas');
+                window.location.href = '/Klientai'
+            })
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
+
+    document.getElementById('klientaiDeleteForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const endpoint = 'http://localhost:5101/Klientai/IstrintiKlienta';
+        const formData = new FormData(this);
+        sendFormDataDelete(endpoint, formData);
+    });
+</script>
+
+
+
+
+
+
+
+
 
 
 <br>

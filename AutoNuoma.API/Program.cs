@@ -28,7 +28,8 @@ builder.Services.AddSingleton<ICacheService, CacheService>();
 builder.Services.AddTransient<IAutomobiliaiRepository, AutomobiliaiEFDRepository>(_ => new AutomobiliaiEFDRepository());
 builder.Services.AddTransient<IKlientaiRepository, KlientaiEFDRepository>(_ => new KlientaiEFDRepository());
 //builder.Services.AddTransient<IKlientaiRepository, KlientaiDBRepository>(_ => new KlientaiDBRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;"));
-builder.Services.AddTransient<IUzsakymaiRepository, UzsakymaiDBRepository>(_ => new UzsakymaiDBRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;"));
+builder.Services.AddTransient<IUzsakymaiRepository, UzsakymaiEFDRepository>(_ => new UzsakymaiEFDRepository());
+//builder.Services.AddTransient<IUzsakymaiRepository, UzsakymaiDBRepository>(_ => new UzsakymaiDBRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;"));
 builder.Services.AddTransient<IDarbuotojaiRepository, DarbuotojaiEFDRepository>(_ => new DarbuotojaiEFDRepository());
 //builder.Services.AddTransient<IDarbuotojaiRepository, DarbuotojaiDbRepository>(_ => new DarbuotojaiDbRepository("Server=localhost;Database=Automobiliai;Trusted_Connection=True;"));
 builder.Services.AddTransient<IKlientaiService, KlientaiService>();
@@ -36,9 +37,22 @@ builder.Services.AddTransient<IAutomobiliaiService, AutomobiliaiService>();
 builder.Services.AddTransient<IAutonuomaService, AutonuomosService>();
 
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        policy =>
+        {
+            policy.WithOrigins("https://localhost:7234")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
 
 
 var app = builder.Build();
+
+app.UseCors("AllowSpecificOrigin");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

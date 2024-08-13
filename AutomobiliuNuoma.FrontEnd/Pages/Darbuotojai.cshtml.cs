@@ -14,9 +14,9 @@ namespace AutomobiliuNuoma.FrontEnd.Pages
         {
             _autonuomaService = autonuomaService;
         }
-        public void OnGet()
+        public async Task OnGet()
         {
-            Darbuotojai = _autonuomaService.GautiVisusDarbuotojus();
+            Darbuotojai = await _autonuomaService.GautiVisusDarbuotojus();
         }
     }
 }

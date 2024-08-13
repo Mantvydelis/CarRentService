@@ -6,31 +6,6 @@
     Layout = "Shared/_Layout";
 }
 
-<h4 class="text-center">Įveskite darbuotojo duomenis:</h4>
-<br>
-<form action="/action_page.php" class="text-center">
-
-    <label for="dbId">Darbuotojo ID:</label><br>
-    <input type="number" id="dbId" name="dbId" value=""><br>
-
-    <label for="dbVardas">Darbuotojo vardas:</label><br>
-    <input type="text" id="dbVardas" name="dbVardas" value=""><br>
-
-    <label for="dbPavarde">Darbuotojo pavardė:</label><br>
-    <input type="text" id="dbPavarde" name="dbPavarde" value=""><br>
-
-    <label for="dbPareigos">Darbuotojo pareigos:</label><br>
-    <input type="number" id="dbPareigos" name="dbPareigos" value=""><br><br>
-
-    <input type="submit" value="Priduoti">
-</form>
-
-
-<br>
-<br>
-<br>
-
-
 
 <h4 class="text-center">Esami darbuotojai:</h4>
 <br>
@@ -44,6 +19,8 @@
         <th>Vardas</th>
         <th>Pavardė</th>
         <th>Pareigos</th>
+        <th>Bazinis Atlyginimas</th>
+        <th>Atliktų užsakymų skaičius</th>
     </tr>
     @foreach (Darbuotojas db in Model.Darbuotojai)
     {
@@ -52,7 +29,212 @@
             <td>@db.Vardas</td>
             <td>@db.Pavarde</td>
             <td>@db.Pareigos</td>
-
+            <td>@db.BazinisAtlyginimas</td>
+            <td>@db.AtliktuUzsakymuKiekis</td>
         </tr>
     }
 </table>
+
+<br>
+<br>
+<br>
+
+
+<h4 class="text-center">Įveskite naujo darbuotojo duomenis:</h4>
+<br>
+
+
+<form id="darbuotojasForm" class="text-center">
+
+    <label for="vardas">Vardas:</label><br>
+    <input type="text" id="vardas" name="vardas" required><br><br>
+
+    <label for="pavarde">Pavardė:</label><br>
+    <input type="text" id="pavarde" name="pavarde" required><br><br>
+
+    <label for="pareigos">Darbuotojo pareigos:</label><br>
+    <input type="number" id="pareigos" name="pareigos" required><br><br>
+
+    <label for="bazinisAtlyginimas">Bazinis atlyginimas:</label><br>
+    <input type="number" id="bazinisAtlyginimas" name="bazinisAtlyginimas" required><br><br>
+
+    <label for="atliktuUzsakymuKiekis">Arliktų užsakymų skaičius:</label><br>
+    <input type="number" id="atliktuUzsakymuKiekis" name="atliktuUzsakymuKiekis" required><br><br>
+
+    <button type="submit" id="submit-button">Priduoti</button>
+</form>
+
+
+<script>
+    function sendFormData(endpoint, formData) {
+        const plainFormData = Object.fromEntries(formData.entries());
+        plainFormData.pareigos = parseInt(plainFormData.pareigos);
+        const jsonString = JSON.stringify(plainFormData);
+        var submitButton = document.getElementById('submit-button');
+        submitButton.innerText = 'Darbuotojas pridedamas, palaukite';
+        submitButton.style.background = '#3CD5EF';
+        fetch(endpoint, {
+            method: 'POST',
+            body: jsonString,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                alert('Darbuotojas sekmingai pridetas');
+                window.location.href = '/Darbuotojai'
+            })
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
+
+    document.getElementById('darbuotojasForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const endpoint = 'http://localhost:5101/Darbuotojai/PridetiDarbuotoja';
+        const formData = new FormData(this);
+        sendFormData(endpoint, formData);
+    });
+</script>
+
+
+<br>
+<br>
+<br>
+
+
+<h4 class="text-center">Pakoreguokite turimo darbuotojo duomenis:</h4>
+<br>
+
+
+<form id="darbuotojasCorrectForm" class="text-center">
+
+    <label for="darbuotojasId">Darbuotojo Id:</label><br>
+    <input type="text" id="darbuotojasId" name="darbuotojasId" required><br>
+
+    <label for="vardas">Vardas:</label><br>
+    <input type="text" id="vardas" name="vardas" required><br>
+
+    <label for="pavarde">Pavardė:</label><br>
+    <input type="text" id="pavarde" name="pavarde" required><br>
+
+    <label for="pareigos">Darbuotojo pareigos:</label><br>
+    <input type="number" id="pareigos" name="pareigos" required><br>
+
+    <label for="bazinisAtlyginimas">Bazinis atlyginimas:</label><br>
+    <input type="number" id="bazinisAtlyginimas" name="bazinisAtlyginimas" required><br>
+
+    <label for="atliktuUzsakymuKiekis">Atliktų užsakymų skaičius:</label><br>
+    <input type="number" id="atliktuUzsakymuKiekis" name="atliktuUzsakymuKiekis" required><br><br>
+
+    <button type="submit" id="submit-button2">Priduoti</button>
+</form>
+
+
+<script>
+    function sendFormDataCorrect(endpoint, formData) {
+        const plainFormData = Object.fromEntries(formData.entries());
+        plainFormData.pareigos = parseInt(plainFormData.pareigos);
+        const jsonString = JSON.stringify(plainFormData);
+        var submitButton = document.getElementById('submit-button2');
+        submitButton.innerText = 'Darbuotojas koreguojamas, palaukite';
+        submitButton.style.background = '#3CD5EF';
+        fetch(endpoint, {
+            method: 'POST',
+            body: jsonString,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                alert('Darbuotojas sekmingai atnaujintas');
+                window.location.href = '/Darbuotojai'
+            })
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
+
+    document.getElementById('darbuotojasCorrectForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const endpoint = 'http://localhost:5101/Darbuotojai/KoreguotiDarbuotojoInfo';
+        const formData = new FormData(this);
+        sendFormDataCorrect(endpoint, formData);
+    });
+</script>
+
+<br>
+<br>
+<br>
+
+<h4 class="text-center">Pasirinkite norimo ištrinti darbuotojo ID:</h4>
+<br>
+
+
+<form id="darbuotojaiDeleteForm" class="text-center">
+
+    <label for="klientasId">Kliento ID:</label><br>
+    <input type="text" id="deleteId" name="klientasId" required><br><br>
+
+    <button type="submit" id="submit-button3">Priduoti</button>
+</form>
+
+
+<script>
+    function sendFormDataDelete(endpoint, formData) {
+        const plainFormData = Object.fromEntries(formData.entries());
+        const jsonString = JSON.stringify(plainFormData);
+        var submitButton = document.getElementById('submit-button3');
+        submitButton.innerText = 'Darbuotojas istrinamas, palaukite';
+        submitButton.style.background = '#3CD5EF';
+        endpoint += '/' + document.getElementById('deleteId').value;
+        fetch(endpoint, {
+            method: 'DELETE',
+            body: jsonString,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                alert('Darbuotojas sėkmingai ištrintas');
+                window.location.href = '/Darbuotojai'
+            })
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
+
+    document.getElementById('darbuotojaiDeleteForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const endpoint = 'http://localhost:5101/Darbuotojai/IstrintiDarbuotoja';
+        const formData = new FormData(this);
+        sendFormDataDelete(endpoint, formData);
+    });
+</script>
+
+
+
+
+
+

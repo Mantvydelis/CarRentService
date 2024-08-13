@@ -16,9 +16,9 @@ namespace AutomobiliuNuoma.FrontEnd.Pages
         }
 
 
-        public void OnGet()
+        public async Task OnGet()
         {
-            Elektromobiliai = _autonuomaService.GautiVisusElektromobilius();
+            Elektromobiliai = await _autonuomaService.GautiVisusElektromobilius();
         }
     }
 }

@@ -14,7 +14,7 @@ namespace AutomobiliuNuoma.Core.Contracts
 
         Task <NuomosUzsakymas> GautiUzsakymaPagalId(int id);
 
-        Task KoreguotiNuomosInfo(int id, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, int darbuotojasId);
+        Task<NuomosUzsakymas> KoreguotiNuomosInfo(int id, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, int darbuotojasId);
 
         Task IstrintiUzsakyma (int id);
     }

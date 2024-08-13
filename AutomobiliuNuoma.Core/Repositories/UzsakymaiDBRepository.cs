@@ -120,6 +120,11 @@ namespace AutomobiliuNuoma.Core.Repositories
 
         }
 
+        Task<NuomosUzsakymas> IUzsakymaiRepository.KoreguotiNuomosInfo(int id, int klientasId, string autoTipas, int automobilisId, DateTime nuomosPradzia, int dienuKiekis, int darbuotojasId)
+        {
+            throw new NotImplementedException();
+        }
+
 
         //public async Task<NuomosUzsakymas> gautiUzsakymusPagalKlienta(int klientasid)
         //{

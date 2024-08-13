@@ -81,11 +81,11 @@ namespace AutoNuoma.API.Controllers
         }
 
         [HttpPost("KoreguotiElektromobilioInfo")]
-        public async Task<IActionResult> KoreguotiElektromobilioInfo(int id, string marke, string modelis, decimal nuomosKaina, int baterijosTalpa, int krovimoLaikas)
+        public async Task<IActionResult> KoreguotiElektromobilioInfo(Elektromobilis elektromobilis)
         {
             try
             {
-                var elId = await _autonuomaService.KoreguotiElektromobilioInfo(id, marke, modelis, nuomosKaina, baterijosTalpa, krovimoLaikas);
+                var elId = await _autonuomaService.KoreguotiElektromobilioInfo(elektromobilis.AutomobilisId, elektromobilis.Marke, elektromobilis.Modelis, elektromobilis.NuomosKaina, elektromobilis.BaterijosTalpa, elektromobilis.KrovimoLaikas);
                 return Ok(elId);
 
             }
@@ -97,11 +97,11 @@ namespace AutoNuoma.API.Controllers
         }
 
         [HttpPost("KoreguotiNaftosAutoInfo")]
-        public async Task<IActionResult> KoreguotiNaftaAutoInfo(int id, string marke, string modelis, decimal nuomosKaina, double degaluSanaudos)
+        public async Task<IActionResult> KoreguotiNaftaAutoInfo(NaftosKuroAutomobilis naftosKuroAutomobilis)
         {
             try
             {
-                var naftaId = await _autonuomaService.KoreguotiNaftaAutoInfo(id, marke, modelis, nuomosKaina, degaluSanaudos);
+                var naftaId = await _autonuomaService.KoreguotiNaftaAutoInfo(naftosKuroAutomobilis.AutomobilisId, naftosKuroAutomobilis.Marke, naftosKuroAutomobilis.Modelis, naftosKuroAutomobilis.NuomosKaina, naftosKuroAutomobilis.DegaluSanaudos);
                 return Ok(naftaId);
 
             }
@@ -112,18 +112,36 @@ namespace AutoNuoma.API.Controllers
 
         }
 
-        [HttpDelete("IstrintiElektromobili")]
+        [HttpDelete("IstrintiElektromobili/{id}")]
         public async Task<IActionResult> IstrintiElektromobili(int id)
         {
-            await _autonuomaService.IstrintiElektromobili(id);
-            return Ok();
+            try
+            {
+                await _autonuomaService.IstrintiElektromobili(id);
+                return Ok();
+
+            }
+            catch
+            {
+                return NotFound();
+            }
+
         }
 
-        [HttpDelete("IstrintiNaftosKuroAuto")]
+        [HttpDelete("IstrintiNaftosKuroAuto/{id}")]
         public async Task<IActionResult> IstrintiNaftaAuto(int id)
         {
-            await _autonuomaService.IstrintiNaftaAuto(id);
-            return Ok();
+            try
+            {
+                await _autonuomaService.IstrintiNaftaAuto(id);
+                return Ok();
+            }
+            catch
+            {
+                return NotFound();
+
+            }
+            
         }
 
 

@@ -7,27 +7,6 @@
 }
 
 
-
-<h4 class="text-center">Įveskite naftos kuro automobilio duomenis:</h4>
-<br>
-<form action="/action_page.php" class="text-center">
-    <label for="naId">AutomobilioID:</label><br>
-    <input type="number" id="naId" name="naId" value=""><br>
-    <label for="naMarke">Automobilio markė:</label><br>
-    <input type="text" id="naMarke" name="naMarke" value=""><br>
-    <label for="naModelis">Automobilio modelis:</label><br>
-    <input type="text" id="naModelis" name="naModelis" value=""><br>
-    <label for="naNuomosKaina">Automobilio nuomos kaina:</label><br>
-    <input type="number" id="naNuomosKaina" name="naNuomosKaina" value=""><br>
-    <label for="naDegaluSanaudos">Automobilio degalų sanaudos:</label><br>
-    <input type="number" id="naDegaluSanaudos" name="naDegaluSanaudos" value=""><br><br>
-    <input type="submit" value="Priduoti">
-</form>
-
-<br>
-<br>
-
-
 <h4 class="text-center">Esami naftos kuro automobiliai:</h4>
 <br>
 <table class="my-table">
@@ -52,6 +31,196 @@
         </tr>
     }
 </table>
+<br>
+<br>
+<br>
+
+
+
+
+<h4 class="text-center">Įveskite naftos kuro automobilio duomenis:</h4>
+<br>
+<form id="naftosKuroAutoForm" class="text-center">
+
+    <label for="marke">Markė:</label><br>
+    <input type="text" id="marke" name="marke" required><br><br>
+
+    <label for="modelis">Modelis:</label><br>
+    <input type="text" id="modelis" name="modelis" required><br><br>
+
+    <label for="nuomosKaina">Nuomos Kaina:</label><br>
+    <input type="number" id="nuomosKaina" name="nuomosKaina" step="0.01" required><br><br>
+
+    <label for="DegaluSanaudos">Degalų Sąnaudos:</label><br>
+    <input type="number" id="degaluSanaudos" name="degaluSanaudos" required><br><br>
+
+    <button type="submit" id="submit-button">Priduoti</button>
+</form>
+
+
+<script>
+    function sendFormData(endpoint, formData) {
+        const plainFormData = Object.fromEntries(formData.entries());
+        const jsonString = JSON.stringify(plainFormData);
+        var submitButton = document.getElementById('submit-button');
+        submitButton.innerText = 'Automobililis pridedamas, palaukite';
+        submitButton.style.background = '#3CD5EF';
+        fetch(endpoint, {
+            method: 'POST',
+            body: jsonString,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                alert('Automobilis sekmingai pridetas');
+                window.location.href = '/NaftosKuroAuto'
+            })
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
+
+    document.getElementById('naftosKuroAutoForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const endpoint = 'http://localhost:5101/Automobiliai/PridetiNaftosKuroAuto';
+        const formData = new FormData(this);
+        sendFormData(endpoint, formData);
+    });
+</script>
+
+<br>
+<br>
+
+
+<h4 class="text-center">Pakoreguokite turimo automobilio duomenis:</h4>
+<br>
+
+
+<form id="naftosKuroAutoCorrectForm" class="text-center">
+
+    <label for="automobilisId">Automobilio Id:</label><br>
+    <input type="text" id="automobilisId" name="automobilisId" required><br><br>
+
+    <label for="marke">Markė:</label><br>
+    <input type="text" id="marke" name="marke"><br><br>
+
+    <label for="modelis">Modelis:</label><br>
+    <input type="text" id="modelis" name="modelis"><br><br>
+
+    <label for="nuomosKaina">Nuomos Kaina:</label><br>
+    <input type="number" id="nuomosKaina" name="nuomosKaina" step="0.01"><br><br>
+
+    <label for="degaluSanaudos">Degalų sąnaudos:</label><br>
+    <input type="number" id="degaluSanaudos" name="degaluSanaudos"><br><br>
+
+    <button type="submit" id="submit-button2">Priduoti</button>
+</form>
+
+
+<script>
+    function sendFormDataCorrect(endpoint, formData) {
+        const plainFormData = Object.fromEntries(formData.entries());
+        const jsonString = JSON.stringify(plainFormData);
+        var submitButton = document.getElementById('submit-button2');
+        submitButton.innerText = 'Automobililis koreguojamas, palaukite';
+        submitButton.style.background = '#3CD5EF';
+        fetch(endpoint, {
+            method: 'POST',
+            body: jsonString,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                alert('Automobilis sekmingai pakoreguotas');
+                window.location.href = '/NaftosKuroAuto'
+            })
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
+
+    document.getElementById('naftosKuroAutoCorrectForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const endpoint = 'http://localhost:5101/Automobiliai/KoreguotiNaftosAutoInfo';
+        const formData = new FormData(this);
+        sendFormDataCorrect(endpoint, formData);
+    });
+</script>
+
+<br>
+<br>
+<br>
+
+
+
+<h4 class="text-center">Pasirinkite norimo ištrinti automobilio ID:</h4>
+<br>
+
+
+<form id="naftosKuroAutoDeleteForm" class="text-center">
+
+    <label for="automobilisId">Automobilio ID:</label><br>
+    <input type="text" id="deleteId" name="automobilisId" required><br><br>
+
+    <button type="submit" id="submit-button3">Priduoti</button>
+</form>
+
+
+<script>
+    function sendFormDataDelete(endpoint, formData) {
+        const plainFormData = Object.fromEntries(formData.entries());
+        const jsonString = JSON.stringify(plainFormData);
+        var submitButton = document.getElementById('submit-button3');
+        submitButton.innerText = 'Automobililis istrinamas, palaukite';
+        submitButton.style.background = '#3CD5EF';
+        endpoint += '/' + document.getElementById('deleteId').value;
+        fetch(endpoint, {
+            method: 'DELETE',
+            body: jsonString,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                alert('Automobilis sėkmingai ištrintas');
+                window.location.href = '/NaftosKuroAuto'
+            })
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
+
+    document.getElementById('naftosKuroAutoDeleteForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const endpoint = 'http://localhost:5101/Automobiliai/IstrintiNaftosKuroAuto';
+        const formData = new FormData(this);
+        sendFormDataDelete(endpoint, formData);
+    });
+</script>
+
 
 
 <br>

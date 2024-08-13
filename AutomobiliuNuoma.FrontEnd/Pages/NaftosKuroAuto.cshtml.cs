@@ -14,10 +14,10 @@ namespace AutomobiliuNuoma.FrontEnd.Pages
         {
             _autonuomaService = autonuomaService;
         }
-        public void OnGet()
+        public async Task OnGet()
         {
 
-            NaftosKuroAutomobiliai = _autonuomaService.GautiVisusNaftosKuroAuto();
+            NaftosKuroAutomobiliai = await _autonuomaService.GautiVisusNaftosKuroAuto();
 
         }
     }

@@ -49,11 +49,11 @@ namespace AutoNuoma.API.Controllers
         }
 
         [HttpPost("KoreguotiDarbuotojoInfo")]
-        public async Task<IActionResult> KoreguotiDarbuotojoInfo(int id, string vardas, string pavarde, DarbuotojasPareigos pareigos, double bazinisAtlyginimas, int atliktuUzsakymuKiekis)
+        public async Task<IActionResult> KoreguotiDarbuotojoInfo(Darbuotojas darbuotojas)
         {
             try
             {
-                var darbuotojasId = await _autonuomaService.KoreguotiDarbuotojoInfo(id, vardas, pavarde, pareigos, bazinisAtlyginimas, atliktuUzsakymuKiekis);
+                var darbuotojasId = await _autonuomaService.KoreguotiDarbuotojoInfo(darbuotojas.Id, darbuotojas.Vardas, darbuotojas.Pavarde, darbuotojas.Pareigos, darbuotojas.BazinisAtlyginimas, darbuotojas.AtliktuUzsakymuKiekis);
                 return Ok(darbuotojasId);
 
             }
@@ -64,7 +64,7 @@ namespace AutoNuoma.API.Controllers
 
         }
 
-        [HttpDelete("IstrintiDarbuotoja")]
+        [HttpDelete("IstrintiDarbuotoja/{id}")]
         public async Task<IActionResult> IstrintiDarbuotoja(int id)
         {
             await _autonuomaService.IstrintiDarbuotoja(id);
