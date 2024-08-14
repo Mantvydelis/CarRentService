@@ -176,23 +176,6 @@
 
 
 
-<br>
-<br>
-<br>
-
-<h4 class="text-center">Pasirinkite norimo ištrinti elektromobilio ID:</h4>
-<br>
-
-
-<form id="elektromobilisDeleteForm" class="text-center">
-
-    <label for="automobilisId">Automobilio ID:</label><br>
-    <input type="text" id="deleteId" name="automobilisId" required><br><br>
-
-    <button type="submit" id="submit-button3">Priduoti</button>
-</form>
-
-
 <script>
     function sendFormDataDelete(endpoint, formData) {
         const plainFormData = Object.fromEntries(formData.entries());
@@ -231,6 +214,61 @@
         sendFormDataDelete(endpoint, formData);
     });
 </script>
+
+@* PABAIGTI *@
+@* <script> 
+    function getElektromobilisData(endpoint) {
+        fetch(endpoint, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(async response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                const car = await response.json();
+                document.getElementById('updateBrand').value = car.brand;
+                document.getElementById('updateModel').value = car.model;
+                document.getElementById('updateRentPrice').value = car.rentPrice;
+                document.getElementById('updateBatteryCapacity').value = car.batteryCapacity;
+                document.getElementById('updateBatteryChargingTime').value = car.batteryChargingTime;
+            })
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
+    document.getElementById('updateId').addEventListener('blur', function (event) {
+        event.preventDefault();
+        const endpoint = `https://localhost:7257/Cars/GetElectricCarById?id=` + document.getElementById('updateId').value;
+        getCarData(endpoint);
+    });
+</script> *@
+
+
+<br>
+<br>
+<br>
+
+<h4 class="text-center">Pasirinkite norimo ištrinti elektromobilio ID:</h4>
+<br>
+
+
+<form id="elektromobilisDeleteForm" class="text-center">
+
+    <label for="automobilisId">Automobilio ID:</label><br>
+    <input type="text" id="deleteId" name="automobilisId" required><br><br>
+
+    <button type="submit" id="submit-button3">Priduoti</button>
+</form>
+
+
+
 
 
 

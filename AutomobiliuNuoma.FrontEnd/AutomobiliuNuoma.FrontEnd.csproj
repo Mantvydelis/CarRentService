@@ -8,14 +8,25 @@
 
   <ItemGroup>
     <Compile Remove="Pages\Index1.cshtml.cs" />
+    <Compile Remove="Pages\Index2.cshtml.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Remove="Pages\Index1.cshtml" />
+    <Content Remove="Pages\Index2.cshtml" />
+    <Content Remove="Pages\NuomosUzsakymai.razor" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AutomobiliuNuoma.Core\AutomobiliuNuoma.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\NuomosUzsakymai.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\NuomosUzsakymai.razor" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,111 @@
+﻿@page
+@using AutomobiliuNuoma.Core.Models
+@model AutomobiliuNuoma.FrontEnd.Pages.NuomosUzsakymaiModel
+@{
+    ViewData["Title"] = "Nuomos Uzsakymai";
+    Layout = "Shared/_Layout";
+
+}
+
+<h4 class="text-center">Esami nuomos užsakymai:</h4>
+<br>
+<table class="my-table">
+    <colgroup>
+        <col span="1" style="background-color: #a2baee">
+    </colgroup>
+    <tr class="my-table-row-headings">
+        <th class="my-table-column">ID</th>
+        <th>Kliento ID</th>
+        <th>AutoTipas</th>
+        <th>Automobilio ID</th>
+        <th>Nuomos Pradžia</th>
+        <th>Dienų Kiekis</th>
+        <th>Darbuotojo ID</th>
+    </tr>
+    @foreach (NuomosUzsakymas na in Model.NuomosUzsakymai)
+    {
+        <tr class="my-table-row">
+            <td class="my-table-column">@na.UzsakymasId</td>
+            <td>@na.KlientasId</td>
+            <td>@na.AutoTipas</td>
+            <td>@na.AutomobilisId</td>
+            <td>@na.NuomosPradzia.ToString("F2")</td>
+            <td>@na.DienuKiekis</td>
+            <td>@na.DarbuotojasId</td>
+
+        </tr>
+    }
+</table>
+<br>
+<br>
+<br>
+
+<h4 class="text-center">Įveskite naujo užsakymo duomenis:</h4>
+<br>
+
+
+<form id="NuomosUzsakymasForm" class="text-center">
+
+    <label for="klientasId">Kliento ID:</label><br>
+    <input type="number" id="klientasId" name="klientasId" required><br>
+
+    <label for="autoTipas">Autotipas:</label><br>
+    <input type="text" id="autoTipas" name="autoTipas" required><br>
+
+    <label for="automobilisId">Automobilio Id:</label><br>
+    <input type="number" id="automobilisId" name="automobilisId" required><br>
+
+    <label for="nuomosPradzia">Nuomos pradžia:</label><br>
+    <input type="date" id="nuomosPradzia" name="nuomosPradzia" required><br>
+
+    <label for="dienuKiekis">Dienų kiekis:</label><br>
+    <input type="number" id="dienuKiekis" name="dienuKiekis" required><br>
+
+    <label for="darbuotojasId">Darbuotojo ID:</label><br>
+    <input type="number" id="darbuotojasId" name="darbuotojasId" required><br><br>
+
+    <button type="submit" id="submit-button">Priduoti</button>
+</form>
+
+
+<script>
+    function sendFormData(endpoint, formData) {
+        const plainFormData = Object.fromEntries(formData.entries());
+        const jsonString = JSON.stringify(plainFormData);
+        var submitButton = document.getElementById('submit-button');
+        submitButton.innerText = 'Užsakymas pridedamas, palaukite';
+        submitButton.style.background = '#3CD5EF';
+        fetch(endpoint, {
+            method: 'POST',
+            body: jsonString,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                alert('Užsakymas sėkmingai pridetas');
+                window.location.href = '/Nuomos Uzsakymai'
+            })
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
+
+    document.getElementById('NuomosUzsakymasForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const endpoint = 'http://localhost:5101/Uzsakymai/PridetiUzsakyma';
+        const formData = new FormData(this);
+        sendFormData(endpoint, formData);
+    });
+</script>
+
+
+<br>
+<br>
